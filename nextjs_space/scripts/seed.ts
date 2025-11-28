@@ -23,6 +23,32 @@ async function main() {
   });
 
   console.log('✅ Created test user:', user.email);
+
+  // Create default company
+  const company = await prisma.company.upsert({
+    where: { id: '00000000-0000-0000-0000-000000000001' },
+    update: {},
+    create: {
+      id: '00000000-0000-0000-0000-000000000001',
+      name: 'Default Company',
+      description: 'Default company for testing purposes',
+    },
+  });
+
+  console.log('✅ Created default company:', company.name);
+
+  // Create default supplier
+  const supplier = await prisma.supplier.upsert({
+    where: { id: '00000000-0000-0000-0000-000000000001' },
+    update: {},
+    create: {
+      id: '00000000-0000-0000-0000-000000000001',
+      name: 'Default Supplier',
+      contactEmail: 'supplier@example.com',
+    },
+  });
+
+  console.log('✅ Created default supplier:', supplier.name);
   console.log('🎉 Database seeding completed!');
 }
 
