@@ -2,6 +2,7 @@ import Link from "next/link";
 import { PrismaClient } from "@prisma/client";
 import { ArrowLeft, Calendar, User, Building2, Users, DollarSign, Flag, FileText, Edit } from "lucide-react";
 import { notFound } from "next/navigation";
+import AISummary from "./ai-summary";
 
 const prisma = new PrismaClient();
 
@@ -242,6 +243,9 @@ export default async function RFPDetailPage({
           </div>
         )}
       </div>
+
+      {/* AI Executive Summary Section */}
+      <AISummary rfpId={rfp.id} />
     </div>
   );
 }
