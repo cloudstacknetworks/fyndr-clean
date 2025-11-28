@@ -245,7 +245,7 @@ export default async function RFPDetailPage({
       </div>
 
       {/* AI Executive Summary Section */}
-      <AISummary rfpId={rfp.id} />
+      <AISummary rfpId={rfp.id} rfpTitle={rfp.title} />
     </div>
   );
 }

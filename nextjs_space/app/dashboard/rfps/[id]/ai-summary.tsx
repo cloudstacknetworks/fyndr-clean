@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Sparkles, AlertCircle, RefreshCw, Loader2 } from "lucide-react";
+import { Sparkles, AlertCircle, RefreshCw, Loader2, Mail } from "lucide-react";
+import ShareSummaryModal from "./share-summary-modal";
 
 interface AISummary {
   overview: string;
@@ -13,12 +14,14 @@ interface AISummary {
 
 interface AISummaryProps {
   rfpId: string;
+  rfpTitle: string;
 }
 
-export default function AISummary({ rfpId }: AISummaryProps) {
+export default function AISummary({ rfpId, rfpTitle }: AISummaryProps) {
   const [summary, setSummary] = useState<AISummary | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
 
   const handleGenerateSummary = async () => {
     setLoading(true);
@@ -108,13 +111,22 @@ export default function AISummary({ rfpId }: AISummaryProps) {
                   AI Executive Summary
                 </h2>
               </div>
-              <button
-                onClick={handleGenerateSummary}
-                className="inline-flex items-center gap-2 bg-white/20 hover:bg-white/30 text-white px-3 py-1.5 rounded-lg text-sm font-medium transition-colors"
-              >
-                <RefreshCw className="h-4 w-4" />
-                Regenerate
-              </button>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setIsShareModalOpen(true)}
+                  className="inline-flex items-center gap-2 bg-white/20 hover:bg-white/30 text-white px-3 py-1.5 rounded-lg text-sm font-medium transition-colors"
+                >
+                  <Mail className="h-4 w-4" />
+                  Share
+                </button>
+                <button
+                  onClick={handleGenerateSummary}
+                  className="inline-flex items-center gap-2 bg-white/20 hover:bg-white/30 text-white px-3 py-1.5 rounded-lg text-sm font-medium transition-colors"
+                >
+                  <RefreshCw className="h-4 w-4" />
+                  Regenerate
+                </button>
+              </div>
             </div>
           </div>
 
@@ -205,6 +217,17 @@ export default function AISummary({ rfpId }: AISummaryProps) {
             </div>
           </div>
         </div>
+      )}
+
+      {/* Share Summary Modal */}
+      {summary && (
+        <ShareSummaryModal
+          isOpen={isShareModalOpen}
+          onClose={() => setIsShareModalOpen(false)}
+          rfpId={rfpId}
+          rfpTitle={rfpTitle}
+          summary={summary}
+        />
       )}
     </div>
   );
