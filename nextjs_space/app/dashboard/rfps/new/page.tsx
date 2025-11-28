@@ -1,6 +1,40 @@
 import { NewRFPForm } from "./new-rfp-form";
+import { PrismaClient } from "@prisma/client";
 
-export default function NewRFPPage() {
+const prisma = new PrismaClient();
+
+async function getCompaniesAndSuppliers() {
+  try {
+    const [companies, suppliers] = await Promise.all([
+      prisma.company.findMany({
+        orderBy: {
+          name: "asc",
+        },
+        select: {
+          id: true,
+          name: true,
+        },
+      }),
+      prisma.supplier.findMany({
+        orderBy: {
+          name: "asc",
+        },
+        select: {
+          id: true,
+          name: true,
+        },
+      }),
+    ]);
+    return { companies, suppliers };
+  } catch (error) {
+    console.error("Error fetching companies and suppliers:", error);
+    return { companies: [], suppliers: [] };
+  }
+}
+
+export default async function NewRFPPage() {
+  const { companies, suppliers } = await getCompaniesAndSuppliers();
+
   return (
     <div className="max-w-3xl mx-auto">
       <div className="bg-white rounded-xl shadow-lg p-8">
@@ -10,7 +44,7 @@ export default function NewRFPPage() {
             Fill in the details below to create a new Request for Proposal
           </p>
         </div>
-        <NewRFPForm />
+        <NewRFPForm companies={companies} suppliers={suppliers} />
       </div>
     </div>
   );

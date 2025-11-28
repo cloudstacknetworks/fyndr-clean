@@ -64,7 +64,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { title, description } = body;
+    const { title, description, companyId, supplierId } = body;
 
     // Validate required fields
     if (!title || title.trim() === "") {
@@ -74,22 +74,69 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // For now, use hardcoded values for companyId and supplierId
-    // TODO: Replace with actual logic when we have company/supplier selection
+    if (!companyId || companyId.trim() === "") {
+      return NextResponse.json(
+        { error: "Company is required" },
+        { status: 400 }
+      );
+    }
+
+    if (!supplierId || supplierId.trim() === "") {
+      return NextResponse.json(
+        { error: "Supplier is required" },
+        { status: 400 }
+      );
+    }
+
+    // Validate that the company exists
+    const company = await prisma.company.findUnique({
+      where: { id: companyId },
+    });
+
+    if (!company) {
+      return NextResponse.json(
+        { error: "Invalid company selected" },
+        { status: 400 }
+      );
+    }
+
+    // Validate that the supplier exists
+    const supplier = await prisma.supplier.findUnique({
+      where: { id: supplierId },
+    });
+
+    if (!supplier) {
+      return NextResponse.json(
+        { error: "Invalid supplier selected" },
+        { status: 400 }
+      );
+    }
+
+    // Create the RFP with validated data
     const rfp = await prisma.rFP.create({
       data: {
         title: title.trim(),
         description: description?.trim() || null,
         status: "draft",
         userId: session.user.id,
-        companyId: "00000000-0000-0000-0000-000000000001", // Hardcoded for now
-        supplierId: "00000000-0000-0000-0000-000000000001", // Hardcoded for now
+        companyId: companyId,
+        supplierId: supplierId,
       },
       include: {
         user: {
           select: {
             name: true,
             email: true,
+          },
+        },
+        company: {
+          select: {
+            name: true,
+          },
+        },
+        supplier: {
+          select: {
+            name: true,
           },
         },
       },

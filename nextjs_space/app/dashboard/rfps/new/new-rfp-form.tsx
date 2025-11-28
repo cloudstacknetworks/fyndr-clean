@@ -5,22 +5,49 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, Loader2 } from "lucide-react";
 
-export function NewRFPForm() {
+type Company = {
+  id: string;
+  name: string;
+};
+
+type Supplier = {
+  id: string;
+  name: string;
+};
+
+type NewRFPFormProps = {
+  companies: Company[];
+  suppliers: Supplier[];
+};
+
+export function NewRFPForm({ companies, suppliers }: NewRFPFormProps) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [formData, setFormData] = useState({
     title: "",
     description: "",
+    companyId: "",
+    supplierId: "",
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
 
-    // Validate title
+    // Validate required fields
     if (!formData.title.trim()) {
       setError("Title is required");
+      return;
+    }
+
+    if (!formData.companyId) {
+      setError("Please select a company");
+      return;
+    }
+
+    if (!formData.supplierId) {
+      setError("Please select a supplier");
       return;
     }
 
@@ -35,6 +62,8 @@ export function NewRFPForm() {
         body: JSON.stringify({
           title: formData.title,
           description: formData.description,
+          companyId: formData.companyId,
+          supplierId: formData.supplierId,
         }),
       });
 
@@ -55,7 +84,7 @@ export function NewRFPForm() {
   };
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -90,6 +119,66 @@ export function NewRFPForm() {
           className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all disabled:bg-gray-100 disabled:cursor-not-allowed"
           placeholder="Enter RFP title"
         />
+      </div>
+
+      <div>
+        <label
+          htmlFor="companyId"
+          className="block text-sm font-semibold text-gray-700 mb-2"
+        >
+          Company <span className="text-red-500">*</span>
+        </label>
+        <select
+          id="companyId"
+          name="companyId"
+          value={formData.companyId}
+          onChange={handleChange}
+          required
+          disabled={isLoading}
+          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all disabled:bg-gray-100 disabled:cursor-not-allowed"
+        >
+          <option value="">Select a company</option>
+          {companies.map((company) => (
+            <option key={company.id} value={company.id}>
+              {company.name}
+            </option>
+          ))}
+        </select>
+        {companies.length === 0 && (
+          <p className="mt-2 text-sm text-amber-600">
+            No companies available. Please create a company first.
+          </p>
+        )}
+      </div>
+
+      <div>
+        <label
+          htmlFor="supplierId"
+          className="block text-sm font-semibold text-gray-700 mb-2"
+        >
+          Supplier <span className="text-red-500">*</span>
+        </label>
+        <select
+          id="supplierId"
+          name="supplierId"
+          value={formData.supplierId}
+          onChange={handleChange}
+          required
+          disabled={isLoading}
+          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all disabled:bg-gray-100 disabled:cursor-not-allowed"
+        >
+          <option value="">Select a supplier</option>
+          {suppliers.map((supplier) => (
+            <option key={supplier.id} value={supplier.id}>
+              {supplier.name}
+            </option>
+          ))}
+        </select>
+        {suppliers.length === 0 && (
+          <p className="mt-2 text-sm text-amber-600">
+            No suppliers available. Please create a supplier first.
+          </p>
+        )}
       </div>
 
       <div>
