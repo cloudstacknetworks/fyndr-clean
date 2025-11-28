@@ -3,6 +3,8 @@
 import { useState, useEffect } from "react";
 import { Sparkles, AlertCircle, RefreshCw, Loader2, Mail } from "lucide-react";
 import ShareSummaryModal from "./share-summary-modal";
+import SharePreviewModal from "./share-preview-modal";
+import { generateSummaryEmailHtml } from "@/lib/email-templates";
 
 interface AISummary {
   overview: string;
@@ -37,6 +39,10 @@ export default function AISummary({ rfpId, rfpTitle }: AISummaryProps) {
   // State for template management
   const [activeTemplate, setActiveTemplate] = useState<TemplateType>('executive');
   const [hasUserEdits, setHasUserEdits] = useState(false);
+  
+  // State for preview modal
+  const [showPreview, setShowPreview] = useState(false);
+  const [previewHtml, setPreviewHtml] = useState('');
 
   // Update editedSummary when summary changes (after generation/regeneration)
   useEffect(() => {
@@ -187,6 +193,34 @@ export default function AISummary({ rfpId, rfpTitle }: AISummaryProps) {
     setError(null);
     handleGenerateSummary();
   };
+  
+  // Handle Share button click - Open preview modal first
+  const handleShareClick = () => {
+    // Generate email HTML with current template and edits
+    const templateNameForEmail = 
+      activeTemplate === 'concise' ? 'Concise' : 
+      activeTemplate === 'detailed' ? 'Detailed' : 'Executive';
+    
+    const html = generateSummaryEmailHtml(
+      rfpTitle,
+      editedSummary,
+      templateNameForEmail
+    );
+    
+    setPreviewHtml(html);
+    setShowPreview(true);
+  };
+  
+  // Handle preview continue - Open recipients modal
+  const handlePreviewContinue = () => {
+    setShowPreview(false);
+    setIsShareModalOpen(true);
+  };
+  
+  // Handle preview cancel - Close preview modal
+  const handlePreviewCancel = () => {
+    setShowPreview(false);
+  };
 
   return (
     <div className="mt-8">
@@ -249,7 +283,7 @@ export default function AISummary({ rfpId, rfpTitle }: AISummaryProps) {
               </div>
               <div className="flex items-center gap-2">
                 <button
-                  onClick={() => setIsShareModalOpen(true)}
+                  onClick={handleShareClick}
                   className="inline-flex items-center gap-2 bg-white/20 hover:bg-white/30 text-white px-3 py-1.5 rounded-lg text-sm font-medium transition-colors"
                 >
                   <Mail className="h-4 w-4" />
@@ -414,6 +448,21 @@ export default function AISummary({ rfpId, rfpTitle }: AISummaryProps) {
         </div>
       )}
 
+      {/* Share Preview Modal */}
+      {summary && (
+        <SharePreviewModal
+          isOpen={showPreview}
+          onClose={handlePreviewCancel}
+          onContinue={handlePreviewContinue}
+          emailHtml={previewHtml}
+          rfpTitle={rfpTitle}
+          templateName={
+            activeTemplate === 'concise' ? 'Concise' : 
+            activeTemplate === 'detailed' ? 'Detailed' : 'Executive'
+          }
+        />
+      )}
+      
       {/* Share Summary Modal */}
       {summary && (
         <ShareSummaryModal
@@ -422,6 +471,10 @@ export default function AISummary({ rfpId, rfpTitle }: AISummaryProps) {
           rfpId={rfpId}
           rfpTitle={rfpTitle}
           summary={editedSummary}
+          templateName={
+            activeTemplate === 'concise' ? 'Concise' : 
+            activeTemplate === 'detailed' ? 'Detailed' : 'Executive'
+          }
         />
       )}
     </div>

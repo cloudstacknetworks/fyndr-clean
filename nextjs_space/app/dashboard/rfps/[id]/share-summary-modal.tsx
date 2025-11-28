@@ -16,6 +16,7 @@ interface ShareSummaryModalProps {
     budget: string;
     risks: string;
   };
+  templateName: 'Concise' | 'Executive' | 'Detailed';
 }
 
 export default function ShareSummaryModal({
@@ -24,6 +25,7 @@ export default function ShareSummaryModal({
   rfpId,
   rfpTitle,
   summary,
+  templateName,
 }: ShareSummaryModalProps) {
   const [emailInput, setEmailInput] = useState('');
   const [emails, setEmails] = useState<string[]>([]);
@@ -86,8 +88,8 @@ export default function ShareSummaryModal({
     setSuccessMessage('');
 
     try {
-      // Generate HTML email content
-      const summaryHtml = generateSummaryEmailHtml(rfpTitle, summary);
+      // Generate HTML email content with template name
+      const summaryHtml = generateSummaryEmailHtml(rfpTitle, summary, templateName);
 
       // Send request to API
       const response = await fetch(`/api/rfps/${rfpId}/share`, {
