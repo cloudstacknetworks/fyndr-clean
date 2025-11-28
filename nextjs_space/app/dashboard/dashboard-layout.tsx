@@ -80,6 +80,76 @@ export default function DashboardLayout({ session, children }: DashboardLayoutPr
     return pathname === href || pathname?.startsWith(href + '/');
   };
 
+  // Helper function to check if a string is a UUID
+  const isUUID = (str: string): boolean => {
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+    return uuidRegex.test(str);
+  };
+
+  // Function to generate page title based on current pathname
+  const getPageTitle = (): string => {
+    if (!pathname) return 'Dashboard';
+
+    // Remove trailing slash if present
+    const cleanPath = pathname.endsWith('/') && pathname !== '/' 
+      ? pathname.slice(0, -1) 
+      : pathname;
+
+    // Split the path into segments
+    const segments = cleanPath.split('/').filter(Boolean);
+
+    // Handle root dashboard
+    if (segments.length === 1 && segments[0] === 'dashboard') {
+      return 'Dashboard';
+    }
+
+    // Handle dashboard routes
+    if (segments[0] === 'dashboard' && segments.length > 1) {
+      const section = segments[1];
+      const action = segments[2];
+      const subAction = segments[3];
+
+      // RFPs routes
+      if (section === 'rfps') {
+        if (!action) return 'RFP List';
+        if (action === 'new') return 'Create New RFP';
+        if (isUUID(action)) {
+          if (!subAction) return 'RFP Details';
+          if (subAction === 'edit') return 'Edit RFP';
+        }
+      }
+
+      // Companies routes
+      if (section === 'companies') {
+        if (!action) return 'Company List';
+        if (action === 'new') return 'Create Company';
+        if (isUUID(action)) {
+          if (!subAction) return 'Company Details';
+          if (subAction === 'edit') return 'Edit Company';
+        }
+      }
+
+      // Suppliers routes
+      if (section === 'suppliers') {
+        if (!action) return 'Supplier List';
+        if (action === 'new') return 'Create Supplier';
+        if (isUUID(action)) {
+          if (!subAction) return 'Supplier Details';
+          if (subAction === 'edit') return 'Edit Supplier';
+        }
+      }
+
+      // Settings route
+      if (section === 'settings') {
+        return 'Settings';
+      }
+    }
+
+    // Fallback to capitalized last segment
+    const lastSegment = segments[segments.length - 1];
+    return lastSegment.charAt(0).toUpperCase() + lastSegment.slice(1);
+  };
+
   const showTopbar = navMode === 'topbar' || navMode === 'both';
   const showSidebar = navMode === 'sidebar' || navMode === 'both';
 
@@ -189,6 +259,13 @@ export default function DashboardLayout({ session, children }: DashboardLayoutPr
 
         {/* Main Content Area */}
         <main className={`flex-1 p-8 transition-all duration-300 ease-in-out ${!showSidebar ? 'ml-0' : ''}`}>
+          {/* Page Title Bar */}
+          <div className="bg-white border-b border-gray-200 -mx-8 -mt-8 mb-6 px-8 py-4">
+            <h1 className="text-3xl font-bold text-gray-900">
+              {getPageTitle()}
+            </h1>
+          </div>
+          
           {children}
         </main>
       </div>
