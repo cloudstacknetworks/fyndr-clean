@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth-options';
 import { PrismaClient } from '@prisma/client';
+import Fuse from 'fuse.js';
 
 const prisma = new PrismaClient();
 
@@ -26,8 +27,8 @@ export async function GET(request: NextRequest) {
       });
     }
 
-    // Search across RFPs (title and description)
-    const rfps = await prisma.rFP.findMany({
+    // Search across RFPs (title and description) - fetch all matching records
+    const allRfps = await prisma.rFP.findMany({
       where: {
         OR: [
           {
@@ -50,11 +51,10 @@ export async function GET(request: NextRequest) {
         status: true,
         description: true,
       },
-      take: 10,
     });
 
-    // Search across Companies (name)
-    const companies = await prisma.company.findMany({
+    // Search across Companies (name) - fetch all matching records
+    const allCompanies = await prisma.company.findMany({
       where: {
         name: {
           contains: query,
@@ -65,11 +65,10 @@ export async function GET(request: NextRequest) {
         id: true,
         name: true,
       },
-      take: 10,
     });
 
-    // Search across Suppliers (name)
-    const suppliers = await prisma.supplier.findMany({
+    // Search across Suppliers (name) - fetch all matching records
+    const allSuppliers = await prisma.supplier.findMany({
       where: {
         name: {
           contains: query,
@@ -80,14 +79,40 @@ export async function GET(request: NextRequest) {
         id: true,
         name: true,
       },
-      take: 10,
     });
 
-    // Return structured results
+    // Apply Fuse.js ranking to RFPs
+    const rfpFuse = new Fuse(allRfps, {
+      threshold: 0.4,
+      distance: 100,
+      keys: ['title', 'description'],
+    });
+    const rfpResults = rfpFuse.search(query);
+    const rankedRfps = rfpResults.slice(0, 10).map((result) => result.item);
+
+    // Apply Fuse.js ranking to Companies
+    const companyFuse = new Fuse(allCompanies, {
+      threshold: 0.4,
+      distance: 100,
+      keys: ['name'],
+    });
+    const companyResults = companyFuse.search(query);
+    const rankedCompanies = companyResults.slice(0, 10).map((result) => result.item);
+
+    // Apply Fuse.js ranking to Suppliers
+    const supplierFuse = new Fuse(allSuppliers, {
+      threshold: 0.4,
+      distance: 100,
+      keys: ['name'],
+    });
+    const supplierResults = supplierFuse.search(query);
+    const rankedSuppliers = supplierResults.slice(0, 10).map((result) => result.item);
+
+    // Return structured results with fuzzy search ranking
     return NextResponse.json({
-      rfps,
-      companies,
-      suppliers,
+      rfps: rankedRfps,
+      companies: rankedCompanies,
+      suppliers: rankedSuppliers,
     });
   } catch (error) {
     console.error('Search error:', error);
