@@ -5,6 +5,7 @@ import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { LogOut, FileText, Building2, Users, Settings, LayoutDashboard, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import GlobalSearch from './global-search';
 
 interface DashboardLayoutProps {
   session: any;
@@ -235,6 +236,9 @@ export default function DashboardLayout({ session, children }: DashboardLayoutPr
             </div>
             <div className="flex items-center gap-4">
               <span className="text-sm text-gray-600">{session?.user?.email}</span>
+              
+              {/* Global Search */}
+              <GlobalSearch />
               
               {/* Navigation Toggle Button */}
               <div className="relative group">
