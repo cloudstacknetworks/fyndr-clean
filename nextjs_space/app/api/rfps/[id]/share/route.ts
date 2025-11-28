@@ -85,14 +85,18 @@ export async function POST(
 
     // 8. Send email using Resend
     const emailSubject = `Executive Summary: ${rfp.title}`;
-    const result = await sendEmail(recipients, emailSubject, summaryHtml);
+    const result = await sendEmail({
+      to: recipients.join(','), // Comma-separated list of recipients
+      subject: emailSubject,
+      html: summaryHtml
+    });
 
     // 9. Handle email send result
     if (!result.success) {
       return NextResponse.json(
         {
           error: 'Failed to send email',
-          message: result.error,
+          message: result.error || 'Unknown error occurred',
         },
         { status: 500 }
       );

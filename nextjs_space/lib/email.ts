@@ -1,179 +1,23 @@
 import { Resend } from 'resend';
 
-/**
- * Send email using Resend API
- * @param to - Array of recipient email addresses
- * @param subject - Email subject line
- * @param html - HTML content of the email
- * @returns Promise with success status and message or error details
- */
-export async function sendEmail(
-  to: string[],
-  subject: string,
-  html: string
-): Promise<{ success: boolean; message?: string; error?: string }> {
+const resend = new Resend(process.env.RESEND_API_KEY);
+
+export async function sendEmail({ to, subject, html }: {
+  to: string;
+  subject: string;
+  html: string;
+}) {
   try {
-    // Check if API key is configured
-    if (!process.env.RESEND_API_KEY) {
-      throw new Error('RESEND_API_KEY is not configured in environment variables');
-    }
-
-    // Initialize Resend with API key (lazy initialization to avoid build-time errors)
-    // Get your API key from: https://resend.com/api-keys
-    const resend = new Resend(process.env.RESEND_API_KEY);
-
-    // Send email using Resend
-    // Note: Replace 'onboarding@resend.dev' with your verified domain email in production
-    // For development, Resend allows sending to verified email addresses
-    const { data, error } = await resend.emails.send({
-      from: 'Fyndr <onboarding@resend.dev>', // Use your verified domain in production
-      to: to,
-      subject: subject,
-      html: html,
+    const data = await resend.emails.send({
+      from: 'Fyndr <no-reply@fyndr.cloudstacknetworks.com>',
+      to,
+      subject,
+      html,
     });
 
-    if (error) {
-      console.error('Resend API error:', error);
-      return {
-        success: false,
-        error: error.message || 'Failed to send email',
-      };
-    }
-
-    return {
-      success: true,
-      message: `Email sent successfully to ${to.length} recipient(s)`,
-    };
-  } catch (error: any) {
+    return { success: true, data };
+  } catch (error) {
     console.error('Email send error:', error);
-    return {
-      success: false,
-      error: error.message || 'Failed to send email',
-    };
+    return { success: false, error };
   }
-}
-
-/**
- * Generate HTML email template for RFP Executive Summary
- * @param rfpTitle - Title of the RFP
- * @param sections - Object containing all summary sections
- * @returns HTML string for email
- */
-export function generateSummaryEmailHtml(
-  rfpTitle: string,
-  sections: {
-    overview: string;
-    goals: string;
-    dates: string;
-    budget: string;
-    risks: string;
-  }
-): string {
-  return `
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>RFP Executive Summary</title>
-  </head>
-  <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #f3f4f6; line-height: 1.6;">
-    <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; padding: 0;">
-      
-      <!-- Header -->
-      <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 40px 30px; text-align: center; border-radius: 0;">
-        <h1 style="margin: 0; color: #ffffff; font-size: 28px; font-weight: 700; letter-spacing: -0.5px;">
-          RFP Executive Summary
-        </h1>
-        <h2 style="margin: 15px 0 0 0; color: #e0e7ff; font-size: 20px; font-weight: 500;">
-          ${escapeHtml(rfpTitle)}
-        </h2>
-      </div>
-
-      <!-- Content Container -->
-      <div style="padding: 40px 30px;">
-        
-        <!-- High-Level Overview Section -->
-        <div style="margin-bottom: 30px; padding: 20px; background-color: #faf5ff; border-left: 4px solid #9333ea; border-radius: 4px;">
-          <h3 style="margin: 0 0 12px 0; color: #7c3aed; font-size: 18px; font-weight: 600;">
-            📋 High-Level Overview
-          </h3>
-          <p style="margin: 0; color: #374151; font-size: 15px; white-space: pre-wrap;">
-            ${escapeHtml(sections.overview)}
-          </p>
-        </div>
-
-        <!-- Goals & Objectives Section -->
-        <div style="margin-bottom: 30px; padding: 20px; background-color: #eef2ff; border-left: 4px solid #4f46e5; border-radius: 4px;">
-          <h3 style="margin: 0 0 12px 0; color: #4338ca; font-size: 18px; font-weight: 600;">
-            🎯 Goals & Objectives
-          </h3>
-          <p style="margin: 0; color: #374151; font-size: 15px; white-space: pre-wrap;">
-            ${escapeHtml(sections.goals)}
-          </p>
-        </div>
-
-        <!-- Important Dates Section -->
-        <div style="margin-bottom: 30px; padding: 20px; background-color: #eff6ff; border-left: 4px solid #3b82f6; border-radius: 4px;">
-          <h3 style="margin: 0 0 12px 0; color: #2563eb; font-size: 18px; font-weight: 600;">
-            📅 Important Dates
-          </h3>
-          <p style="margin: 0; color: #374151; font-size: 15px; white-space: pre-wrap;">
-            ${escapeHtml(sections.dates)}
-          </p>
-        </div>
-
-        <!-- Budget & Resources Section -->
-        <div style="margin-bottom: 30px; padding: 20px; background-color: #ecfdf5; border-left: 4px solid #10b981; border-radius: 4px;">
-          <h3 style="margin: 0 0 12px 0; color: #059669; font-size: 18px; font-weight: 600;">
-            💰 Budget & Resources
-          </h3>
-          <p style="margin: 0; color: #374151; font-size: 15px; white-space: pre-wrap;">
-            ${escapeHtml(sections.budget)}
-          </p>
-        </div>
-
-        <!-- Risk Factors Section -->
-        <div style="margin-bottom: 30px; padding: 20px; background-color: #fffbeb; border-left: 4px solid #f59e0b; border-radius: 4px;">
-          <h3 style="margin: 0 0 12px 0; color: #d97706; font-size: 18px; font-weight: 600;">
-            ⚠️ Risk Factors
-          </h3>
-          <p style="margin: 0; color: #374151; font-size: 15px; white-space: pre-wrap;">
-            ${escapeHtml(sections.risks)}
-          </p>
-        </div>
-
-      </div>
-
-      <!-- Footer -->
-      <div style="background-color: #f9fafb; padding: 30px; text-align: center; border-top: 1px solid #e5e7eb;">
-        <p style="margin: 0; color: #6b7280; font-size: 14px;">
-          Generated by <strong style="color: #4f46e5;">Fyndr</strong> RFP Management System
-        </p>
-        <p style="margin: 10px 0 0 0; color: #9ca3af; font-size: 12px;">
-          This is an automated email. Please do not reply to this message.
-        </p>
-      </div>
-
-    </div>
-  </body>
-</html>
-  `.trim();
-}
-
-/**
- * Escape HTML special characters to prevent XSS attacks
- * @param text - Text to escape
- * @returns Escaped HTML string
- */
-function escapeHtml(text: string): string {
-  const map: { [key: string]: string } = {
-    '&': '&amp;',
-    '<': '&lt;',
-    '>': '&gt;',
-    '"': '&quot;',
-    "'": '&#039;',
-  };
-  return text.replace(/[&<>"']/g, (m) => map[m]);
 }

@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { X, Mail, Plus, Loader2, CheckCircle, AlertCircle } from 'lucide-react';
-import { generateSummaryEmailHtml } from '@/lib/email';
+import { generateSummaryEmailHtml } from '@/lib/email-templates';
 
 interface ShareSummaryModalProps {
   isOpen: boolean;
