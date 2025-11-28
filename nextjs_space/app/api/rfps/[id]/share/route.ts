@@ -2,9 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth-options';
 import { sendEmail } from '@/lib/email';
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import { prisma } from '@/lib/prisma';
 
 /**
  * POST /api/rfps/[id]/share
@@ -38,7 +36,7 @@ export async function POST(
 
     // 3. Parse request body
     const body = await request.json();
-    const { recipients, summaryHtml } = body;
+    const { recipients, summaryHtml, selectedContactIds = [], template = 'Executive' } = body;
 
     // 4. Validate recipients
     if (!recipients || !Array.isArray(recipients) || recipients.length === 0) {
@@ -83,7 +81,20 @@ export async function POST(
       );
     }
 
-    // 8. Send email using Resend
+    // 8. Fetch selected contacts to map emails to contactIds
+    const selectedContacts = await prisma.contact.findMany({
+      where: {
+        id: { in: selectedContactIds },
+        userId: session.user.id
+      }
+    });
+
+    // Create email to contactId map
+    const emailToContactId = new Map(
+      selectedContacts.map(c => [c.email, c.id])
+    );
+
+    // 9. Send email using Resend
     const emailSubject = `Executive Summary: ${rfp.title}`;
     const result = await sendEmail({
       to: recipients.join(','), // Comma-separated list of recipients
@@ -91,7 +102,7 @@ export async function POST(
       html: summaryHtml
     });
 
-    // 9. Handle email send result
+    // 10. Handle email send result
     if (!result.success) {
       return NextResponse.json(
         {
@@ -102,7 +113,19 @@ export async function POST(
       );
     }
 
-    // 10. Return success response
+    // 11. Create SummaryShare entries for tracking
+    const shareEntries = recipients.map((email: string) => ({
+      rfpId: params.id,
+      contactId: emailToContactId.get(email) || null,
+      email,
+      template
+    }));
+
+    await prisma.summaryShare.createMany({
+      data: shareEntries
+    });
+
+    // 12. Return success response
     return NextResponse.json({
       success: true,
       message: `Summary sent to ${recipients.length} recipient(s)`,

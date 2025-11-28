@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { PrismaClient } from "@prisma/client";
-import { ArrowLeft, Calendar, User, Building2, Users, DollarSign, Flag, FileText, Edit } from "lucide-react";
+import { ArrowLeft, Calendar, User, Building2, Users, DollarSign, Flag, FileText, Edit, Share2, Mail } from "lucide-react";
 import { notFound } from "next/navigation";
 import AISummary from "./ai-summary";
 
@@ -27,6 +27,18 @@ async function getRFP(id: string) {
           select: {
             name: true,
             contactEmail: true,
+          },
+        },
+        summaryShares: {
+          include: {
+            contact: {
+              select: {
+                name: true,
+              },
+            },
+          },
+          orderBy: {
+            sentAt: 'desc',
           },
         },
       },
@@ -246,6 +258,80 @@ export default async function RFPDetailPage({
 
       {/* AI Executive Summary Section */}
       <AISummary rfpId={rfp.id} rfpTitle={rfp.title} />
+
+      {/* Summary Sharing History Section */}
+      <div className="bg-white rounded-lg shadow p-6 mt-6">
+        <div className="flex items-center gap-2 mb-4">
+          <Share2 className="w-5 h-5 text-indigo-600" />
+          <h2 className="text-2xl font-bold text-gray-900">Summary Sharing History</h2>
+        </div>
+        
+        {rfp.summaryShares.length === 0 ? (
+          <div className="text-center py-8">
+            <Share2 className="w-12 h-12 text-gray-400 mx-auto mb-3" />
+            <p className="text-gray-500">No summaries shared yet.</p>
+            <p className="text-sm text-gray-400 mt-1">
+              Share the AI summary to start tracking
+            </p>
+          </div>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b border-gray-200">
+                  <th className="text-left py-3 px-4 text-sm font-medium text-gray-700">
+                    Recipient Name
+                  </th>
+                  <th className="text-left py-3 px-4 text-sm font-medium text-gray-700">
+                    Email
+                  </th>
+                  <th className="text-left py-3 px-4 text-sm font-medium text-gray-700">
+                    Template
+                  </th>
+                  <th className="text-left py-3 px-4 text-sm font-medium text-gray-700">
+                    Sent Date
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-100">
+                {rfp.summaryShares.map((share) => (
+                  <tr key={share.id} className="hover:bg-gray-50">
+                    <td className="py-3 px-4">
+                      <div className="flex items-center gap-2">
+                        <User className="w-4 h-4 text-gray-400" />
+                        <span className="text-gray-900 font-medium">
+                          {share.contact?.name || 'External Contact'}
+                        </span>
+                      </div>
+                    </td>
+                    <td className="py-3 px-4">
+                      <div className="flex items-center gap-2">
+                        <Mail className="w-4 h-4 text-gray-400" />
+                        <span className="text-gray-600">{share.email}</span>
+                      </div>
+                    </td>
+                    <td className="py-3 px-4">
+                      <span className="px-3 py-1 bg-indigo-100 text-indigo-700 rounded-full text-xs font-medium">
+                        {share.template}
+                      </span>
+                    </td>
+                    <td className="py-3 px-4 text-sm text-gray-600">
+                      {new Date(share.sentAt).toLocaleString('en-US', {
+                        month: 'short',
+                        day: 'numeric',
+                        year: 'numeric',
+                        hour: 'numeric',
+                        minute: '2-digit',
+                        hour12: true
+                      })}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

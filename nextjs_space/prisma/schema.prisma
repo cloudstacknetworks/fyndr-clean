@@ -14,6 +14,7 @@ model User {
   name      String?
   createdAt DateTime @default(now())
   rfps      RFP[]
+  contacts  Contact[]
 }
 
 model Company {
@@ -55,4 +56,32 @@ model RFP {
   companyId     String
   supplier      Supplier  @relation(fields: [supplierId], references: [id])
   supplierId    String
+  summaryShares SummaryShare[]
+}
+
+model Contact {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name      String
+  email     String
+  role      String?
+  createdAt DateTime @default(now())
+  shares    SummaryShare[]
+
+  @@index([userId])
+}
+
+model SummaryShare {
+  id          String   @id @default(uuid())
+  rfpId       String
+  rfp         RFP      @relation(fields: [rfpId], references: [id], onDelete: Cascade)
+  contactId   String?
+  contact     Contact? @relation(fields: [contactId], references: [id], onDelete: SetNull)
+  email       String
+  template    String
+  sentAt      DateTime @default(now())
+
+  @@index([rfpId])
+  @@index([contactId])
 }

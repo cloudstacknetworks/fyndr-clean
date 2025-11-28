@@ -1,8 +1,15 @@
 'use client';
 
-import { useState } from 'react';
-import { X, Mail, Plus, Loader2, CheckCircle, AlertCircle } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { X, Mail, Plus, Loader2, CheckCircle, AlertCircle, User, Users } from 'lucide-react';
 import { generateSummaryEmailHtml } from '@/lib/email-templates';
+
+interface Contact {
+  id: string;
+  name: string;
+  email: string;
+  role?: string | null;
+}
 
 interface ShareSummaryModalProps {
   isOpen: boolean;
@@ -27,16 +34,49 @@ export default function ShareSummaryModal({
   summary,
   templateName,
 }: ShareSummaryModalProps) {
+  const [contacts, setContacts] = useState<Contact[]>([]);
+  const [selectedContactIds, setSelectedContactIds] = useState<string[]>([]);
   const [emailInput, setEmailInput] = useState('');
   const [emails, setEmails] = useState<string[]>([]);
   const [emailError, setEmailError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingContacts, setIsLoadingContacts] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [showPreview, setShowPreview] = useState(false);
 
   // Email validation regex
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  // Fetch contacts on mount
+  useEffect(() => {
+    if (isOpen) {
+      fetchContacts();
+    }
+  }, [isOpen]);
+
+  const fetchContacts = async () => {
+    setIsLoadingContacts(true);
+    try {
+      const res = await fetch('/api/contacts');
+      if (res.ok) {
+        const data = await res.json();
+        setContacts(data);
+      }
+    } catch (error) {
+      console.error('Error fetching contacts:', error);
+    } finally {
+      setIsLoadingContacts(false);
+    }
+  };
+
+  const handleContactToggle = (contactId: string) => {
+    setSelectedContactIds(prev =>
+      prev.includes(contactId)
+        ? prev.filter(id => id !== contactId)
+        : [...prev, contactId]
+    );
+  };
 
   // Handle adding email
   const handleAddEmail = () => {
@@ -77,9 +117,16 @@ export default function ShareSummaryModal({
 
   // Handle sending email
   const handleSend = async () => {
+    // Get selected contacts' emails
+    const selectedContacts = contacts.filter(c => selectedContactIds.includes(c.id));
+    const contactEmails = selectedContacts.map(c => c.email);
+
+    // Combine all emails
+    const allEmails = [...contactEmails, ...emails];
+
     // Validate that we have recipients
-    if (emails.length === 0) {
-      setErrorMessage('Please add at least one recipient');
+    if (allEmails.length === 0) {
+      setErrorMessage('Please select at least one contact or add an email address');
       return;
     }
 
@@ -98,7 +145,10 @@ export default function ShareSummaryModal({
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          recipients: emails,
+          recipients: allEmails,
+          selectedContactIds,
+          template: templateName,
+          summary,
           summaryHtml: summaryHtml,
         }),
       });
@@ -110,10 +160,11 @@ export default function ShareSummaryModal({
       }
 
       // Show success message
-      setSuccessMessage(`Successfully sent summary to ${emails.length} recipient(s)!`);
+      setSuccessMessage(`Successfully sent summary to ${allEmails.length} recipient(s)!`);
       
-      // Clear emails list
+      // Clear state
       setEmails([]);
+      setSelectedContactIds([]);
       
       // Close modal after 2 seconds
       setTimeout(() => {
@@ -181,6 +232,70 @@ export default function ShareSummaryModal({
                 <p className="text-red-800 text-sm">{errorMessage}</p>
               </div>
             )}
+
+            {/* Internal Contacts Section */}
+            <div className="mb-6 pb-6 border-b border-gray-200">
+              <div className="flex items-center justify-between mb-3">
+                <label className="flex items-center gap-2 text-sm font-medium text-gray-700">
+                  <Users className="w-4 h-4" />
+                  Select Internal Contacts
+                </label>
+                {contacts.length === 0 && !isLoadingContacts && (
+                  <a 
+                    href="/dashboard/settings/contacts/new" 
+                    target="_blank"
+                    className="text-xs text-indigo-600 hover:text-indigo-800"
+                  >
+                    + Add Contact
+                  </a>
+                )}
+              </div>
+
+              {isLoadingContacts ? (
+                <div className="flex items-center justify-center py-4">
+                  <Loader2 className="w-5 h-5 animate-spin text-indigo-600" />
+                </div>
+              ) : contacts.length === 0 ? (
+                <div className="text-center py-4 text-sm text-gray-500">
+                  No contacts yet. <a href="/dashboard/settings/contacts/new" target="_blank" className="text-indigo-600 hover:text-indigo-800">Add your first contact</a>
+                </div>
+              ) : (
+                <div className="space-y-2 max-h-48 overflow-y-auto border border-gray-200 rounded-lg p-3">
+                  {contacts.map(contact => (
+                    <label 
+                      key={contact.id} 
+                      className="flex items-center gap-3 p-2 hover:bg-gray-50 rounded cursor-pointer"
+                    >
+                      <input
+                        type="checkbox"
+                        checked={selectedContactIds.includes(contact.id)}
+                        onChange={() => handleContactToggle(contact.id)}
+                        className="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
+                      />
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2">
+                          <User className="w-3 h-3 text-gray-400 flex-shrink-0" />
+                          <span className="font-medium text-gray-900 text-sm">{contact.name}</span>
+                        </div>
+                        <div className="flex items-center gap-2 mt-0.5">
+                          <Mail className="w-3 h-3 text-gray-400 flex-shrink-0" />
+                          <span className="text-xs text-gray-600">{contact.email}</span>
+                          {contact.role && (
+                            <span className="text-xs text-gray-400">• {contact.role}</span>
+                          )}
+                        </div>
+                      </div>
+                    </label>
+                  ))}
+                </div>
+              )}
+              
+              {selectedContactIds.length > 0 && (
+                <div className="mt-3 text-sm text-indigo-600">
+                  {selectedContactIds.length} contact{selectedContactIds.length !== 1 ? 's' : ''} selected
+                </div>
+              )}
+            </div>
 
             {/* Email Input Section */}
             <div className="mb-6">
@@ -300,7 +415,7 @@ export default function ShareSummaryModal({
             </button>
             <button
               onClick={handleSend}
-              disabled={isLoading || emails.length === 0}
+              disabled={isLoading || (selectedContactIds.length === 0 && emails.length === 0)}
               className="px-6 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg hover:from-indigo-700 hover:to-purple-700 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
             >
               {isLoading ? (
@@ -311,7 +426,7 @@ export default function ShareSummaryModal({
               ) : (
                 <>
                   <Mail className="w-4 h-4" />
-                  Send Summary
+                  Send Summary ({selectedContactIds.length + emails.length})
                 </>
               )}
             </button>
