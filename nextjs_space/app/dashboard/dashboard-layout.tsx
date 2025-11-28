@@ -3,7 +3,7 @@
 import { signOut } from 'next-auth/react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { LogOut, FileText, Building2, Users, Settings, LayoutDashboard } from 'lucide-react';
+import { LogOut, FileText, Building2, Users, Settings, LayoutDashboard, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
 interface DashboardLayoutProps {
@@ -12,11 +12,13 @@ interface DashboardLayoutProps {
 }
 
 type NavMode = 'sidebar' | 'topbar' | 'both';
+type SidebarMode = 'expanded' | 'collapsed';
 
 export default function DashboardLayout({ session, children }: DashboardLayoutProps) {
   const router = useRouter();
   const pathname = usePathname();
   const [navMode, setNavMode] = useState<NavMode>('both');
+  const [sidebarMode, setSidebarMode] = useState<SidebarMode>('expanded');
   const [isClient, setIsClient] = useState(false);
 
   // Initialize from localStorage on mount
@@ -26,6 +28,11 @@ export default function DashboardLayout({ session, children }: DashboardLayoutPr
       const storedMode = localStorage.getItem('navMode') as NavMode;
       if (storedMode && ['sidebar', 'topbar', 'both'].includes(storedMode)) {
         setNavMode(storedMode);
+      }
+      
+      const storedSidebarMode = localStorage.getItem('sidebarMode') as SidebarMode;
+      if (storedSidebarMode && ['expanded', 'collapsed'].includes(storedSidebarMode)) {
+        setSidebarMode(storedSidebarMode);
       }
     }
   }, []);
@@ -42,6 +49,14 @@ export default function DashboardLayout({ session, children }: DashboardLayoutPr
     setNavMode(nextMode);
     if (typeof window !== 'undefined') {
       localStorage.setItem('navMode', nextMode);
+    }
+  };
+
+  const handleToggleSidebar = () => {
+    const newMode: SidebarMode = sidebarMode === 'expanded' ? 'collapsed' : 'expanded';
+    setSidebarMode(newMode);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('sidebarMode', newMode);
     }
   };
 
@@ -233,24 +248,53 @@ export default function DashboardLayout({ session, children }: DashboardLayoutPr
       <div className="flex">
         {/* Sidebar */}
         {showSidebar && (
-          <aside className="w-64 bg-white shadow-md min-h-[calc(100vh-7.5rem)] transition-all duration-300 ease-in-out">
+          <aside className={`bg-white shadow-md min-h-[calc(100vh-7.5rem)] transition-all duration-300 ease-in-out ${
+            sidebarMode === 'expanded' ? 'w-64' : 'w-20'
+          }`}>
+            {/* Chevron Toggle Button */}
+            <div className={`flex items-center p-4 border-b border-gray-200 ${
+              sidebarMode === 'collapsed' ? 'justify-center' : 'justify-end'
+            }`}>
+              <button
+                onClick={handleToggleSidebar}
+                className="p-2 rounded-md text-gray-600 hover:bg-gray-100 hover:text-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200"
+                title={sidebarMode === 'expanded' ? 'Collapse sidebar' : 'Expand sidebar'}
+              >
+                {sidebarMode === 'expanded' ? (
+                  <ChevronLeft className="w-5 h-5" />
+                ) : (
+                  <ChevronRight className="w-5 h-5" />
+                )}
+              </button>
+            </div>
+            
             <nav className="p-4 space-y-2">
               {sidebarNavigation.map((item) => {
                 const Icon = item.icon;
                 const active = isActive(item.href);
                 return (
-                  <Link
-                    key={item.name}
-                    href={item.href}
-                    className={`flex items-center px-4 py-3 text-sm font-medium rounded-md transition-colors ${
-                      active
-                        ? 'bg-indigo-600 text-white'
-                        : 'text-gray-700 hover:bg-gray-100'
-                    }`}
-                  >
-                    <Icon className="w-5 h-5 mr-3" />
-                    {item.name}
-                  </Link>
+                  <div key={item.name} className="relative group">
+                    <Link
+                      href={item.href}
+                      className={`flex items-center text-sm font-medium rounded-md transition-colors ${
+                        sidebarMode === 'expanded' ? 'px-4 py-3' : 'px-3 py-3 justify-center'
+                      } ${
+                        active
+                          ? 'bg-indigo-600 text-white'
+                          : 'text-gray-700 hover:bg-gray-100'
+                      }`}
+                    >
+                      <Icon className={`w-5 h-5 ${sidebarMode === 'expanded' ? 'mr-3' : ''}`} />
+                      {sidebarMode === 'expanded' && <span>{item.name}</span>}
+                    </Link>
+                    
+                    {/* Tooltip for collapsed mode */}
+                    {sidebarMode === 'collapsed' && isClient && (
+                      <div className="absolute left-full ml-2 top-1/2 -translate-y-1/2 px-3 py-2 bg-gray-900 text-white text-sm rounded-md whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-50">
+                        {item.name}
+                      </div>
+                    )}
+                  </div>
                 );
               })}
             </nav>
