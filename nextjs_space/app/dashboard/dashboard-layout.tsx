@@ -101,6 +101,60 @@ export default function DashboardLayout({ session, children }: DashboardLayoutPr
     return uuidRegex.test(str);
   };
 
+  // Helper function to convert segment to readable label
+  const segmentToLabel = (segment: string): string => {
+    const labelMap: { [key: string]: string } = {
+      'dashboard': 'Dashboard',
+      'rfps': 'RFPs',
+      'companies': 'Companies',
+      'suppliers': 'Suppliers',
+      'settings': 'Settings',
+      'new': 'Create',
+      'edit': 'Edit',
+    };
+
+    // Check if it's a known segment
+    if (labelMap[segment]) {
+      return labelMap[segment];
+    }
+
+    // Check if it's a UUID
+    if (isUUID(segment)) {
+      return 'Details';
+    }
+
+    // Fallback: capitalize first letter
+    return segment.charAt(0).toUpperCase() + segment.slice(1);
+  };
+
+  // Function to generate breadcrumb items
+  const getBreadcrumbs = () => {
+    if (!pathname) return [];
+
+    // Remove trailing slash if present
+    const cleanPath = pathname.endsWith('/') && pathname !== '/' 
+      ? pathname.slice(0, -1) 
+      : pathname;
+
+    // Split the path into segments
+    const segments = cleanPath.split('/').filter(Boolean);
+
+    // Build breadcrumb items
+    const breadcrumbs = segments.map((segment, index) => {
+      const path = '/' + segments.slice(0, index + 1).join('/');
+      const label = segmentToLabel(segment);
+      const isLast = index === segments.length - 1;
+
+      return {
+        label,
+        path,
+        isLast,
+      };
+    });
+
+    return breadcrumbs;
+  };
+
   // Function to generate page title based on current pathname
   const getPageTitle = (): string => {
     if (!pathname) return 'Dashboard';
@@ -303,8 +357,33 @@ export default function DashboardLayout({ session, children }: DashboardLayoutPr
 
         {/* Main Content Area */}
         <main className={`flex-1 p-8 transition-all duration-300 ease-in-out ${!showSidebar ? 'ml-0' : ''}`}>
+          {/* Breadcrumbs */}
+          <div className="-mx-8 -mt-8 px-8 pt-4 pb-2">
+            <nav className="flex items-center space-x-2 text-sm">
+              {getBreadcrumbs().map((breadcrumb, index) => (
+                <div key={breadcrumb.path} className="flex items-center">
+                  {index > 0 && (
+                    <span className="text-gray-400 mx-2">&gt;</span>
+                  )}
+                  {breadcrumb.isLast ? (
+                    <span className="text-gray-700 font-medium">
+                      {breadcrumb.label}
+                    </span>
+                  ) : (
+                    <Link
+                      href={breadcrumb.path}
+                      className="text-gray-500 hover:text-indigo-600 transition-colors duration-200"
+                    >
+                      {breadcrumb.label}
+                    </Link>
+                  )}
+                </div>
+              ))}
+            </nav>
+          </div>
+
           {/* Page Title Bar */}
-          <div className="bg-white border-b border-gray-200 -mx-8 -mt-8 mb-6 px-8 py-4">
+          <div className="bg-white border-b border-gray-200 -mx-8 mb-6 px-8 py-4">
             <h1 className="text-3xl font-bold text-gray-900">
               {getPageTitle()}
             </h1>
