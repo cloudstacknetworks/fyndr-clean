@@ -19,14 +19,27 @@ export default function DashboardLayout({ session, children }: DashboardLayoutPr
     router.replace('/');
   };
 
-  const navigation = [
+  const sidebarNavigation = [
     { name: 'RFPs', href: '/dashboard/rfps', icon: FileText },
     { name: 'Companies', href: '/dashboard/companies', icon: Building2 },
     { name: 'Suppliers', href: '/dashboard/suppliers', icon: Users },
     { name: 'Settings', href: '/dashboard/settings', icon: Settings },
   ];
 
-  const isActive = (href: string) => pathname === href || pathname?.startsWith(href + '/');
+  const topNavigation = [
+    { name: 'Dashboard', href: '/dashboard' },
+    { name: 'RFPs', href: '/dashboard/rfps' },
+    { name: 'Companies', href: '/dashboard/companies' },
+    { name: 'Suppliers', href: '/dashboard/suppliers' },
+    { name: 'Settings', href: '/dashboard/settings' },
+  ];
+
+  const isActive = (href: string) => {
+    if (href === '/dashboard') {
+      return pathname === '/dashboard';
+    }
+    return pathname === href || pathname?.startsWith(href + '/');
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
@@ -53,12 +66,43 @@ export default function DashboardLayout({ session, children }: DashboardLayoutPr
         </div>
       </nav>
 
+      {/* Global Top Navigation */}
+      <div className="bg-white shadow-md border-b border-gray-200">
+        <div className="px-4 sm:px-6 lg:px-8">
+          <nav className="flex items-center space-x-8 h-14">
+            {topNavigation.map((item) => {
+              const active = isActive(item.href);
+              return (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className={`relative text-sm transition-all duration-200 py-4 ${
+                    active
+                      ? 'font-bold text-indigo-600'
+                      : 'font-normal text-gray-700 hover:text-indigo-500'
+                  } group`}
+                >
+                  {item.name}
+                  <span
+                    className={`absolute bottom-0 left-0 w-full h-0.5 bg-indigo-600 transform transition-all duration-200 ${
+                      active
+                        ? 'scale-x-100'
+                        : 'scale-x-0 group-hover:scale-x-100 group-hover:bg-indigo-400'
+                    }`}
+                  />
+                </Link>
+              );
+            })}
+          </nav>
+        </div>
+      </div>
+
       {/* Main Content with Sidebar */}
       <div className="flex">
         {/* Sidebar */}
-        <aside className="w-64 bg-white shadow-md min-h-[calc(100vh-4rem)]">
+        <aside className="w-64 bg-white shadow-md min-h-[calc(100vh-7.5rem)]">
           <nav className="p-4 space-y-2">
-            {navigation.map((item) => {
+            {sidebarNavigation.map((item) => {
               const Icon = item.icon;
               const active = isActive(item.href);
               return (
