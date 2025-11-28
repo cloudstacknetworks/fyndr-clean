@@ -3,9 +3,10 @@
 import { signOut } from 'next-auth/react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { LogOut, FileText, Building2, Users, Settings, LayoutDashboard, ChevronLeft, ChevronRight } from 'lucide-react';
+import { LogOut, FileText, Building2, Users, Settings, LayoutDashboard, ChevronLeft, ChevronRight, Search } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import GlobalSearch from './global-search';
+import CommandPalette from './command-palette';
 
 interface DashboardLayoutProps {
   session: any;
@@ -21,6 +22,7 @@ export default function DashboardLayout({ session, children }: DashboardLayoutPr
   const [navMode, setNavMode] = useState<NavMode>('both');
   const [sidebarMode, setSidebarMode] = useState<SidebarMode>('expanded');
   const [isClient, setIsClient] = useState(false);
+  const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
 
   // Initialize from localStorage on mount
   useEffect(() => {
@@ -36,6 +38,22 @@ export default function DashboardLayout({ session, children }: DashboardLayoutPr
         setSidebarMode(storedSidebarMode);
       }
     }
+  }, []);
+
+  // Global keyboard shortcut for Command Palette (⌘K or Ctrl+K)
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      // Check for Cmd+K (Mac) or Ctrl+K (Windows/Linux)
+      if ((event.metaKey || event.ctrlKey) && event.key === 'k') {
+        event.preventDefault();
+        setIsCommandPaletteOpen(true);
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
   }, []);
 
   const handleSignOut = async () => {
@@ -240,6 +258,19 @@ export default function DashboardLayout({ session, children }: DashboardLayoutPr
               {/* Global Search */}
               <GlobalSearch />
               
+              {/* Command-K Hint Button */}
+              <button
+                onClick={() => setIsCommandPaletteOpen(true)}
+                className="hidden md:flex items-center gap-2 px-3 py-1.5 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm text-gray-600 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-1"
+                aria-label="Open command palette"
+              >
+                <Search className="w-4 h-4" />
+                <span>Search</span>
+                <kbd className="px-1.5 py-0.5 bg-white rounded text-xs font-mono border border-gray-200 shadow-sm">
+                  ⌘K
+                </kbd>
+              </button>
+              
               {/* Navigation Toggle Button */}
               <div className="relative group">
                 <button
@@ -396,6 +427,12 @@ export default function DashboardLayout({ session, children }: DashboardLayoutPr
           {children}
         </main>
       </div>
+
+      {/* Command Palette */}
+      <CommandPalette
+        isOpen={isCommandPaletteOpen}
+        onClose={() => setIsCommandPaletteOpen(false)}
+      />
     </div>
   );
 }
