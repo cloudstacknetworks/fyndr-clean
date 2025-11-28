@@ -79,7 +79,7 @@ export async function PUT(
     }
 
     const body = await request.json();
-    const { title, description, status } = body;
+    const { title, description, status, dueDate, submittedAt, budget, priority, internalNotes } = body;
 
     // Validate required fields
     if (title !== undefined && (!title || title.trim() === "")) {
@@ -98,6 +98,25 @@ export async function PUT(
       );
     }
 
+    // Validate budget if provided
+    if (budget !== undefined && budget !== null && budget !== "") {
+      const budgetNum = parseFloat(budget);
+      if (isNaN(budgetNum) || budgetNum < 0) {
+        return NextResponse.json(
+          { error: "Budget must be a positive number" },
+          { status: 400 }
+        );
+      }
+    }
+
+    // Validate priority if provided
+    if (priority !== undefined && priority && !["LOW", "MEDIUM", "HIGH"].includes(priority)) {
+      return NextResponse.json(
+        { error: "Priority must be one of: LOW, MEDIUM, HIGH" },
+        { status: 400 }
+      );
+    }
+
     // Check if RFP exists
     const existingRfp = await prisma.rFP.findUnique({
       where: { id: params.id },
@@ -110,16 +129,26 @@ export async function PUT(
       );
     }
 
+    // Prepare update data
+    const updateData: any = {};
+    
+    if (title !== undefined) updateData.title = title.trim();
+    if (description !== undefined) updateData.description = description?.trim() || null;
+    if (status !== undefined) updateData.status = status;
+    if (dueDate !== undefined) updateData.dueDate = dueDate ? new Date(dueDate) : null;
+    if (submittedAt !== undefined) updateData.submittedAt = submittedAt ? new Date(submittedAt) : null;
+    if (budget !== undefined) {
+      updateData.budget = budget !== null && budget !== "" ? parseFloat(budget) : null;
+    }
+    if (priority !== undefined) updateData.priority = priority || "MEDIUM";
+    if (internalNotes !== undefined) updateData.internalNotes = internalNotes?.trim() || null;
+
     // Update the RFP
     const updatedRfp = await prisma.rFP.update({
       where: {
         id: params.id,
       },
-      data: {
-        ...(title !== undefined && { title: title.trim() }),
-        ...(description !== undefined && { description: description?.trim() || null }),
-        ...(status !== undefined && { status }),
-      },
+      data: updateData,
       include: {
         user: {
           select: {

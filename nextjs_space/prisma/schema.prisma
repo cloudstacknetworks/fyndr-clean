@@ -32,16 +32,27 @@ model Supplier {
   rfps      RFP[]
 }
 
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+}
+
 model RFP {
-  id          String   @id @default(uuid())
-  title       String
-  description String?
-  status      String   @default("draft")
-  createdAt   DateTime @default(now())
-  user        User     @relation(fields: [userId], references: [id])
-  userId      String
-  company     Company  @relation(fields: [companyId], references: [id])
-  companyId   String
-  supplier    Supplier @relation(fields: [supplierId], references: [id])
-  supplierId  String
+  id            String    @id @default(uuid())
+  title         String
+  description   String?
+  status        String    @default("draft")
+  createdAt     DateTime  @default(now())
+  dueDate       DateTime?
+  submittedAt   DateTime?
+  budget        Float?
+  priority      Priority  @default(MEDIUM)
+  internalNotes String?
+  user          User      @relation(fields: [userId], references: [id])
+  userId        String
+  company       Company   @relation(fields: [companyId], references: [id])
+  companyId     String
+  supplier      Supplier  @relation(fields: [supplierId], references: [id])
+  supplierId    String
 }

@@ -15,24 +15,53 @@ type Supplier = {
   name: string;
 };
 
-type NewRFPFormProps = {
+type RFP = {
+  id: string;
+  title: string;
+  description: string | null;
+  status: string;
+  dueDate: Date | null;
+  submittedAt: Date | null;
+  budget: number | null;
+  priority: string;
+  internalNotes: string | null;
+  companyId: string;
+  supplierId: string;
+  company: Company;
+  supplier: Supplier;
+};
+
+type EditRFPFormProps = {
+  rfp: RFP;
   companies: Company[];
   suppliers: Supplier[];
 };
 
-export function NewRFPForm({ companies, suppliers }: NewRFPFormProps) {
+// Helper function to format date for input[type="date"]
+function formatDateForInput(date: Date | null): string {
+  if (!date) return "";
+  const d = new Date(date);
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
+export function EditRFPForm({ rfp, companies, suppliers }: EditRFPFormProps) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [formData, setFormData] = useState({
-    title: "",
-    description: "",
-    companyId: "",
-    supplierId: "",
-    dueDate: "",
-    budget: "",
-    priority: "MEDIUM",
-    internalNotes: "",
+    title: rfp.title,
+    description: rfp.description || "",
+    status: rfp.status,
+    companyId: rfp.companyId,
+    supplierId: rfp.supplierId,
+    dueDate: formatDateForInput(rfp.dueDate),
+    submittedAt: formatDateForInput(rfp.submittedAt),
+    budget: rfp.budget?.toString() || "",
+    priority: rfp.priority || "MEDIUM",
+    internalNotes: rfp.internalNotes || "",
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -64,17 +93,17 @@ export function NewRFPForm({ companies, suppliers }: NewRFPFormProps) {
     setIsLoading(true);
 
     try {
-      const response = await fetch("/api/rfps", {
-        method: "POST",
+      const response = await fetch(`/api/rfps/${rfp.id}`, {
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
           title: formData.title,
           description: formData.description,
-          companyId: formData.companyId,
-          supplierId: formData.supplierId,
+          status: formData.status,
           dueDate: formData.dueDate || null,
+          submittedAt: formData.submittedAt || null,
           budget: formData.budget || null,
           priority: formData.priority,
           internalNotes: formData.internalNotes,
@@ -84,14 +113,14 @@ export function NewRFPForm({ companies, suppliers }: NewRFPFormProps) {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || "Failed to create RFP");
+        throw new Error(data.error || "Failed to update RFP");
       }
 
-      // Success! Redirect to the RFPs list
-      router.push("/dashboard/rfps");
+      // Success! Redirect to the RFP detail page
+      router.push(`/dashboard/rfps/${rfp.id}`);
       router.refresh();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to create RFP");
+      setError(err instanceof Error ? err.message : "Failed to update RFP");
     } finally {
       setIsLoading(false);
     }
@@ -135,64 +164,77 @@ export function NewRFPForm({ companies, suppliers }: NewRFPFormProps) {
         />
       </div>
 
-      <div>
-        <label
-          htmlFor="companyId"
-          className="block text-sm font-semibold text-gray-700 mb-2"
-        >
-          Company <span className="text-red-500">*</span>
-        </label>
-        <select
-          id="companyId"
-          name="companyId"
-          value={formData.companyId}
-          onChange={handleChange}
-          required
-          disabled={isLoading}
-          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all disabled:bg-gray-100 disabled:cursor-not-allowed"
-        >
-          <option value="">Select a company</option>
-          {companies.map((company) => (
-            <option key={company.id} value={company.id}>
-              {company.name}
-            </option>
-          ))}
-        </select>
-        {companies.length === 0 && (
-          <p className="mt-2 text-sm text-amber-600">
-            No companies available. Please create a company first.
-          </p>
-        )}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label
+            htmlFor="companyId"
+            className="block text-sm font-semibold text-gray-700 mb-2"
+          >
+            Company <span className="text-red-500">*</span>
+          </label>
+          <select
+            id="companyId"
+            name="companyId"
+            value={formData.companyId}
+            onChange={handleChange}
+            required
+            disabled={isLoading}
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all disabled:bg-gray-100 disabled:cursor-not-allowed"
+          >
+            <option value="">Select a company</option>
+            {companies.map((company) => (
+              <option key={company.id} value={company.id}>
+                {company.name}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div>
+          <label
+            htmlFor="supplierId"
+            className="block text-sm font-semibold text-gray-700 mb-2"
+          >
+            Supplier <span className="text-red-500">*</span>
+          </label>
+          <select
+            id="supplierId"
+            name="supplierId"
+            value={formData.supplierId}
+            onChange={handleChange}
+            required
+            disabled={isLoading}
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all disabled:bg-gray-100 disabled:cursor-not-allowed"
+          >
+            <option value="">Select a supplier</option>
+            {suppliers.map((supplier) => (
+              <option key={supplier.id} value={supplier.id}>
+                {supplier.name}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
 
       <div>
         <label
-          htmlFor="supplierId"
+          htmlFor="status"
           className="block text-sm font-semibold text-gray-700 mb-2"
         >
-          Supplier <span className="text-red-500">*</span>
+          Status
         </label>
         <select
-          id="supplierId"
-          name="supplierId"
-          value={formData.supplierId}
+          id="status"
+          name="status"
+          value={formData.status}
           onChange={handleChange}
-          required
           disabled={isLoading}
           className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all disabled:bg-gray-100 disabled:cursor-not-allowed"
         >
-          <option value="">Select a supplier</option>
-          {suppliers.map((supplier) => (
-            <option key={supplier.id} value={supplier.id}>
-              {supplier.name}
-            </option>
-          ))}
+          <option value="draft">Draft</option>
+          <option value="published">Published</option>
+          <option value="completed">Completed</option>
         </select>
-        {suppliers.length === 0 && (
-          <p className="mt-2 text-sm text-amber-600">
-            No suppliers available. Please create a supplier first.
-          </p>
-        )}
       </div>
 
       <div>
@@ -235,6 +277,26 @@ export function NewRFPForm({ companies, suppliers }: NewRFPFormProps) {
 
         <div>
           <label
+            htmlFor="submittedAt"
+            className="block text-sm font-semibold text-gray-700 mb-2"
+          >
+            Submitted At
+          </label>
+          <input
+            type="date"
+            id="submittedAt"
+            name="submittedAt"
+            value={formData.submittedAt}
+            onChange={handleChange}
+            disabled={isLoading}
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all disabled:bg-gray-100 disabled:cursor-not-allowed"
+          />
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label
             htmlFor="budget"
             className="block text-sm font-semibold text-gray-700 mb-2"
           >
@@ -253,27 +315,27 @@ export function NewRFPForm({ companies, suppliers }: NewRFPFormProps) {
             placeholder="Enter budget amount"
           />
         </div>
-      </div>
 
-      <div>
-        <label
-          htmlFor="priority"
-          className="block text-sm font-semibold text-gray-700 mb-2"
-        >
-          Priority
-        </label>
-        <select
-          id="priority"
-          name="priority"
-          value={formData.priority}
-          onChange={handleChange}
-          disabled={isLoading}
-          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all disabled:bg-gray-100 disabled:cursor-not-allowed"
-        >
-          <option value="LOW">Low</option>
-          <option value="MEDIUM">Medium</option>
-          <option value="HIGH">High</option>
-        </select>
+        <div>
+          <label
+            htmlFor="priority"
+            className="block text-sm font-semibold text-gray-700 mb-2"
+          >
+            Priority
+          </label>
+          <select
+            id="priority"
+            name="priority"
+            value={formData.priority}
+            onChange={handleChange}
+            disabled={isLoading}
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all disabled:bg-gray-100 disabled:cursor-not-allowed"
+          >
+            <option value="LOW">Low</option>
+            <option value="MEDIUM">Medium</option>
+            <option value="HIGH">High</option>
+          </select>
+        </div>
       </div>
 
       <div>
@@ -305,14 +367,14 @@ export function NewRFPForm({ companies, suppliers }: NewRFPFormProps) {
           {isLoading ? (
             <>
               <Loader2 className="h-5 w-5 animate-spin" />
-              Creating...
+              Updating...
             </>
           ) : (
-            "Create RFP"
+            "Update RFP"
           )}
         </button>
         <Link
-          href="/dashboard/rfps"
+          href={`/dashboard/rfps/${rfp.id}`}
           className="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 px-6 py-3 rounded-lg font-semibold transition-all flex items-center justify-center gap-2"
         >
           <ArrowLeft className="h-5 w-5" />

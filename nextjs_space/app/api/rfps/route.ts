@@ -64,7 +64,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { title, description, companyId, supplierId } = body;
+    const { title, description, companyId, supplierId, dueDate, budget, priority, internalNotes } = body;
 
     // Validate required fields
     if (!title || title.trim() === "") {
@@ -84,6 +84,25 @@ export async function POST(request: NextRequest) {
     if (!supplierId || supplierId.trim() === "") {
       return NextResponse.json(
         { error: "Supplier is required" },
+        { status: 400 }
+      );
+    }
+
+    // Validate budget if provided
+    if (budget !== undefined && budget !== null && budget !== "") {
+      const budgetNum = parseFloat(budget);
+      if (isNaN(budgetNum) || budgetNum < 0) {
+        return NextResponse.json(
+          { error: "Budget must be a positive number" },
+          { status: 400 }
+        );
+      }
+    }
+
+    // Validate priority if provided
+    if (priority && !["LOW", "MEDIUM", "HIGH"].includes(priority)) {
+      return NextResponse.json(
+        { error: "Priority must be one of: LOW, MEDIUM, HIGH" },
         { status: 400 }
       );
     }
@@ -121,6 +140,10 @@ export async function POST(request: NextRequest) {
         userId: session.user.id,
         companyId: companyId,
         supplierId: supplierId,
+        dueDate: dueDate ? new Date(dueDate) : null,
+        budget: budget !== undefined && budget !== null && budget !== "" ? parseFloat(budget) : null,
+        priority: priority || "MEDIUM",
+        internalNotes: internalNotes?.trim() || null,
       },
       include: {
         user: {
