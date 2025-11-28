@@ -261,12 +261,10 @@ export default function DashboardLayout({ session, children }: DashboardLayoutPr
               {/* Command-K Hint Button */}
               <button
                 onClick={() => setIsCommandPaletteOpen(true)}
-                className="hidden md:flex items-center gap-2 px-3 py-1.5 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm text-gray-600 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-1"
-                aria-label="Open command palette"
+                className="hidden md:flex items-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-md px-3 py-1 text-sm transition"
               >
-                <Search className="w-4 h-4" />
                 <span>Search</span>
-                <kbd className="px-1.5 py-0.5 bg-white rounded text-xs font-mono border border-gray-200 shadow-sm">
+                <kbd className="px-1.5 py-0.5 bg-white rounded text-xs font-mono border border-gray-200">
                   ⌘K
                 </kbd>
               </button>
