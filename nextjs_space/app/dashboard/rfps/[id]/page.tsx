@@ -42,6 +42,11 @@ async function getRFP(id: string) {
             sentAt: 'desc',
           },
         },
+        stageHistory: {
+          orderBy: {
+            createdAt: 'desc',
+          },
+        },
       },
     });
     return rfp;
@@ -112,6 +117,21 @@ export default async function RFPDetailPage({
   if (!rfp) {
     notFound();
   }
+
+  // Fetch users for changedBy in stage history
+  const userIds = rfp.stageHistory
+    .map((h) => h.changedBy)
+    .filter((id): id is string => id !== null);
+  
+  const users = await prisma.user.findMany({
+    where: { id: { in: userIds } },
+    select: { id: true, email: true, name: true },
+  });
+
+  const userMap = users.reduce((acc, user) => {
+    acc[user.id] = user;
+    return acc;
+  }, {} as Record<string, { id: string; email: string; name: string | null }>);
 
   return (
     <div className="max-w-4xl mx-auto">
@@ -335,6 +355,49 @@ export default async function RFPDetailPage({
                 ))}
               </tbody>
             </table>
+          </div>
+        )}
+      </div>
+
+      {/* Stage Timeline Section */}
+      <div className="bg-white rounded-lg shadow p-6 mt-6">
+        <h2 className="text-xl font-semibold text-gray-900 mb-4">
+          Stage Timeline
+        </h2>
+        
+        {rfp.stageHistory.length === 0 ? (
+          <p className="text-gray-500 text-sm">
+            Stage changes will appear here.
+          </p>
+        ) : (
+          <div className="space-y-4">
+            {rfp.stageHistory.map((history) => {
+              const oldLabel = history.oldStage ? STAGE_LABELS[history.oldStage] : 'None';
+              const newLabel = STAGE_LABELS[history.newStage];
+              const user = history.changedBy ? userMap[history.changedBy] : null;
+              const userName = user?.name || user?.email || 'Unknown';
+              
+              return (
+                <div
+                  key={history.id}
+                  className="flex items-start gap-4 pb-4 border-b border-gray-200 last:border-b-0"
+                >
+                  {/* Timeline dot */}
+                  <div className="flex-shrink-0 w-2 h-2 mt-2 rounded-full bg-indigo-600" />
+                  
+                  {/* Content */}
+                  <div className="flex-1">
+                    <p className="text-sm text-gray-900">
+                      Stage changed: <span className="font-medium">{oldLabel}</span> → <span className="font-medium">{newLabel}</span>
+                    </p>
+                    <p className="text-xs text-gray-500 mt-1">
+                      {new Date(history.createdAt).toLocaleString()}
+                      {history.changedBy && ` by ${userName}`}
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         )}
       </div>

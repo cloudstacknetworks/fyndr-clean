@@ -148,6 +148,21 @@ export async function PUT(
       );
     }
 
+    // Detect stage change and create history entry
+    const stageChanged = stage !== undefined && stage !== existingRfp.stage;
+    
+    if (stageChanged) {
+      // Create StageHistory entry
+      await prisma.stageHistory.create({
+        data: {
+          rfpId: params.id,
+          oldStage: existingRfp.stage,
+          newStage: stage,
+          changedBy: session.user.id
+        }
+      });
+    }
+
     // Prepare update data
     const updateData: any = {};
     

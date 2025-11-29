@@ -70,6 +70,8 @@ model RFP {
   supplier      Supplier  @relation(fields: [supplierId], references: [id])
   supplierId    String
   summaryShares SummaryShare[]
+  stageHistory  StageHistory[]
+  stageTasks    StageTask[]
 }
 
 model Contact {
@@ -97,4 +99,32 @@ model SummaryShare {
 
   @@index([rfpId])
   @@index([contactId])
+}
+
+model StageHistory {
+  id        String    @id @default(uuid())
+  rfpId     String
+  oldStage  RFPStage?
+  newStage  RFPStage
+  changedBy String?
+  createdAt DateTime  @default(now())
+  
+  rfp       RFP       @relation(fields: [rfpId], references: [id], onDelete: Cascade)
+  
+  @@index([rfpId])
+}
+
+model StageTask {
+  id          String    @id @default(uuid())
+  rfpId       String
+  stage       RFPStage
+  title       String
+  completed   Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  completedAt DateTime?
+  
+  rfp         RFP       @relation(fields: [rfpId], references: [id], onDelete: Cascade)
+  
+  @@index([rfpId])
+  @@index([stage])
 }
