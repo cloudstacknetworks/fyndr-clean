@@ -12,9 +12,11 @@ model User {
   email     String   @unique
   password  String
   name      String?
+  role      String   @default("buyer")  // "buyer" or "supplier"
   createdAt DateTime @default(now())
   rfps      RFP[]
   contacts  Contact[]
+  supplierPortalAccess SupplierContact?
 }
 
 model Company {
@@ -49,6 +51,14 @@ enum RFPStage {
   SUBMISSION
   DEBRIEF
   ARCHIVED
+}
+
+enum InvitationStatus {
+  PENDING
+  SENT
+  ACCEPTED
+  REJECTED
+  EXPIRED
 }
 
 model RFP {
@@ -94,6 +104,7 @@ model RFP {
   summaryShares    SummaryShare[]
   stageHistory     StageHistory[]
   stageTasks       StageTask[]
+  supplierContacts SupplierContact[]
 }
 
 model Contact {
@@ -150,4 +161,26 @@ model StageTask {
   
   @@index([rfpId])
   @@index([stage])
+}
+
+model SupplierContact {
+  id               String           @id @default(uuid())
+  rfpId            String
+  name             String
+  email            String
+  organization     String?
+  invitedAt        DateTime?
+  invitationStatus InvitationStatus @default(PENDING)
+  portalUserId     String?          @unique
+  accessToken      String?
+  accessTokenExpires DateTime?
+  responses        Json?
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+  
+  rfp              RFP              @relation(fields: [rfpId], references: [id], onDelete: Cascade)
+  portalUser       User?            @relation(fields: [portalUserId], references: [id], onDelete: SetNull)
+  
+  @@index([rfpId])
+  @@index([email, rfpId])
 }

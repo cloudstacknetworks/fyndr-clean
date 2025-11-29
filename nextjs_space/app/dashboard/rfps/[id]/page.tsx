@@ -8,6 +8,7 @@ import AIActionsPanel from "./ai-actions-panel";
 import OpportunityScorePanel from "./opportunity-score-panel";
 import { RFPTimelineBar } from "./rfp-timeline-bar";
 import { RFPTimelineDetails } from "./rfp-timeline-details";
+import SupplierContactsPanel from "./supplier-contacts-panel";
 import { STAGE_LABELS, STAGE_COLORS } from "@/lib/stages";
 import { isAutomationTask } from "@/lib/stage-automation";
 import { getSlaStatus } from "@/lib/stage-sla";
@@ -314,6 +315,11 @@ export default async function RFPDetailPage({
             </div>
           </div>
         )}
+      </div>
+
+      {/* Supplier Contacts Panel - STEP 15 */}
+      <div className="mt-6">
+        <SupplierContactsPanel rfpId={rfp.id} />
       </div>
 
       {/* RFP Timeline Bar - STEP 14 */}
