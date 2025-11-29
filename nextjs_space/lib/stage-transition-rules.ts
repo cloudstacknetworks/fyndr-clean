@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, RFPStage } from '@prisma/client';
 import { STAGE_ORDER } from './stages';
 
 const prisma = new PrismaClient();
@@ -99,7 +99,7 @@ export async function validateStageTransition(
     const incompleteTasks = await prisma.stageTask.findMany({
       where: {
         rfpId,
-        stage: oldStage,
+        stage: oldStage as RFPStage,
         completed: false
       },
       select: {

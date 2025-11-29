@@ -4,6 +4,7 @@ import { authOptions } from "@/lib/auth-options";
 import { PrismaClient } from "@prisma/client";
 import { validateStageTransition } from "@/lib/stage-transition-rules";
 import { runStageAutomations } from "@/lib/stage-automation";
+import { getSlaForStage } from "@/lib/stage-sla";
 
 const prisma = new PrismaClient();
 
@@ -199,9 +200,12 @@ export async function PUT(
     if (priority !== undefined) updateData.priority = priority || "MEDIUM";
     if (internalNotes !== undefined) updateData.internalNotes = internalNotes?.trim() || null;
     
-    // Update stageEnteredAt when stage changes
+    // Update SLA fields when stage changes
     if (stageChanged) {
-      updateData.stageEnteredAt = new Date();
+      const now = new Date();
+      updateData.stageEnteredAt = now; // Keep for backward compatibility
+      updateData.enteredStageAt = now; // Primary field for SLA tracking
+      updateData.stageSlaDays = getSlaForStage(stage);
     }
 
     // Update the RFP

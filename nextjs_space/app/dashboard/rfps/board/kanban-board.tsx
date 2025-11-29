@@ -6,6 +6,7 @@ import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea
 import Link from 'next/link';
 import { STAGES, STAGE_ORDER, STAGE_LABELS, STAGE_COLORS } from '@/lib/stages';
 import StageTransitionWarningModal from '../components/stage-transition-warning-modal';
+import { getSlaStatus } from '@/lib/stage-sla';
 
 // Priority colors
 const PRIORITY_COLORS = {
@@ -23,6 +24,9 @@ interface RFP {
   priority: string | null;
   dueDate: Date | null;
   company: { name: string } | null;
+  enteredStageAt: Date | null;
+  stageEnteredAt: Date | null;
+  stageSlaDays: number | null;
 }
 
 interface KanbanBoardProps {
@@ -87,15 +91,30 @@ export default function KanbanBoard({ initialRfps }: KanbanBoardProps) {
     });
   }, [rfps, priorityFilter, companyFilter, searchQuery]);
 
-  // Group filtered RFPs by stage (not status)
+  // Group filtered RFPs by stage and sort by SLA status
   const groupedRfps = useMemo(() => {
-    return filteredRfps.reduce((acc, rfp) => {
+    const grouped = filteredRfps.reduce((acc, rfp) => {
       if (!acc[rfp.stage]) {
         acc[rfp.stage] = [];
       }
       acc[rfp.stage].push(rfp);
       return acc;
     }, {} as Record<string, RFP[]>);
+
+    // Sort each stage's RFPs by SLA status (breached > warning > ok)
+    Object.keys(grouped).forEach(stage => {
+      grouped[stage].sort((a, b) => {
+        const slaA = getSlaStatus(a);
+        const slaB = getSlaStatus(b);
+        
+        // Priority order: breached > warning > ok
+        const statusOrder = { breached: 0, warning: 1, ok: 2 };
+        
+        return statusOrder[slaA.status] - statusOrder[slaB.status];
+      });
+    });
+
+    return grouped;
   }, [filteredRfps]);
 
   const handleDragEnd = async (result: DropResult) => {
@@ -363,14 +382,35 @@ export default function KanbanBoard({ initialRfps }: KanbanBoardProps) {
                               }`}
                             >
                               {/* RFP Card */}
-                              <Link
-                                href={`/dashboard/rfps/${rfp.id}`}
-                                className="block"
-                              >
-                                <h4 className="font-semibold text-gray-900 hover:text-indigo-600 mb-2">
-                                  {rfp.title}
-                                </h4>
-                              </Link>
+                              <div className="flex items-start gap-2 mb-2">
+                                {/* SLA Dot Indicator */}
+                                {(() => {
+                                  const slaStatus = getSlaStatus(rfp);
+                                  const dotColor =
+                                    slaStatus.status === 'ok'
+                                      ? 'bg-green-500'
+                                      : slaStatus.status === 'warning'
+                                      ? 'bg-yellow-500'
+                                      : 'bg-red-500';
+                                  
+                                  return (
+                                    <div
+                                      className={`flex-shrink-0 w-3 h-3 rounded-full ${dotColor} mt-1`}
+                                      title={`Stage SLA: ${slaStatus.daysInStage} days in stage of ${slaStatus.sla || 'N/A'} allowed`}
+                                    />
+                                  );
+                                })()}
+                                
+                                {/* Title */}
+                                <Link
+                                  href={`/dashboard/rfps/${rfp.id}`}
+                                  className="flex-1"
+                                >
+                                  <h4 className="font-semibold text-gray-900 hover:text-indigo-600">
+                                    {rfp.title}
+                                  </h4>
+                                </Link>
+                              </div>
 
                               {/* Company */}
                               {rfp.company && (

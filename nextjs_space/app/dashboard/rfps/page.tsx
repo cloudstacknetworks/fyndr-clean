@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { PrismaClient } from "@prisma/client";
 import { Plus } from "lucide-react";
+import { getSlaStatus } from "@/lib/stage-sla";
+import { STAGE_LABELS } from "@/lib/stages";
 
 const prisma = new PrismaClient();
 
@@ -95,42 +97,68 @@ export default async function RFPsPage() {
               <thead>
                 <tr className="border-b border-gray-200">
                   <th className="text-left py-3 px-4 font-semibold text-gray-700">Title</th>
+                  <th className="text-left py-3 px-4 font-semibold text-gray-700">Stage</th>
                   <th className="text-left py-3 px-4 font-semibold text-gray-700">Status</th>
+                  <th className="text-left py-3 px-4 font-semibold text-gray-700">SLA Status</th>
                   <th className="text-left py-3 px-4 font-semibold text-gray-700">Created By</th>
                   <th className="text-left py-3 px-4 font-semibold text-gray-700">Created At</th>
                 </tr>
               </thead>
               <tbody>
-                {rfps.map((rfp) => (
-                  <tr
-                    key={rfp.id}
-                    className="border-b border-gray-100 hover:bg-gray-50 transition-colors"
-                  >
-                    <td className="py-4 px-4">
-                      <Link
-                        href={`/dashboard/rfps/${rfp.id}`}
-                        className="text-blue-600 hover:text-blue-800 font-medium hover:underline"
-                      >
-                        {rfp.title}
-                      </Link>
-                    </td>
-                    <td className="py-4 px-4">
-                      <span
-                        className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${getStatusColor(
-                          rfp.status
-                        )}`}
-                      >
-                        {rfp.status.charAt(0).toUpperCase() + rfp.status.slice(1)}
-                      </span>
-                    </td>
-                    <td className="py-4 px-4 text-gray-600">
-                      {rfp.user?.name || rfp.user?.email || "Unknown"}
-                    </td>
-                    <td className="py-4 px-4 text-gray-600">
-                      {formatDate(rfp.createdAt)}
-                    </td>
-                  </tr>
-                ))}
+                {rfps.map((rfp) => {
+                  const slaStatus = getSlaStatus(rfp);
+                  
+                  return (
+                    <tr
+                      key={rfp.id}
+                      className="border-b border-gray-100 hover:bg-gray-50 transition-colors"
+                    >
+                      <td className="py-4 px-4">
+                        <Link
+                          href={`/dashboard/rfps/${rfp.id}`}
+                          className="text-blue-600 hover:text-blue-800 font-medium hover:underline"
+                        >
+                          {rfp.title}
+                        </Link>
+                      </td>
+                      <td className="py-4 px-4">
+                        <span className="text-sm text-gray-900">
+                          {STAGE_LABELS[rfp.stage as keyof typeof STAGE_LABELS]}
+                        </span>
+                      </td>
+                      <td className="py-4 px-4">
+                        <span
+                          className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${getStatusColor(
+                            rfp.status
+                          )}`}
+                        >
+                          {rfp.status.charAt(0).toUpperCase() + rfp.status.slice(1)}
+                        </span>
+                      </td>
+                      <td className="py-4 px-4">
+                        <span
+                          className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${
+                            slaStatus.status === 'ok'
+                              ? 'bg-green-100 text-green-700'
+                              : slaStatus.status === 'warning'
+                              ? 'bg-yellow-100 text-yellow-700'
+                              : 'bg-red-100 text-red-700'
+                          }`}
+                        >
+                          {slaStatus.status === 'ok' && 'OK'}
+                          {slaStatus.status === 'warning' && 'Warning'}
+                          {slaStatus.status === 'breached' && 'Breached'}
+                        </span>
+                      </td>
+                      <td className="py-4 px-4 text-gray-600">
+                        {rfp.user?.name || rfp.user?.email || "Unknown"}
+                      </td>
+                      <td className="py-4 px-4 text-gray-600">
+                        {formatDate(rfp.createdAt)}
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>

@@ -15,7 +15,17 @@ export default async function RFPBoardPage() {
   // Fetch all RFPs for the current user with related data
   const rfps = await prisma.rFP.findMany({
     where: { userId: session.user.id },
-    include: {
+    select: {
+      id: true,
+      title: true,
+      description: true,
+      status: true,
+      stage: true,
+      priority: true,
+      dueDate: true,
+      enteredStageAt: true,
+      stageEnteredAt: true,
+      stageSlaDays: true,
       company: {
         select: { name: true }
       }

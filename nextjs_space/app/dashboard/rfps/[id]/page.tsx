@@ -6,6 +6,7 @@ import AISummary from "./ai-summary";
 import StageTasks from "./stage-tasks";
 import { STAGE_LABELS, STAGE_COLORS } from "@/lib/stages";
 import { isAutomationTask } from "@/lib/stage-automation";
+import { getSlaStatus } from "@/lib/stage-sla";
 
 const prisma = new PrismaClient();
 
@@ -390,6 +391,61 @@ export default async function RFPDetailPage({
       {/* Stage Tasks Section */}
       <div className="mt-6">
         <StageTasks rfpId={rfp.id} stage={rfp.stage} initialTasks={stageTasks} />
+      </div>
+
+      {/* Stage SLA Monitor Section */}
+      <div className="bg-white rounded-lg shadow p-6 mt-6">
+        <h2 className="text-xl font-semibold text-gray-900 mb-4">
+          Stage SLA Monitor
+        </h2>
+        
+        <div className="space-y-4">
+          {(() => {
+            const slaStatus = getSlaStatus(rfp);
+            
+            return (
+              <>
+                {/* Current Stage */}
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-medium text-gray-700">Current Stage:</span>
+                  <span className="text-sm text-gray-900">{STAGE_LABELS[rfp.stage]}</span>
+                </div>
+                
+                {/* Days in Stage */}
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-medium text-gray-700">Days in Stage:</span>
+                  <span className="text-sm text-gray-900">{slaStatus.daysInStage} days</span>
+                </div>
+                
+                {/* Allowed SLA Days */}
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-medium text-gray-700">Allowed SLA:</span>
+                  <span className="text-sm text-gray-900">
+                    {slaStatus.sla !== null ? `${slaStatus.sla} days` : 'No SLA'}
+                  </span>
+                </div>
+                
+                {/* Status Chip */}
+                <div className="flex items-center justify-between pt-2 border-t border-gray-200">
+                  <span className="text-sm font-medium text-gray-700">Status:</span>
+                  <span
+                    className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
+                      slaStatus.status === 'ok'
+                        ? 'bg-green-100 text-green-700'
+                        : slaStatus.status === 'warning'
+                        ? 'bg-yellow-100 text-yellow-700'
+                        : 'bg-red-100 text-red-700'
+                    }`}
+                  >
+                    {slaStatus.status === 'ok' && '✓ OK'}
+                    {slaStatus.status === 'warning' && '⚠ Warning'}
+                    {slaStatus.status === 'breached' && '✕ Breached'}
+                  </span>
+                </div>
+              </>
+            );
+          })()}
+        </div>
       </div>
 
       {/* Stage Automation Log Section */}
