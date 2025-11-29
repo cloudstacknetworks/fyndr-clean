@@ -4,9 +4,11 @@ import { ArrowLeft, Calendar, User, Building2, Users, DollarSign, Flag, FileText
 import { notFound } from "next/navigation";
 import AISummary from "./ai-summary";
 import StageTasks from "./stage-tasks";
+import AIActionsPanel from "./ai-actions-panel";
 import { STAGE_LABELS, STAGE_COLORS } from "@/lib/stages";
 import { isAutomationTask } from "@/lib/stage-automation";
 import { getSlaStatus } from "@/lib/stage-sla";
+import { STAGE_AI_ACTIONS } from "@/lib/stage-ai-actions";
 
 const prisma = new PrismaClient();
 
@@ -391,6 +393,15 @@ export default async function RFPDetailPage({
       {/* Stage Tasks Section */}
       <div className="mt-6">
         <StageTasks rfpId={rfp.id} stage={rfp.stage} initialTasks={stageTasks} />
+      </div>
+
+      {/* AI Actions Panel */}
+      <div className="mt-6">
+        <AIActionsPanel
+          rfpId={rfp.id}
+          stage={rfp.stage}
+          actions={STAGE_AI_ACTIONS[rfp.stage] || []}
+        />
       </div>
 
       {/* Stage SLA Monitor Section */}
