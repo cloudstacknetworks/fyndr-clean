@@ -3,9 +3,10 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, Loader2 } from "lucide-react";
+import { ArrowLeft, Loader2, ChevronDown, ChevronUp } from "lucide-react";
 import { STAGES } from "@/lib/stages";
 import StageTransitionWarningModal from "../../components/stage-transition-warning-modal";
+import { validateTimeline } from "@/lib/rfp-timeline";
 
 type Company = {
   id: string;
@@ -32,6 +33,14 @@ type RFP = {
   supplierId: string;
   company: Company;
   supplier: Supplier;
+  // Timeline fields (STEP 14)
+  askQuestionsStart: Date | null;
+  askQuestionsEnd: Date | null;
+  submissionStart: Date | null;
+  submissionEnd: Date | null;
+  demoWindowStart: Date | null;
+  demoWindowEnd: Date | null;
+  awardDate: Date | null;
 };
 
 type EditRFPFormProps = {
@@ -66,10 +75,21 @@ export function EditRFPForm({ rfp, companies, suppliers }: EditRFPFormProps) {
     budget: rfp.budget?.toString() || "",
     priority: rfp.priority || "MEDIUM",
     internalNotes: rfp.internalNotes || "",
+    // Timeline fields (STEP 14)
+    askQuestionsStart: formatDateForInput(rfp.askQuestionsStart),
+    askQuestionsEnd: formatDateForInput(rfp.askQuestionsEnd),
+    submissionStart: formatDateForInput(rfp.submissionStart),
+    submissionEnd: formatDateForInput(rfp.submissionEnd),
+    demoWindowStart: formatDateForInput(rfp.demoWindowStart),
+    demoWindowEnd: formatDateForInput(rfp.demoWindowEnd),
+    awardDate: formatDateForInput(rfp.awardDate),
   });
 
   // Track original stage for validation
   const originalStage = rfp.stage || "INTAKE";
+
+  // Timeline section collapsible state
+  const [isTimelineSectionOpen, setIsTimelineSectionOpen] = useState(false);
 
   // Modal state for stage transition warnings
   const [showWarningModal, setShowWarningModal] = useState(false);
@@ -99,6 +119,22 @@ export function EditRFPForm({ rfp, companies, suppliers }: EditRFPFormProps) {
     // Validate budget if provided
     if (formData.budget && parseFloat(formData.budget) < 0) {
       setError("Budget must be a positive number");
+      return;
+    }
+
+    // Validate timeline configuration (STEP 14)
+    const timelineError = validateTimeline({
+      askQuestionsStart: formData.askQuestionsStart ? new Date(formData.askQuestionsStart) : null,
+      askQuestionsEnd: formData.askQuestionsEnd ? new Date(formData.askQuestionsEnd) : null,
+      submissionStart: formData.submissionStart ? new Date(formData.submissionStart) : null,
+      submissionEnd: formData.submissionEnd ? new Date(formData.submissionEnd) : null,
+      demoWindowStart: formData.demoWindowStart ? new Date(formData.demoWindowStart) : null,
+      demoWindowEnd: formData.demoWindowEnd ? new Date(formData.demoWindowEnd) : null,
+      awardDate: formData.awardDate ? new Date(formData.awardDate) : null,
+    });
+
+    if (timelineError) {
+      setError(timelineError);
       return;
     }
 
@@ -159,6 +195,14 @@ export function EditRFPForm({ rfp, companies, suppliers }: EditRFPFormProps) {
           budget: formData.budget || null,
           priority: formData.priority,
           internalNotes: formData.internalNotes,
+          // Timeline fields (STEP 14)
+          askQuestionsStart: formData.askQuestionsStart || null,
+          askQuestionsEnd: formData.askQuestionsEnd || null,
+          submissionStart: formData.submissionStart || null,
+          submissionEnd: formData.submissionEnd || null,
+          demoWindowStart: formData.demoWindowStart || null,
+          demoWindowEnd: formData.demoWindowEnd || null,
+          awardDate: formData.awardDate || null,
           override,
           overrideReason: override ? "User override from Edit Form" : undefined,
         }),
@@ -450,6 +494,164 @@ export function EditRFPForm({ rfp, companies, suppliers }: EditRFPFormProps) {
           className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all disabled:bg-gray-100 disabled:cursor-not-allowed resize-vertical"
           placeholder="Add internal notes (optional)"
         />
+      </div>
+
+      {/* RFP Timeline & Milestones Section (STEP 14) */}
+      <div className="border border-gray-200 rounded-lg overflow-hidden">
+        <button
+          type="button"
+          onClick={() => setIsTimelineSectionOpen(!isTimelineSectionOpen)}
+          className="w-full flex items-center justify-between px-6 py-4 bg-gray-50 hover:bg-gray-100 transition-colors"
+        >
+          <div className="flex items-center gap-3">
+            <h3 className="text-lg font-semibold text-gray-800">
+              RFP Timeline & Milestones
+            </h3>
+            <span className="text-xs text-gray-500 font-normal">
+              (Optional - Define supplier timeline windows)
+            </span>
+          </div>
+          {isTimelineSectionOpen ? (
+            <ChevronUp className="h-5 w-5 text-gray-600" />
+          ) : (
+            <ChevronDown className="h-5 w-5 text-gray-600" />
+          )}
+        </button>
+
+        {isTimelineSectionOpen && (
+          <div className="p-6 space-y-6 bg-white">
+            <p className="text-sm text-gray-600 mb-4">
+              Set key dates for supplier engagement windows. These dates will be displayed on the RFP detail page
+              and help track important milestones throughout the RFP lifecycle.
+            </p>
+
+            {/* Questions Period */}
+            <div>
+              <h4 className="text-sm font-semibold text-gray-700 mb-3">Questions Period</h4>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label htmlFor="askQuestionsStart" className="block text-sm font-medium text-gray-700 mb-2">
+                    Questions Open
+                  </label>
+                  <input
+                    type="date"
+                    id="askQuestionsStart"
+                    name="askQuestionsStart"
+                    value={formData.askQuestionsStart}
+                    onChange={handleChange}
+                    disabled={isLoading}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all disabled:bg-gray-100 disabled:cursor-not-allowed"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="askQuestionsEnd" className="block text-sm font-medium text-gray-700 mb-2">
+                    Questions Close
+                  </label>
+                  <input
+                    type="date"
+                    id="askQuestionsEnd"
+                    name="askQuestionsEnd"
+                    value={formData.askQuestionsEnd}
+                    onChange={handleChange}
+                    disabled={isLoading}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all disabled:bg-gray-100 disabled:cursor-not-allowed"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Submission Period */}
+            <div>
+              <h4 className="text-sm font-semibold text-gray-700 mb-3">Submission Period</h4>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label htmlFor="submissionStart" className="block text-sm font-medium text-gray-700 mb-2">
+                    Submissions Open
+                  </label>
+                  <input
+                    type="date"
+                    id="submissionStart"
+                    name="submissionStart"
+                    value={formData.submissionStart}
+                    onChange={handleChange}
+                    disabled={isLoading}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all disabled:bg-gray-100 disabled:cursor-not-allowed"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="submissionEnd" className="block text-sm font-medium text-gray-700 mb-2">
+                    Submissions Due
+                  </label>
+                  <input
+                    type="date"
+                    id="submissionEnd"
+                    name="submissionEnd"
+                    value={formData.submissionEnd}
+                    onChange={handleChange}
+                    disabled={isLoading}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all disabled:bg-gray-100 disabled:cursor-not-allowed"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Demo Window */}
+            <div>
+              <h4 className="text-sm font-semibold text-gray-700 mb-3">Demo Window</h4>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label htmlFor="demoWindowStart" className="block text-sm font-medium text-gray-700 mb-2">
+                    Demo Window Start
+                  </label>
+                  <input
+                    type="date"
+                    id="demoWindowStart"
+                    name="demoWindowStart"
+                    value={formData.demoWindowStart}
+                    onChange={handleChange}
+                    disabled={isLoading}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all disabled:bg-gray-100 disabled:cursor-not-allowed"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="demoWindowEnd" className="block text-sm font-medium text-gray-700 mb-2">
+                    Demo Window End
+                  </label>
+                  <input
+                    type="date"
+                    id="demoWindowEnd"
+                    name="demoWindowEnd"
+                    value={formData.demoWindowEnd}
+                    onChange={handleChange}
+                    disabled={isLoading}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all disabled:bg-gray-100 disabled:cursor-not-allowed"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Award Date */}
+            <div>
+              <h4 className="text-sm font-semibold text-gray-700 mb-3">Award Date</h4>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label htmlFor="awardDate" className="block text-sm font-medium text-gray-700 mb-2">
+                    Award Date
+                  </label>
+                  <input
+                    type="date"
+                    id="awardDate"
+                    name="awardDate"
+                    value={formData.awardDate}
+                    onChange={handleChange}
+                    disabled={isLoading}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all disabled:bg-gray-100 disabled:cursor-not-allowed"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="flex gap-4 pt-4">

@@ -75,6 +75,16 @@ model RFP {
   opportunityScoreSource         String?
   opportunityScoreOverrideReason String?
   
+  // RFP Timeline & Milestones (STEP 14)
+  askQuestionsStart   DateTime?
+  askQuestionsEnd     DateTime?
+  submissionStart     DateTime?
+  submissionEnd       DateTime?
+  demoWindowStart     DateTime?
+  demoWindowEnd       DateTime?
+  awardDate           DateTime?
+  notifications       Json?
+  
   user             User      @relation(fields: [userId], references: [id])
   userId           String
   company          Company   @relation(fields: [companyId], references: [id])

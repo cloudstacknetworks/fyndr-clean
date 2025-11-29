@@ -5,6 +5,7 @@ import { PrismaClient } from "@prisma/client";
 import { validateStageTransition } from "@/lib/stage-transition-rules";
 import { runStageAutomations } from "@/lib/stage-automation";
 import { getSlaForStage } from "@/lib/stage-sla";
+import { validateTimeline } from "@/lib/rfp-timeline";
 
 const prisma = new PrismaClient();
 
@@ -82,12 +83,34 @@ export async function PUT(
     }
 
     const body = await request.json();
-    const { title, description, status, stage, dueDate, submittedAt, budget, priority, internalNotes, override, overrideReason } = body;
+    const { 
+      title, description, status, stage, dueDate, submittedAt, budget, priority, internalNotes, override, overrideReason,
+      // Timeline fields (STEP 14)
+      askQuestionsStart, askQuestionsEnd, submissionStart, submissionEnd, demoWindowStart, demoWindowEnd, awardDate
+    } = body;
 
     // Validate required fields
     if (title !== undefined && (!title || title.trim() === "")) {
       return NextResponse.json(
         { error: "Title cannot be empty" },
+        { status: 400 }
+      );
+    }
+
+    // Validate timeline configuration (STEP 14)
+    const timelineError = validateTimeline({
+      askQuestionsStart: askQuestionsStart ? new Date(askQuestionsStart) : null,
+      askQuestionsEnd: askQuestionsEnd ? new Date(askQuestionsEnd) : null,
+      submissionStart: submissionStart ? new Date(submissionStart) : null,
+      submissionEnd: submissionEnd ? new Date(submissionEnd) : null,
+      demoWindowStart: demoWindowStart ? new Date(demoWindowStart) : null,
+      demoWindowEnd: demoWindowEnd ? new Date(demoWindowEnd) : null,
+      awardDate: awardDate ? new Date(awardDate) : null,
+    });
+
+    if (timelineError) {
+      return NextResponse.json(
+        { error: timelineError },
         { status: 400 }
       );
     }
@@ -199,6 +222,15 @@ export async function PUT(
     }
     if (priority !== undefined) updateData.priority = priority || "MEDIUM";
     if (internalNotes !== undefined) updateData.internalNotes = internalNotes?.trim() || null;
+    
+    // Update timeline fields (STEP 14)
+    if (askQuestionsStart !== undefined) updateData.askQuestionsStart = askQuestionsStart ? new Date(askQuestionsStart) : null;
+    if (askQuestionsEnd !== undefined) updateData.askQuestionsEnd = askQuestionsEnd ? new Date(askQuestionsEnd) : null;
+    if (submissionStart !== undefined) updateData.submissionStart = submissionStart ? new Date(submissionStart) : null;
+    if (submissionEnd !== undefined) updateData.submissionEnd = submissionEnd ? new Date(submissionEnd) : null;
+    if (demoWindowStart !== undefined) updateData.demoWindowStart = demoWindowStart ? new Date(demoWindowStart) : null;
+    if (demoWindowEnd !== undefined) updateData.demoWindowEnd = demoWindowEnd ? new Date(demoWindowEnd) : null;
+    if (awardDate !== undefined) updateData.awardDate = awardDate ? new Date(awardDate) : null;
     
     // Update SLA fields when stage changes
     if (stageChanged) {

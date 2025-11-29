@@ -6,6 +6,8 @@ import AISummary from "./ai-summary";
 import StageTasks from "./stage-tasks";
 import AIActionsPanel from "./ai-actions-panel";
 import OpportunityScorePanel from "./opportunity-score-panel";
+import { RFPTimelineBar } from "./rfp-timeline-bar";
+import { RFPTimelineDetails } from "./rfp-timeline-details";
 import { STAGE_LABELS, STAGE_COLORS } from "@/lib/stages";
 import { isAutomationTask } from "@/lib/stage-automation";
 import { getSlaStatus } from "@/lib/stage-sla";
@@ -312,6 +314,16 @@ export default async function RFPDetailPage({
             </div>
           </div>
         )}
+      </div>
+
+      {/* RFP Timeline Bar - STEP 14 */}
+      <div className="mt-6">
+        <RFPTimelineBar rfp={rfp} />
+      </div>
+
+      {/* RFP Timeline Details - STEP 14 */}
+      <div className="mt-6">
+        <RFPTimelineDetails rfp={rfp} />
       </div>
 
       {/* Opportunity Score Panel - STEP 13 */}
