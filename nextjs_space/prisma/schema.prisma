@@ -39,11 +39,24 @@ enum Priority {
   HIGH
 }
 
+enum RFPStage {
+  INTAKE
+  QUALIFICATION
+  DISCOVERY
+  DRAFTING
+  PRICING_LEGAL_REVIEW
+  EXEC_REVIEW
+  SUBMISSION
+  DEBRIEF
+  ARCHIVED
+}
+
 model RFP {
   id            String    @id @default(uuid())
   title         String
   description   String?
   status        String    @default("draft")
+  stage         RFPStage  @default(INTAKE)
   createdAt     DateTime  @default(now())
   dueDate       DateTime?
   submittedAt   DateTime?

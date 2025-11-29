@@ -79,7 +79,7 @@ export async function PUT(
     }
 
     const body = await request.json();
-    const { title, description, status, dueDate, submittedAt, budget, priority, internalNotes } = body;
+    const { title, description, status, stage, dueDate, submittedAt, budget, priority, internalNotes } = body;
 
     // Validate required fields
     if (title !== undefined && (!title || title.trim() === "")) {
@@ -94,6 +94,25 @@ export async function PUT(
     if (status !== undefined && !validStatuses.includes(status)) {
       return NextResponse.json(
         { error: "Invalid status value" },
+        { status: 400 }
+      );
+    }
+
+    // Validate stage if provided
+    const validStages = [
+      'INTAKE',
+      'QUALIFICATION',
+      'DISCOVERY',
+      'DRAFTING',
+      'PRICING_LEGAL_REVIEW',
+      'EXEC_REVIEW',
+      'SUBMISSION',
+      'DEBRIEF',
+      'ARCHIVED'
+    ];
+    if (stage !== undefined && !validStages.includes(stage)) {
+      return NextResponse.json(
+        { error: "Invalid stage value" },
         { status: 400 }
       );
     }
@@ -135,6 +154,7 @@ export async function PUT(
     if (title !== undefined) updateData.title = title.trim();
     if (description !== undefined) updateData.description = description?.trim() || null;
     if (status !== undefined) updateData.status = status;
+    if (stage !== undefined) updateData.stage = stage;
     if (dueDate !== undefined) updateData.dueDate = dueDate ? new Date(dueDate) : null;
     if (submittedAt !== undefined) updateData.submittedAt = submittedAt ? new Date(submittedAt) : null;
     if (budget !== undefined) {

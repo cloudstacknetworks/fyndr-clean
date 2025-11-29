@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, Loader2 } from "lucide-react";
+import { STAGES } from "@/lib/stages";
 
 type Company = {
   id: string;
@@ -20,6 +21,7 @@ type RFP = {
   title: string;
   description: string | null;
   status: string;
+  stage: string;
   dueDate: Date | null;
   submittedAt: Date | null;
   budget: number | null;
@@ -55,6 +57,7 @@ export function EditRFPForm({ rfp, companies, suppliers }: EditRFPFormProps) {
     title: rfp.title,
     description: rfp.description || "",
     status: rfp.status,
+    stage: rfp.stage || "INTAKE",
     companyId: rfp.companyId,
     supplierId: rfp.supplierId,
     dueDate: formatDateForInput(rfp.dueDate),
@@ -102,6 +105,7 @@ export function EditRFPForm({ rfp, companies, suppliers }: EditRFPFormProps) {
           title: formData.title,
           description: formData.description,
           status: formData.status,
+          stage: formData.stage,
           dueDate: formData.dueDate || null,
           submittedAt: formData.submittedAt || null,
           budget: formData.budget || null,
@@ -216,25 +220,50 @@ export function EditRFPForm({ rfp, companies, suppliers }: EditRFPFormProps) {
         </div>
       </div>
 
-      <div>
-        <label
-          htmlFor="status"
-          className="block text-sm font-semibold text-gray-700 mb-2"
-        >
-          Status
-        </label>
-        <select
-          id="status"
-          name="status"
-          value={formData.status}
-          onChange={handleChange}
-          disabled={isLoading}
-          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all disabled:bg-gray-100 disabled:cursor-not-allowed"
-        >
-          <option value="draft">Draft</option>
-          <option value="published">Published</option>
-          <option value="completed">Completed</option>
-        </select>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label
+            htmlFor="status"
+            className="block text-sm font-semibold text-gray-700 mb-2"
+          >
+            Status
+          </label>
+          <select
+            id="status"
+            name="status"
+            value={formData.status}
+            onChange={handleChange}
+            disabled={isLoading}
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all disabled:bg-gray-100 disabled:cursor-not-allowed"
+          >
+            <option value="draft">Draft</option>
+            <option value="published">Published</option>
+            <option value="completed">Completed</option>
+          </select>
+        </div>
+
+        <div>
+          <label
+            htmlFor="stage"
+            className="block text-sm font-semibold text-gray-700 mb-2"
+          >
+            Stage
+          </label>
+          <select
+            id="stage"
+            name="stage"
+            value={formData.stage}
+            onChange={handleChange}
+            disabled={isLoading}
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all disabled:bg-gray-100 disabled:cursor-not-allowed"
+          >
+            {STAGES.map(s => (
+              <option key={s.id} value={s.id}>
+                {s.label}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
 
       <div>
