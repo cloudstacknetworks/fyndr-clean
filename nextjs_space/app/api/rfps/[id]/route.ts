@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth-options";
 import { PrismaClient } from "@prisma/client";
+import { validateStageTransition } from "@/lib/stage-transition-rules";
 
 const prisma = new PrismaClient();
 
@@ -79,7 +80,7 @@ export async function PUT(
     }
 
     const body = await request.json();
-    const { title, description, status, stage, dueDate, submittedAt, budget, priority, internalNotes } = body;
+    const { title, description, status, stage, dueDate, submittedAt, budget, priority, internalNotes, override, overrideReason } = body;
 
     // Validate required fields
     if (title !== undefined && (!title || title.trim() === "")) {
@@ -148,17 +149,36 @@ export async function PUT(
       );
     }
 
-    // Detect stage change and create history entry
+    // Detect stage change and validate transition
     const stageChanged = stage !== undefined && stage !== existingRfp.stage;
     
     if (stageChanged) {
-      // Create StageHistory entry
+      // Run validation
+      const validationResult = await validateStageTransition(
+        existingRfp.stage,
+        stage,
+        params.id
+      );
+
+      // If validation fails and no override, return 409 with validation details
+      if (!validationResult.allowed && !override) {
+        return NextResponse.json(
+          {
+            error: 'Stage transition validation failed',
+            validation: validationResult
+          },
+          { status: 409 }
+        );
+      }
+
+      // Create StageHistory entry with override reason if applicable
       await prisma.stageHistory.create({
         data: {
           rfpId: params.id,
           oldStage: existingRfp.stage,
           newStage: stage,
-          changedBy: session.user.id
+          changedBy: session.user.id,
+          overrideReason: override ? (overrideReason || "User override") : null
         }
       });
     }

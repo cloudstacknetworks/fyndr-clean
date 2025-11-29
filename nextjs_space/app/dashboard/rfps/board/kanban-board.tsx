@@ -5,6 +5,7 @@ import { useState, useMemo } from 'react';
 import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea/dnd';
 import Link from 'next/link';
 import { STAGES, STAGE_ORDER, STAGE_LABELS, STAGE_COLORS } from '@/lib/stages';
+import StageTransitionWarningModal from '../components/stage-transition-warning-modal';
 
 // Priority colors
 const PRIORITY_COLORS = {
@@ -36,6 +37,15 @@ export default function KanbanBoard({ initialRfps }: KanbanBoardProps) {
   const [priorityFilter, setPriorityFilter] = useState<string>('all');
   const [companyFilter, setCompanyFilter] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState<string>('');
+
+  // Modal state for stage transition warnings
+  const [showWarningModal, setShowWarningModal] = useState(false);
+  const [validationResult, setValidationResult] = useState<any>(null);
+  const [pendingTransition, setPendingTransition] = useState<{
+    rfpId: string;
+    oldStage: string;
+    newStage: string;
+  } | null>(null);
 
   // Extract unique companies from RFPs
   const companies = useMemo(() => {
@@ -111,6 +121,43 @@ export default function KanbanBoard({ initialRfps }: KanbanBoardProps) {
 
     const oldStage = rfp.stage;
 
+    // Validate the transition first
+    try {
+      const validationRes = await fetch(`/api/rfps/${rfpId}/validate-transition`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ newStage })
+      });
+
+      if (!validationRes.ok) {
+        throw new Error('Failed to validate transition');
+      }
+
+      const validation = await validationRes.json();
+
+      // If not allowed or has warnings, show modal
+      if (!validation.allowed || validation.warning) {
+        setValidationResult(validation);
+        setPendingTransition({ rfpId, oldStage, newStage });
+        setShowWarningModal(true);
+        return;
+      }
+
+      // If allowed with no warnings, proceed normally
+      await updateStage(rfpId, oldStage, newStage, false);
+    } catch (err) {
+      setError('Failed to validate stage transition. Please try again.');
+      setTimeout(() => setError(null), 5000);
+    }
+  };
+
+  // Helper function to update stage
+  const updateStage = async (
+    rfpId: string,
+    oldStage: string,
+    newStage: string,
+    override: boolean
+  ) => {
     // Optimistic update
     setRfps(prev =>
       prev.map(r => (r.id === rfpId ? { ...r, stage: newStage } : r))
@@ -121,24 +168,51 @@ export default function KanbanBoard({ initialRfps }: KanbanBoardProps) {
       const res = await fetch(`/api/rfps/${rfpId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ stage: newStage })
+        body: JSON.stringify({
+          stage: newStage,
+          override,
+          overrideReason: override ? 'User override from Kanban' : undefined
+        })
       });
 
       if (!res.ok) {
-        throw new Error('Failed to update stage');
+        const errorData = await res.json();
+        throw new Error(errorData.error || 'Failed to update stage');
       }
 
       setError(null);
-    } catch (err) {
+    } catch (err: any) {
       // Revert on error
       setRfps(prev =>
         prev.map(r => (r.id === rfpId ? { ...r, stage: oldStage } : r))
       );
-      setError('Failed to update RFP stage. Please try again.');
+      setError(err.message || 'Failed to update RFP stage. Please try again.');
       
       // Clear error after 5 seconds
       setTimeout(() => setError(null), 5000);
     }
+  };
+
+  // Handle modal confirmation
+  const handleModalConfirm = async () => {
+    if (!pendingTransition) return;
+
+    setShowWarningModal(false);
+    await updateStage(
+      pendingTransition.rfpId,
+      pendingTransition.oldStage,
+      pendingTransition.newStage,
+      true
+    );
+    setPendingTransition(null);
+    setValidationResult(null);
+  };
+
+  // Handle modal cancel
+  const handleModalCancel = () => {
+    setShowWarningModal(false);
+    setPendingTransition(null);
+    setValidationResult(null);
   };
 
   return (
@@ -336,6 +410,15 @@ export default function KanbanBoard({ initialRfps }: KanbanBoardProps) {
           })}
         </div>
       </DragDropContext>
+
+      {/* Stage Transition Warning Modal */}
+      <StageTransitionWarningModal
+        isOpen={showWarningModal}
+        onClose={handleModalCancel}
+        onConfirm={handleModalConfirm}
+        warning={validationResult?.warning || null}
+        incompleteTasks={validationResult?.requiredTasksIncomplete || []}
+      />
     </div>
   );
 }

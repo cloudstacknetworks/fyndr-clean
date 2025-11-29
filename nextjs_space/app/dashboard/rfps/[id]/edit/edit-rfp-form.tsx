@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, Loader2 } from "lucide-react";
 import { STAGES } from "@/lib/stages";
+import StageTransitionWarningModal from "../../components/stage-transition-warning-modal";
 
 type Company = {
   id: string;
@@ -67,7 +68,15 @@ export function EditRFPForm({ rfp, companies, suppliers }: EditRFPFormProps) {
     internalNotes: rfp.internalNotes || "",
   });
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  // Track original stage for validation
+  const originalStage = rfp.stage || "INTAKE";
+
+  // Modal state for stage transition warnings
+  const [showWarningModal, setShowWarningModal] = useState(false);
+  const [validationResult, setValidationResult] = useState<any>(null);
+  const [pendingFormData, setPendingFormData] = useState<any>(null);
+
+  const handleSubmit = async (e: React.FormEvent, override = false) => {
     e.preventDefault();
     setError("");
 
@@ -93,6 +102,45 @@ export function EditRFPForm({ rfp, companies, suppliers }: EditRFPFormProps) {
       return;
     }
 
+    // Check if stage has changed and validate transition
+    const stageChanged = formData.stage !== originalStage;
+
+    if (stageChanged && !override) {
+      setIsLoading(true);
+      try {
+        const validationRes = await fetch(`/api/rfps/${rfp.id}/validate-transition`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ newStage: formData.stage })
+        });
+
+        if (!validationRes.ok) {
+          throw new Error('Failed to validate transition');
+        }
+
+        const validation = await validationRes.json();
+
+        // If not allowed or has warnings, show modal
+        if (!validation.allowed || validation.warning) {
+          setValidationResult(validation);
+          setPendingFormData(formData);
+          setShowWarningModal(true);
+          setIsLoading(false);
+          return;
+        }
+      } catch (err) {
+        setError('Failed to validate stage transition. Please try again.');
+        setIsLoading(false);
+        return;
+      }
+    }
+
+    // Proceed with update
+    await submitForm(override);
+  };
+
+  // Helper function to submit the form
+  const submitForm = async (override = false) => {
     setIsLoading(true);
 
     try {
@@ -111,6 +159,8 @@ export function EditRFPForm({ rfp, companies, suppliers }: EditRFPFormProps) {
           budget: formData.budget || null,
           priority: formData.priority,
           internalNotes: formData.internalNotes,
+          override,
+          overrideReason: override ? "User override from Edit Form" : undefined,
         }),
       });
 
@@ -128,6 +178,21 @@ export function EditRFPForm({ rfp, companies, suppliers }: EditRFPFormProps) {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  // Handle modal confirmation
+  const handleModalConfirm = async () => {
+    setShowWarningModal(false);
+    await submitForm(true);
+    setPendingFormData(null);
+    setValidationResult(null);
+  };
+
+  // Handle modal cancel
+  const handleModalCancel = () => {
+    setShowWarningModal(false);
+    setPendingFormData(null);
+    setValidationResult(null);
   };
 
   const handleChange = (
@@ -410,6 +475,15 @@ export function EditRFPForm({ rfp, companies, suppliers }: EditRFPFormProps) {
           Cancel
         </Link>
       </div>
+
+      {/* Stage Transition Warning Modal */}
+      <StageTransitionWarningModal
+        isOpen={showWarningModal}
+        onClose={handleModalCancel}
+        onConfirm={handleModalConfirm}
+        warning={validationResult?.warning || null}
+        incompleteTasks={validationResult?.requiredTasksIncomplete || []}
+      />
     </form>
   );
 }

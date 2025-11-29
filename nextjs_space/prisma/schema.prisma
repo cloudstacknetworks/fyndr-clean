@@ -102,14 +102,15 @@ model SummaryShare {
 }
 
 model StageHistory {
-  id        String    @id @default(uuid())
-  rfpId     String
-  oldStage  RFPStage?
-  newStage  RFPStage
-  changedBy String?
-  createdAt DateTime  @default(now())
+  id             String    @id @default(uuid())
+  rfpId          String
+  oldStage       RFPStage?
+  newStage       RFPStage
+  changedBy      String?
+  overrideReason String?
+  createdAt      DateTime  @default(now())
   
-  rfp       RFP       @relation(fields: [rfpId], references: [id], onDelete: Cascade)
+  rfp            RFP       @relation(fields: [rfpId], references: [id], onDelete: Cascade)
   
   @@index([rfpId])
 }
