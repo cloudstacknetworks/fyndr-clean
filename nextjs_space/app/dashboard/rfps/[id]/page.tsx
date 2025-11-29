@@ -3,6 +3,7 @@ import { PrismaClient } from "@prisma/client";
 import { ArrowLeft, Calendar, User, Building2, Users, DollarSign, Flag, FileText, Edit, Share2, Mail } from "lucide-react";
 import { notFound } from "next/navigation";
 import AISummary from "./ai-summary";
+import StageTasks from "./stage-tasks";
 import { STAGE_LABELS, STAGE_COLORS } from "@/lib/stages";
 
 const prisma = new PrismaClient();
@@ -132,6 +133,12 @@ export default async function RFPDetailPage({
     acc[user.id] = user;
     return acc;
   }, {} as Record<string, { id: string; email: string; name: string | null }>);
+
+  // Fetch stage tasks for current stage
+  const stageTasks = await prisma.stageTask.findMany({
+    where: { rfpId: params.id, stage: rfp.stage },
+    orderBy: { createdAt: 'asc' },
+  });
 
   return (
     <div className="max-w-4xl mx-auto">
@@ -357,6 +364,11 @@ export default async function RFPDetailPage({
             </table>
           </div>
         )}
+      </div>
+
+      {/* Stage Tasks Section */}
+      <div className="mt-6">
+        <StageTasks rfpId={rfp.id} stage={rfp.stage} initialTasks={stageTasks} />
       </div>
 
       {/* Stage Timeline Section */}
