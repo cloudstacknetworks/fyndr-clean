@@ -26,6 +26,7 @@ export default async function RFPBoardPage() {
       enteredStageAt: true,
       stageEnteredAt: true,
       stageSlaDays: true,
+      opportunityScore: true,
       company: {
         select: { name: true }
       }

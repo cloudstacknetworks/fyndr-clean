@@ -67,6 +67,14 @@ model RFP {
   enteredStageAt   DateTime?  // NEW: Primary field for SLA tracking
   stageSlaDays     Int?       // NEW: SLA duration for current stage
   stageAutoActions Json?
+  
+  // Opportunity Scoring (STEP 13)
+  opportunityScore               Int?
+  opportunityScoreBreakdown      Json?
+  opportunityScoreUpdatedAt      DateTime?
+  opportunityScoreSource         String?
+  opportunityScoreOverrideReason String?
+  
   user             User      @relation(fields: [userId], references: [id])
   userId           String
   company          Company   @relation(fields: [companyId], references: [id])

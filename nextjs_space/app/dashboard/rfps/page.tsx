@@ -3,6 +3,7 @@ import { PrismaClient } from "@prisma/client";
 import { Plus } from "lucide-react";
 import { getSlaStatus } from "@/lib/stage-sla";
 import { STAGE_LABELS } from "@/lib/stages";
+import { getOpportunityRating } from "@/lib/opportunity-scoring";
 
 const prisma = new PrismaClient();
 
@@ -100,6 +101,7 @@ export default async function RFPsPage() {
                   <th className="text-left py-3 px-4 font-semibold text-gray-700">Stage</th>
                   <th className="text-left py-3 px-4 font-semibold text-gray-700">Status</th>
                   <th className="text-left py-3 px-4 font-semibold text-gray-700">SLA Status</th>
+                  <th className="text-left py-3 px-4 font-semibold text-gray-700">Score</th>
                   <th className="text-left py-3 px-4 font-semibold text-gray-700">Created By</th>
                   <th className="text-left py-3 px-4 font-semibold text-gray-700">Created At</th>
                 </tr>
@@ -107,6 +109,9 @@ export default async function RFPsPage() {
               <tbody>
                 {rfps.map((rfp) => {
                   const slaStatus = getSlaStatus(rfp);
+                  const opportunityRating = rfp.opportunityScore !== null 
+                    ? getOpportunityRating(rfp.opportunityScore) 
+                    : null;
                   
                   return (
                     <tr
@@ -149,6 +154,17 @@ export default async function RFPsPage() {
                           {slaStatus.status === 'warning' && 'Warning'}
                           {slaStatus.status === 'breached' && 'Breached'}
                         </span>
+                      </td>
+                      <td className="py-4 px-4">
+                        {opportunityRating ? (
+                          <span
+                            className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${opportunityRating.bgColor} ${opportunityRating.textColor}`}
+                          >
+                            {rfp.opportunityScore}
+                          </span>
+                        ) : (
+                          <span className="text-gray-400">–</span>
+                        )}
                       </td>
                       <td className="py-4 px-4 text-gray-600">
                         {rfp.user?.name || rfp.user?.email || "Unknown"}

@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { STAGES, STAGE_ORDER, STAGE_LABELS, STAGE_COLORS } from '@/lib/stages';
 import StageTransitionWarningModal from '../components/stage-transition-warning-modal';
 import { getSlaStatus } from '@/lib/stage-sla';
+import { getOpportunityRating } from '@/lib/opportunity-scoring';
 
 // Priority colors
 const PRIORITY_COLORS = {
@@ -27,6 +28,7 @@ interface RFP {
   enteredStageAt: Date | null;
   stageEnteredAt: Date | null;
   stageSlaDays: number | null;
+  opportunityScore: number | null;
 }
 
 interface KanbanBoardProps {
@@ -410,6 +412,19 @@ export default function KanbanBoard({ initialRfps }: KanbanBoardProps) {
                                     {rfp.title}
                                   </h4>
                                 </Link>
+                                
+                                {/* Opportunity Score Badge */}
+                                {rfp.opportunityScore !== null && (() => {
+                                  const rating = getOpportunityRating(rfp.opportunityScore);
+                                  return (
+                                    <span
+                                      className={`flex-shrink-0 inline-flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold ${rating.bgColor} ${rating.textColor}`}
+                                      title={`Opportunity Score: ${rfp.opportunityScore} (${rating.label})`}
+                                    >
+                                      {rfp.opportunityScore}
+                                    </span>
+                                  );
+                                })()}
                               </div>
 
                               {/* Company */}

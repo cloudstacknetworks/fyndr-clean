@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import AISummary from "./ai-summary";
 import StageTasks from "./stage-tasks";
 import AIActionsPanel from "./ai-actions-panel";
+import OpportunityScorePanel from "./opportunity-score-panel";
 import { STAGE_LABELS, STAGE_COLORS } from "@/lib/stages";
 import { isAutomationTask } from "@/lib/stage-automation";
 import { getSlaStatus } from "@/lib/stage-sla";
@@ -313,8 +314,22 @@ export default async function RFPDetailPage({
         )}
       </div>
 
+      {/* Opportunity Score Panel - STEP 13 */}
+      <div className="mt-6">
+        <OpportunityScorePanel
+          rfpId={rfp.id}
+          score={rfp.opportunityScore}
+          breakdown={rfp.opportunityScoreBreakdown as any}
+          source={rfp.opportunityScoreSource as 'AUTO' | 'MANUAL' | null}
+          updatedAt={rfp.opportunityScoreUpdatedAt}
+          overrideReason={rfp.opportunityScoreOverrideReason}
+        />
+      </div>
+
       {/* AI Executive Summary Section */}
-      <AISummary rfpId={rfp.id} rfpTitle={rfp.title} />
+      <div className="mt-6">
+        <AISummary rfpId={rfp.id} rfpTitle={rfp.title} />
+      </div>
 
       {/* Summary Sharing History Section */}
       <div className="bg-white rounded-lg shadow p-6 mt-6">
