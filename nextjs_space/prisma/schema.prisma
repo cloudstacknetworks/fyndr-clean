@@ -213,6 +213,16 @@ model SupplierResponse {
   createdAt          DateTime        @default(now())
   updatedAt          DateTime        @updatedAt
 
+  // AI Extraction Fields (STEP 17)
+  extractedPricing              Json?
+  extractedRequirementsCoverage Json?
+  extractedTechnicalClaims      Json?
+  extractedAssumptions          Json?
+  extractedRisks                Json?
+  extractedDifferentiators      Json?
+  extractedDemoSummary          Json?
+  extractedFilesMetadata        Json?
+
   rfp                RFP             @relation(fields: [rfpId], references: [id], onDelete: Cascade)
   supplierContact    SupplierContact @relation(fields: [supplierContactId], references: [id], onDelete: Cascade)
   attachments        SupplierResponseAttachment[]

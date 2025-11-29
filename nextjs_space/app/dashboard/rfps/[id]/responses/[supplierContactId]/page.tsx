@@ -17,6 +17,7 @@ import {
   File,
   Download,
 } from 'lucide-react';
+import AIInsightsPanel from './ai-insights-panel';
 
 const prisma = new PrismaClient();
 
@@ -329,6 +330,23 @@ export default async function BuyerResponseDetailPage({
           <h3 className="text-xl font-bold text-gray-900 mb-4">Attachments</h3>
           <p className="text-center text-gray-500 py-8">No attachments provided</p>
         </div>
+      )}
+
+      {/* AI-Extracted Insights Panel */}
+      {response && response.status === 'SUBMITTED' && (
+        <AIInsightsPanel
+          responseId={response.id}
+          extractedData={{
+            extractedPricing: response.extractedPricing as any,
+            extractedRequirementsCoverage: response.extractedRequirementsCoverage as any,
+            extractedTechnicalClaims: response.extractedTechnicalClaims as any,
+            extractedAssumptions: response.extractedAssumptions as any,
+            extractedRisks: response.extractedRisks as any,
+            extractedDifferentiators: response.extractedDifferentiators as any,
+            extractedDemoSummary: response.extractedDemoSummary as any,
+            extractedFilesMetadata: response.extractedFilesMetadata as any,
+          }}
+        />
       )}
     </div>
   );
