@@ -1,10 +1,11 @@
 import Link from "next/link";
 import { PrismaClient } from "@prisma/client";
-import { ArrowLeft, Calendar, User, Building2, Users, DollarSign, Flag, FileText, Edit, Share2, Mail } from "lucide-react";
+import { ArrowLeft, Calendar, User, Building2, Users, DollarSign, Flag, FileText, Edit, Share2, Mail, Zap } from "lucide-react";
 import { notFound } from "next/navigation";
 import AISummary from "./ai-summary";
 import StageTasks from "./stage-tasks";
 import { STAGE_LABELS, STAGE_COLORS } from "@/lib/stages";
+import { isAutomationTask } from "@/lib/stage-automation";
 
 const prisma = new PrismaClient();
 
@@ -138,6 +139,26 @@ export default async function RFPDetailPage({
   const stageTasks = await prisma.stageTask.findMany({
     where: { rfpId: params.id, stage: rfp.stage },
     orderBy: { createdAt: 'asc' },
+  });
+
+  // Fetch automation tasks (created after stage entry)
+  const automationTasks = rfp.stageEnteredAt
+    ? await prisma.stageTask.findMany({
+        where: {
+          rfpId: params.id,
+          stage: rfp.stage,
+          createdAt: {
+            gte: rfp.stageEnteredAt
+          }
+        },
+        orderBy: { createdAt: 'desc' }
+      })
+    : [];
+
+  // Filter to only automation tasks
+  const automationLog = automationTasks.filter(task => {
+    // Check if task title matches any automation task for this stage
+    return isAutomationTask(task.title, rfp.stage);
   });
 
   return (
@@ -369,6 +390,43 @@ export default async function RFPDetailPage({
       {/* Stage Tasks Section */}
       <div className="mt-6">
         <StageTasks rfpId={rfp.id} stage={rfp.stage} initialTasks={stageTasks} />
+      </div>
+
+      {/* Stage Automation Log Section */}
+      <div className="bg-white rounded-lg shadow p-6 mt-6">
+        <h2 className="text-xl font-semibold text-gray-900 mb-4">
+          Stage Automation Log
+        </h2>
+        
+        {automationLog.length === 0 ? (
+          <p className="text-gray-500 text-sm">
+            No automation actions for this stage yet.
+          </p>
+        ) : (
+          <div className="space-y-3">
+            {automationLog.map((task) => (
+              <div
+                key={task.id}
+                className="flex items-start gap-3 pb-3 border-b border-gray-200 last:border-b-0"
+              >
+                {/* Icon */}
+                <div className="flex-shrink-0 w-5 h-5 mt-0.5">
+                  <Zap className="w-5 h-5 text-indigo-600" />
+                </div>
+                
+                {/* Content */}
+                <div className="flex-1">
+                  <p className="text-sm text-gray-900">
+                    <span className="font-medium">Automation:</span> Created task — {task.title}
+                  </p>
+                  <p className="text-xs text-gray-500 mt-1">
+                    {new Date(task.createdAt).toLocaleString()}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Stage Timeline Section */}

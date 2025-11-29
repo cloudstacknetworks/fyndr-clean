@@ -52,26 +52,28 @@ enum RFPStage {
 }
 
 model RFP {
-  id            String    @id @default(uuid())
-  title         String
-  description   String?
-  status        String    @default("draft")
-  stage         RFPStage  @default(INTAKE)
-  createdAt     DateTime  @default(now())
-  dueDate       DateTime?
-  submittedAt   DateTime?
-  budget        Float?
-  priority      Priority  @default(MEDIUM)
-  internalNotes String?
-  user          User      @relation(fields: [userId], references: [id])
-  userId        String
-  company       Company   @relation(fields: [companyId], references: [id])
-  companyId     String
-  supplier      Supplier  @relation(fields: [supplierId], references: [id])
-  supplierId    String
-  summaryShares SummaryShare[]
-  stageHistory  StageHistory[]
-  stageTasks    StageTask[]
+  id               String    @id @default(uuid())
+  title            String
+  description      String?
+  status           String    @default("draft")
+  stage            RFPStage  @default(INTAKE)
+  createdAt        DateTime  @default(now())
+  dueDate          DateTime?
+  submittedAt      DateTime?
+  budget           Float?
+  priority         Priority  @default(MEDIUM)
+  internalNotes    String?
+  stageEnteredAt   DateTime?
+  stageAutoActions Json?
+  user             User      @relation(fields: [userId], references: [id])
+  userId           String
+  company          Company   @relation(fields: [companyId], references: [id])
+  companyId        String
+  supplier         Supplier  @relation(fields: [supplierId], references: [id])
+  supplierId       String
+  summaryShares    SummaryShare[]
+  stageHistory     StageHistory[]
+  stageTasks       StageTask[]
 }
 
 model Contact {

@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth-options";
 import { PrismaClient } from "@prisma/client";
 import { validateStageTransition } from "@/lib/stage-transition-rules";
+import { runStageAutomations } from "@/lib/stage-automation";
 
 const prisma = new PrismaClient();
 
@@ -197,6 +198,11 @@ export async function PUT(
     }
     if (priority !== undefined) updateData.priority = priority || "MEDIUM";
     if (internalNotes !== undefined) updateData.internalNotes = internalNotes?.trim() || null;
+    
+    // Update stageEnteredAt when stage changes
+    if (stageChanged) {
+      updateData.stageEnteredAt = new Date();
+    }
 
     // Update the RFP
     const updatedRfp = await prisma.rFP.update({
@@ -223,6 +229,14 @@ export async function PUT(
         },
       },
     });
+
+    // Run stage automations AFTER update
+    if (stageChanged) {
+      await runStageAutomations({
+        rfpId: params.id,
+        newStage: stage
+      });
+    }
 
     return NextResponse.json(updatedRfp);
   } catch (error) {
