@@ -5,6 +5,7 @@ import { PrismaClient } from '@prisma/client';
 import { Calendar, Building2, DollarSign, AlertCircle, Clock } from 'lucide-react';
 import { STAGE_LABELS } from '@/lib/stages';
 import { formatTimelineDate, getTimelineMilestones, getStatusColor } from '@/lib/rfp-timeline';
+import SupplierResponseForm from './supplier-response-form';
 
 const prisma = new PrismaClient();
 
@@ -26,6 +27,21 @@ async function getSupplierRFPAccess(rfpId: string, userId: string) {
   });
 
   return supplierContact;
+}
+
+async function getSupplierResponse(supplierContactId: string) {
+  const response = await prisma.supplierResponse.findUnique({
+    where: {
+      supplierContactId,
+    },
+    include: {
+      attachments: {
+        orderBy: { createdAt: 'desc' },
+      },
+    },
+  });
+
+  return response;
 }
 
 export default async function SupplierRFPPage({
@@ -61,6 +77,17 @@ export default async function SupplierRFPPage({
   const rfp = supplierAccess.rfp;
   const milestones = getTimelineMilestones(rfp);
 
+  // Fetch supplier response and attachments
+  const responseData = await getSupplierResponse(supplierAccess.id);
+  const response = responseData ? {
+    id: responseData.id,
+    status: responseData.status,
+    submittedAt: responseData.submittedAt,
+    structuredAnswers: responseData.structuredAnswers,
+    notesFromSupplier: responseData.notesFromSupplier,
+  } : null;
+  const attachments = responseData?.attachments || [];
+
   return (
     <div className="max-w-5xl mx-auto space-y-6">
       {/* Header */}
@@ -80,20 +107,7 @@ export default async function SupplierRFPPage({
         </div>
       </div>
 
-      {/* Status Banner */}
-      <div className="bg-gradient-to-r from-indigo-50 to-purple-50 rounded-lg border border-indigo-200 p-6">
-        <div className="flex items-start space-x-3">
-          <AlertCircle className="w-6 h-6 text-indigo-600 flex-shrink-0 mt-0.5" />
-          <div>
-            <h3 className="font-semibold text-indigo-900 mb-1">
-              Supplier Portal — Part 1 (Read-Only View)
-            </h3>
-            <p className="text-indigo-700 text-sm">
-              This is a read-only view of the RFP details. Future updates will include response submission capabilities.
-            </p>
-          </div>
-        </div>
-      </div>
+
 
       {/* RFP Details */}
       <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
@@ -231,6 +245,13 @@ export default async function SupplierRFPPage({
           </div>
         </div>
       )}
+
+      {/* Your Response Section */}
+      <SupplierResponseForm
+        rfpId={rfpId}
+        initialResponse={response}
+        initialAttachments={attachments}
+      />
 
       {/* Contact Information */}
       <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg border border-gray-200 p-6">

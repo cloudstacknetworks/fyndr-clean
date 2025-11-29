@@ -105,6 +105,7 @@ model RFP {
   stageHistory     StageHistory[]
   stageTasks       StageTask[]
   supplierContacts SupplierContact[]
+  supplierResponses SupplierResponse[]
 }
 
 model Contact {
@@ -180,7 +181,59 @@ model SupplierContact {
   
   rfp              RFP              @relation(fields: [rfpId], references: [id], onDelete: Cascade)
   portalUser       User?            @relation(fields: [portalUserId], references: [id], onDelete: SetNull)
+  supplierResponse SupplierResponse?
   
   @@index([rfpId])
   @@index([email, rfpId])
+}
+
+enum SupplierResponseStatus {
+  DRAFT
+  SUBMITTED
+}
+
+enum AttachmentType {
+  GENERAL
+  PRICING_SHEET
+  REQUIREMENTS_MATRIX
+  PRESENTATION
+  DEMO_RECORDING
+  CONTRACT_DRAFT
+  OTHER
+}
+
+model SupplierResponse {
+  id                 String          @id @default(uuid())
+  rfpId              String
+  supplierContactId  String          @unique
+  status             SupplierResponseStatus @default(DRAFT)
+  submittedAt        DateTime?
+  structuredAnswers  Json?
+  notesFromSupplier  String?
+  createdAt          DateTime        @default(now())
+  updatedAt          DateTime        @updatedAt
+
+  rfp                RFP             @relation(fields: [rfpId], references: [id], onDelete: Cascade)
+  supplierContact    SupplierContact @relation(fields: [supplierContactId], references: [id], onDelete: Cascade)
+  attachments        SupplierResponseAttachment[]
+
+  @@index([rfpId])
+  @@index([supplierContactId])
+  @@unique([rfpId, supplierContactId])
+}
+
+model SupplierResponseAttachment {
+  id                 String   @id @default(uuid())
+  supplierResponseId String
+  fileName           String
+  fileType           String
+  fileSize           Int
+  storageKey         String
+  attachmentType     AttachmentType @default(GENERAL)
+  description        String?
+  createdAt          DateTime @default(now())
+
+  supplierResponse   SupplierResponse @relation(fields: [supplierResponseId], references: [id], onDelete: Cascade)
+
+  @@index([supplierResponseId])
 }
