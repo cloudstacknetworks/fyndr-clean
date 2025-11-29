@@ -60,13 +60,21 @@ export default async function RFPsPage() {
             <h1 className="text-3xl font-bold text-gray-900 mb-2">RFPs</h1>
             <p className="text-gray-600">Manage your Requests for Proposals (RFPs) here.</p>
           </div>
-          <Link
-            href="/dashboard/rfps/new"
-            className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-6 py-3 rounded-lg font-semibold transition-all shadow-md hover:shadow-lg"
-          >
-            <Plus className="h-5 w-5" />
-            Create New RFP
-          </Link>
+          <div className="flex gap-3">
+            <Link
+              href="/dashboard/rfps/board"
+              className="flex items-center gap-2 px-6 py-3 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 font-semibold transition-all shadow-sm hover:shadow-md"
+            >
+              Pipeline View
+            </Link>
+            <Link
+              href="/dashboard/rfps/new"
+              className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-6 py-3 rounded-lg font-semibold transition-all shadow-md hover:shadow-lg"
+            >
+              <Plus className="h-5 w-5" />
+              Create New RFP
+            </Link>
+          </div>
         </div>
 
         {rfps.length === 0 ? (
