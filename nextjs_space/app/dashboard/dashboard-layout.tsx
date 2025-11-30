@@ -8,6 +8,7 @@ import { useState, useEffect } from 'react';
 import GlobalSearch from './global-search';
 import CommandPalette from './command-palette';
 import BellIcon from './bell-icon';
+import { SearchBar } from '../components/search-bar';
 
 interface DashboardLayoutProps {
   session: any;
@@ -254,21 +255,10 @@ export default function DashboardLayout({ session, children }: DashboardLayoutPr
               </Link>
             </div>
             <div className="flex items-center gap-4">
-              <span className="text-sm text-gray-600">{session?.user?.email}</span>
+              <span className="text-sm text-gray-600 hidden md:block">{session?.user?.email}</span>
               
-              {/* Global Search */}
-              <GlobalSearch />
-              
-              {/* Command-K Hint Button */}
-              <button
-                onClick={() => setIsCommandPaletteOpen(true)}
-                className="hidden md:flex items-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-md px-3 py-1 text-sm transition"
-              >
-                <span>Search</span>
-                <kbd className="px-1.5 py-0.5 bg-white rounded text-xs font-mono border border-gray-200">
-                  ⌘K
-                </kbd>
-              </button>
+              {/* STEP 26: Global Search Bar */}
+              <SearchBar />
               
               {/* STEP 22: Notification Bell Icon */}
               <BellIcon />

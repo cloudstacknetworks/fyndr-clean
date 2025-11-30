@@ -43,6 +43,7 @@ export async function GET(
     const actorRole = searchParams.get("actorRole") || undefined;
     const dateFrom = searchParams.get("dateFrom") || undefined;
     const dateTo = searchParams.get("dateTo") || undefined;
+    const keyword = searchParams.get("keyword") || undefined;
 
     // Build where clause
     const where: any = { rfpId };
@@ -52,6 +53,9 @@ export async function GET(
       where.createdAt = {};
       if (dateFrom) where.createdAt.gte = new Date(dateFrom);
       if (dateTo) where.createdAt.lte = new Date(dateTo);
+    }
+    if (keyword && keyword.trim().length >= 2) {
+      where.summary = { contains: keyword, mode: "insensitive" };
     }
 
     // Fetch logs with pagination

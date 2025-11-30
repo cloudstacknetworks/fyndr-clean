@@ -8,34 +8,34 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  email     String   @unique
-  password  String
-  name      String?
-  role      String   @default("buyer")  // "buyer" or "supplier"
-  createdAt DateTime @default(now())
-  rfps      RFP[]
-  contacts  Contact[]
-  supplierPortalAccess SupplierContact?
+  id                     String                  @id @default(uuid())
+  email                  String                  @unique
+  password               String
+  name                   String?
+  role                   String                  @default("buyer") // "buyer" or "supplier"
+  createdAt              DateTime                @default(now())
+  rfps                   RFP[]
+  contacts               Contact[]
+  supplierPortalAccess   SupplierContact?
   notifications          Notification[]
   notificationPreference NotificationPreference?
-  activityLogs ActivityLog[]
+  activityLogs           ActivityLog[]
 }
 
 model Company {
-  id        String   @id @default(uuid())
-  name      String
+  id          String   @id @default(uuid())
+  name        String
   description String?
-  createdAt DateTime @default(now())
-  rfps      RFP[]
+  createdAt   DateTime @default(now())
+  rfps        RFP[]
 }
 
 model Supplier {
-  id        String   @id @default(uuid())
-  name      String
+  id           String   @id @default(uuid())
+  name         String
   contactEmail String?
-  createdAt DateTime @default(now())
-  rfps      RFP[]
+  createdAt    DateTime @default(now())
+  rfps         RFP[]
 }
 
 enum Priority {
@@ -77,70 +77,77 @@ model RFP {
   priority         Priority  @default(MEDIUM)
   internalNotes    String?
   stageEnteredAt   DateTime?
-  enteredStageAt   DateTime?  // NEW: Primary field for SLA tracking
-  stageSlaDays     Int?       // NEW: SLA duration for current stage
+  enteredStageAt   DateTime? // NEW: Primary field for SLA tracking
+  stageSlaDays     Int? // NEW: SLA duration for current stage
   stageAutoActions Json?
-  
+
   // Opportunity Scoring (STEP 13)
   opportunityScore               Int?
   opportunityScoreBreakdown      Json?
   opportunityScoreUpdatedAt      DateTime?
   opportunityScoreSource         String?
   opportunityScoreOverrideReason String?
-  
+
   // RFP Timeline & Milestones (STEP 14)
-  askQuestionsStart   DateTime?
-  askQuestionsEnd     DateTime?
-  submissionStart     DateTime?
-  submissionEnd       DateTime?
-  demoWindowStart     DateTime?
-  demoWindowEnd       DateTime?
-  awardDate           DateTime?
-  notifications       Json?
-  
+  askQuestionsStart DateTime?
+  askQuestionsEnd   DateTime?
+  submissionStart   DateTime?
+  submissionEnd     DateTime?
+  demoWindowStart   DateTime?
+  demoWindowEnd     DateTime?
+  awardDate         DateTime?
+  notifications     Json?
+
   // Supplier Comparison AI Narrative & Report (STEP 19)
-  comparisonNarrative   Json?
-  comparisonReportUrl   String?
-  
-  user             User      @relation(fields: [userId], references: [id])
-  userId           String
-  company          Company   @relation(fields: [companyId], references: [id])
-  companyId        String
-  supplier         Supplier  @relation(fields: [supplierId], references: [id])
-  supplierId       String
-  summaryShares     SummaryShare[]
-  stageHistory      StageHistory[]
-  stageTasks        StageTask[]
-  supplierContacts  SupplierContact[]
-  supplierResponses SupplierResponse[]
-  evaluationMatrix  EvaluationMatrix?
-  supplierQuestions SupplierQuestion[]
+  comparisonNarrative Json?
+  comparisonReportUrl String?
+
+  user                      User                       @relation(fields: [userId], references: [id])
+  userId                    String
+  company                   Company                    @relation(fields: [companyId], references: [id])
+  companyId                 String
+  supplier                  Supplier                   @relation(fields: [supplierId], references: [id])
+  supplierId                String
+  summaryShares             SummaryShare[]
+  stageHistory              StageHistory[]
+  stageTasks                StageTask[]
+  supplierContacts          SupplierContact[]
+  supplierResponses         SupplierResponse[]
+  evaluationMatrix          EvaluationMatrix?
+  supplierQuestions         SupplierQuestion[]
   supplierBroadcastMessages SupplierBroadcastMessage[]
-  activityLogs      ActivityLog[]
+  activityLogs              ActivityLog[]
+  // Note: PostgreSQL full-text search implemented via case-insensitive contains queries
+
+  @@index([title])
+  @@index([status])
+  @@index([stage])
+  @@index([createdAt])
+  @@index([userId])
 }
 
 model Contact {
-  id        String   @id @default(uuid())
+  id        String         @id @default(uuid())
   userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user      User           @relation(fields: [userId], references: [id], onDelete: Cascade)
   name      String
   email     String
   role      String?
-  createdAt DateTime @default(now())
+  createdAt DateTime       @default(now())
   shares    SummaryShare[]
 
   @@index([userId])
 }
 
 model SummaryShare {
-  id          String   @id @default(uuid())
-  rfpId       String
-  rfp         RFP      @relation(fields: [rfpId], references: [id], onDelete: Cascade)
-  contactId   String?
-  contact     Contact? @relation(fields: [contactId], references: [id], onDelete: SetNull)
-  email       String
-  template    String
-  sentAt      DateTime @default(now())
+  id        String   @id @default(uuid())
+  rfpId     String
+  rfp       RFP      @relation(fields: [rfpId], references: [id], onDelete: Cascade)
+  contactId String?
+  contact   Contact? @relation(fields: [contactId], references: [id], onDelete: SetNull)
+  email     String
+  template  String
+  sentAt    DateTime @default(now())
 
   @@index([rfpId])
   @@index([contactId])
@@ -154,9 +161,9 @@ model StageHistory {
   changedBy      String?
   overrideReason String?
   createdAt      DateTime  @default(now())
-  
-  rfp            RFP       @relation(fields: [rfpId], references: [id], onDelete: Cascade)
-  
+
+  rfp RFP @relation(fields: [rfpId], references: [id], onDelete: Cascade)
+
   @@index([rfpId])
 }
 
@@ -168,36 +175,41 @@ model StageTask {
   completed   Boolean   @default(false)
   createdAt   DateTime  @default(now())
   completedAt DateTime?
-  
-  rfp         RFP       @relation(fields: [rfpId], references: [id], onDelete: Cascade)
-  
+
+  rfp RFP @relation(fields: [rfpId], references: [id], onDelete: Cascade)
+
   @@index([rfpId])
   @@index([stage])
 }
 
 model SupplierContact {
-  id               String           @id @default(uuid())
-  rfpId            String
-  name             String
-  email            String
-  organization     String?
-  invitedAt        DateTime?
-  invitationStatus InvitationStatus @default(PENDING)
-  portalUserId     String?          @unique
-  accessToken      String?
+  id                 String           @id @default(uuid())
+  rfpId              String
+  name               String
+  email              String
+  organization       String?
+  invitedAt          DateTime?
+  invitationStatus   InvitationStatus @default(PENDING)
+  portalUserId       String?          @unique
+  accessToken        String?
   accessTokenExpires DateTime?
-  responses        Json?
-  createdAt        DateTime         @default(now())
-  updatedAt        DateTime         @updatedAt
-  
-  rfp              RFP              @relation(fields: [rfpId], references: [id], onDelete: Cascade)
-  portalUser       User?            @relation(fields: [portalUserId], references: [id], onDelete: SetNull)
-  supplierResponse SupplierResponse?
+  responses          Json?
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+
+  rfp               RFP                @relation(fields: [rfpId], references: [id], onDelete: Cascade)
+  portalUser        User?              @relation(fields: [portalUserId], references: [id], onDelete: SetNull)
+  supplierResponse  SupplierResponse?
   supplierQuestions SupplierQuestion[]
-  activityLogs     ActivityLog[]
-  
+  activityLogs      ActivityLog[]
+  // Note: PostgreSQL full-text search implemented via case-insensitive contains queries
+
   @@index([rfpId])
   @@index([email, rfpId])
+  @@index([email])
+  @@index([name])
+  @@index([organization])
+  @@index([invitationStatus])
 }
 
 enum SupplierResponseStatus {
@@ -216,15 +228,15 @@ enum AttachmentType {
 }
 
 model SupplierResponse {
-  id                 String          @id @default(uuid())
-  rfpId              String
-  supplierContactId  String          @unique
-  status             SupplierResponseStatus @default(DRAFT)
-  submittedAt        DateTime?
-  structuredAnswers  Json?
-  notesFromSupplier  String?
-  createdAt          DateTime        @default(now())
-  updatedAt          DateTime        @updatedAt
+  id                String                 @id @default(uuid())
+  rfpId             String
+  supplierContactId String                 @unique
+  status            SupplierResponseStatus @default(DRAFT)
+  submittedAt       DateTime?
+  structuredAnswers Json?
+  notesFromSupplier String?
+  createdAt         DateTime               @default(now())
+  updatedAt         DateTime               @updatedAt
 
   // AI Extraction Fields (STEP 17)
   extractedPricing              Json?
@@ -237,44 +249,46 @@ model SupplierResponse {
   extractedFilesMetadata        Json?
 
   // Comparison Fields (STEP 18)
-  comparisonScore           Int?
-  comparisonBreakdown       Json?
-  comparisonMatrixUsed      Boolean?
-  comparisonAIInsights      Json?
+  comparisonScore      Int?
+  comparisonBreakdown  Json?
+  comparisonMatrixUsed Boolean?
+  comparisonAIInsights Json?
 
   // Supplier Readiness Fields (STEP 20)
-  complianceFindings           Json?
-  diversityMetadata            Json?
-  mandatoryRequirementsStatus  Json?
-  riskFlags                    Json?
-  readinessIndicator           String?
-  readinessRationale           String?
+  complianceFindings          Json?
+  diversityMetadata           Json?
+  mandatoryRequirementsStatus Json?
+  riskFlags                   Json?
+  readinessIndicator          String?
+  readinessRationale          String?
 
-  rfp                RFP             @relation(fields: [rfpId], references: [id], onDelete: Cascade)
-  supplierContact    SupplierContact @relation(fields: [supplierContactId], references: [id], onDelete: Cascade)
-  attachments        SupplierResponseAttachment[]
-  activityLogs       ActivityLog[]
+  rfp             RFP                          @relation(fields: [rfpId], references: [id], onDelete: Cascade)
+  supplierContact SupplierContact              @relation(fields: [supplierContactId], references: [id], onDelete: Cascade)
+  attachments     SupplierResponseAttachment[]
+  activityLogs    ActivityLog[]
 
+  @@unique([rfpId, supplierContactId])
   @@index([rfpId])
   @@index([supplierContactId])
-  @@unique([rfpId, supplierContactId])
+  @@index([status])
+  @@index([submittedAt])
 }
 
 model EvaluationMatrix {
-  id         String   @id @default(uuid())
-  rfpId      String   @unique
-  name       String
-  criteria   Json     // array of objects: { id, label, weight }
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-  
-  rfp        RFP      @relation(fields: [rfpId], references: [id], onDelete: Cascade)
-  
+  id        String   @id @default(uuid())
+  rfpId     String   @unique
+  name      String
+  criteria  Json // array of objects: { id, label, weight }
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  rfp RFP @relation(fields: [rfpId], references: [id], onDelete: Cascade)
+
   @@index([rfpId])
 }
 
 model SupplierResponseAttachment {
-  id                 String   @id @default(uuid())
+  id                 String         @id @default(uuid())
   supplierResponseId String
   fileName           String
   fileType           String
@@ -282,9 +296,9 @@ model SupplierResponseAttachment {
   storageKey         String
   attachmentType     AttachmentType @default(GENERAL)
   description        String?
-  createdAt          DateTime @default(now())
+  createdAt          DateTime       @default(now())
 
-  supplierResponse   SupplierResponse @relation(fields: [supplierResponseId], references: [id], onDelete: Cascade)
+  supplierResponse SupplierResponse @relation(fields: [supplierResponseId], references: [id], onDelete: Cascade)
 
   @@index([supplierResponseId])
 }
@@ -304,100 +318,106 @@ model SupplierQuestion {
   status            QuestionStatus @default(PENDING)
   askedAt           DateTime       @default(now())
   answeredAt        DateTime?
-  
-  rfp               RFP            @relation(fields: [rfpId], references: [id], onDelete: Cascade)
-  supplierContact   SupplierContact @relation(fields: [supplierContactId], references: [id], onDelete: Cascade)
-  
+
+  rfp             RFP             @relation(fields: [rfpId], references: [id], onDelete: Cascade)
+  supplierContact SupplierContact @relation(fields: [supplierContactId], references: [id], onDelete: Cascade)
+  // Note: PostgreSQL full-text search implemented via case-insensitive contains queries
+
   @@index([rfpId])
   @@index([supplierContactId])
+  @@index([status])
+  @@index([askedAt])
 }
 
 model SupplierBroadcastMessage {
-  id                  String   @id @default(cuid())
-  rfpId               String
-  message             String   @db.Text
-  createdAt           DateTime @default(now())
-  createdBy           String
-  supplierVisibility  Json?
-  
-  rfp                 RFP      @relation(fields: [rfpId], references: [id], onDelete: Cascade)
-  
+  id                 String   @id @default(cuid())
+  rfpId              String
+  message            String   @db.Text
+  createdAt          DateTime @default(now())
+  createdBy          String
+  supplierVisibility Json?
+
+  rfp RFP @relation(fields: [rfpId], references: [id], onDelete: Cascade)
+
   @@index([rfpId])
 }
 
 // STEP 22: Notifications & Reminders Engine
 model Notification {
-  id                 String    @id @default(cuid())
+  id                 String  @id @default(cuid())
   userId             String
   rfpId              String?
   supplierResponseId String?
   supplierContactId  String?
-  
-  type               String
-  category           String
-  title              String
-  message            String
-  channel            String
-  metadata           Json?
-  
-  readAt             DateTime?
-  createdAt          DateTime  @default(now())
-  
-  user               User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
+
+  type     String
+  category String
+  title    String
+  message  String
+  channel  String
+  metadata Json?
+
+  readAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   @@index([userId, createdAt])
   @@index([rfpId])
 }
 
 model NotificationPreference {
-  id                         String   @id @default(cuid())
-  userId                     String   @unique
-  emailEnabled               Boolean  @default(true)
-  inAppEnabled               Boolean  @default(true)
-  
+  id           String  @id @default(cuid())
+  userId       String  @unique
+  emailEnabled Boolean @default(true)
+  inAppEnabled Boolean @default(true)
+
   // Buyer-specific toggles
-  buyerRfpTimeline           Boolean  @default(true)
-  buyerSupplierResponses     Boolean  @default(true)
-  buyerSupplierQuestions     Boolean  @default(true)
-  buyerQABroadcasts          Boolean  @default(true)
-  buyerReadinessChanges      Boolean  @default(true)
-  
+  buyerRfpTimeline       Boolean @default(true)
+  buyerSupplierResponses Boolean @default(true)
+  buyerSupplierQuestions Boolean @default(true)
+  buyerQABroadcasts      Boolean @default(true)
+  buyerReadinessChanges  Boolean @default(true)
+
   // Supplier-specific toggles
-  supplierQATimeline         Boolean  @default(true)
-  supplierSubmissionTimeline Boolean  @default(true)
-  supplierBroadcasts         Boolean  @default(true)
-  supplierResponseStatus     Boolean  @default(true)
-  
-  createdAt                  DateTime @default(now())
-  updatedAt                  DateTime @updatedAt
-  
-  user                       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  supplierQATimeline         Boolean @default(true)
+  supplierSubmissionTimeline Boolean @default(true)
+  supplierBroadcasts         Boolean @default(true)
+  supplierResponseStatus     Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 // STEP 23: Activity Log & Audit Trail System
 model ActivityLog {
-  id                 String   @id @default(cuid())
-  
+  id String @id @default(cuid())
+
   rfpId              String?
   supplierResponseId String?
   supplierContactId  String?
   userId             String?
-  actorRole          String    // "BUYER" | "SUPPLIER" | "SYSTEM"
-  
-  eventType          String    // event name
-  summary            String    // short human-readable summary
-  details            Json?     // structured metadata
-  ipAddress          String?
-  userAgent          String?
-  
-  createdAt          DateTime  @default(now())
-  
-  rfp                RFP?              @relation(fields: [rfpId], references: [id], onDelete: Cascade)
-  supplierResponse   SupplierResponse? @relation(fields: [supplierResponseId], references: [id], onDelete: Cascade)
-  supplierContact    SupplierContact?  @relation(fields: [supplierContactId], references: [id], onDelete: Cascade)
-  user               User?             @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
+  actorRole          String // "BUYER" | "SUPPLIER" | "SYSTEM"
+
+  eventType String // event name
+  summary   String // short human-readable summary
+  details   Json? // structured metadata
+  ipAddress String?
+  userAgent String?
+
+  createdAt DateTime @default(now())
+
+  rfp              RFP?              @relation(fields: [rfpId], references: [id], onDelete: Cascade)
+  supplierResponse SupplierResponse? @relation(fields: [supplierResponseId], references: [id], onDelete: Cascade)
+  supplierContact  SupplierContact?  @relation(fields: [supplierContactId], references: [id], onDelete: Cascade)
+  user             User?             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  // Note: PostgreSQL full-text search implemented via case-insensitive contains queries
+
   @@index([rfpId, createdAt])
   @@index([userId, createdAt])
   @@index([eventType])
+  @@index([actorRole])
+  @@index([createdAt])
 }
