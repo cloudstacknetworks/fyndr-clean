@@ -79,9 +79,9 @@ export default function BuyerNotificationPreferencesPage() {
 
   if (loading) {
     return (
-      <div className=\"max-w-3xl mx-auto py-8 px-4\">
-        <div className=\"flex items-center justify-center py-12\">
-          <Loader2 className=\"h-8 w-8 animate-spin text-indigo-600\" />
+      <div className="max-w-3xl mx-auto py-8 px-4">
+        <div className="flex items-center justify-center py-12">
+          <Loader2 className="h-8 w-8 animate-spin text-indigo-600" />
         </div>
       </div>
     );
@@ -89,23 +89,23 @@ export default function BuyerNotificationPreferencesPage() {
 
   if (!preferences) {
     return (
-      <div className=\"max-w-3xl mx-auto py-8 px-4\">
-        <div className=\"bg-red-50 border border-red-200 rounded-lg p-4 text-center\">
-          <AlertCircle className=\"h-8 w-8 text-red-600 mx-auto mb-2\" />
-          <p className=\"text-red-800\">Failed to load notification preferences.</p>
+      <div className="max-w-3xl mx-auto py-8 px-4">
+        <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-center">
+          <AlertCircle className="h-8 w-8 text-red-600 mx-auto mb-2" />
+          <p className="text-red-800">Failed to load notification preferences.</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className=\"max-w-3xl mx-auto py-8 px-4\">
+    <div className="max-w-3xl mx-auto py-8 px-4">
       {/* Header */}
-      <div className=\"mb-6\">
-        <h1 className=\"text-3xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent\">
+      <div className="mb-6">
+        <h1 className="text-3xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
           Notification Preferences
         </h1>
-        <p className=\"text-gray-600 mt-2\">
+        <p className="text-gray-600 mt-2">
           Customize how you receive notifications for your RFP activities.
         </p>
       </div>
@@ -120,193 +120,193 @@ export default function BuyerNotificationPreferencesPage() {
           }`}
         >
           {message.type === 'success' ? (
-            <CheckCircle className=\"h-5 w-5 flex-shrink-0\" />
+            <CheckCircle className="h-5 w-5 flex-shrink-0" />
           ) : (
-            <AlertCircle className=\"h-5 w-5 flex-shrink-0\" />
+            <AlertCircle className="h-5 w-5 flex-shrink-0" />
           )}
-          <p className=\"text-sm font-medium\">{message.text}</p>
+          <p className="text-sm font-medium">{message.text}</p>
         </div>
       )}
 
       {/* Preferences Form */}
-      <div className=\"bg-white rounded-lg shadow-sm border border-gray-200\">
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200">
         {/* Global Toggles */}
-        <div className=\"p-6 border-b border-gray-200\">
-          <h2 className=\"text-lg font-semibold text-gray-900 mb-4\">Global Settings</h2>
-          <div className=\"space-y-4\">
-            <div className=\"flex items-center justify-between\">
-              <div className=\"flex-1\">
-                <label htmlFor=\"emailEnabled\" className=\"text-sm font-medium text-gray-900\">
+        <div className="p-6 border-b border-gray-200">
+          <h2 className="text-lg font-semibold text-gray-900 mb-4">Global Settings</h2>
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <div className="flex-1">
+                <label htmlFor="emailEnabled" className="text-sm font-medium text-gray-900">
                   Email Notifications
                 </label>
-                <p className=\"text-sm text-gray-600\">
+                <p className="text-sm text-gray-600">
                   Receive notifications via email
                 </p>
               </div>
-              <label className=\"relative inline-flex items-center cursor-pointer\">
+              <label className="relative inline-flex items-center cursor-pointer">
                 <input
-                  id=\"emailEnabled\"
-                  type=\"checkbox\"
+                  id="emailEnabled"
+                  type="checkbox"
                   checked={preferences.emailEnabled}
                   onChange={(e) => updatePreference('emailEnabled', e.target.checked)}
-                  className=\"sr-only peer\"
+                  className="sr-only peer"
                 />
-                <div className=\"w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600\"></div>
+                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
               </label>
             </div>
 
-            <div className=\"flex items-center justify-between\">
-              <div className=\"flex-1\">
-                <label htmlFor=\"inAppEnabled\" className=\"text-sm font-medium text-gray-900\">
+            <div className="flex items-center justify-between">
+              <div className="flex-1">
+                <label htmlFor="inAppEnabled" className="text-sm font-medium text-gray-900">
                   In-App Notifications
                 </label>
-                <p className=\"text-sm text-gray-600\">
+                <p className="text-sm text-gray-600">
                   Show notifications in the notification center
                 </p>
               </div>
-              <label className=\"relative inline-flex items-center cursor-pointer\">
+              <label className="relative inline-flex items-center cursor-pointer">
                 <input
-                  id=\"inAppEnabled\"
-                  type=\"checkbox\"
+                  id="inAppEnabled"
+                  type="checkbox"
                   checked={preferences.inAppEnabled}
                   onChange={(e) => updatePreference('inAppEnabled', e.target.checked)}
-                  className=\"sr-only peer\"
+                  className="sr-only peer"
                 />
-                <div className=\"w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600\"></div>
+                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
               </label>
             </div>
           </div>
         </div>
 
         {/* Buyer-Specific Toggles */}
-        <div className=\"p-6\">
-          <h2 className=\"text-lg font-semibold text-gray-900 mb-4\">Notification Categories</h2>
-          <div className=\"space-y-4\">
-            <div className=\"flex items-center justify-between\">
-              <div className=\"flex-1\">
-                <label htmlFor=\"buyerRfpTimeline\" className=\"text-sm font-medium text-gray-900\">
+        <div className="p-6">
+          <h2 className="text-lg font-semibold text-gray-900 mb-4">Notification Categories</h2>
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <div className="flex-1">
+                <label htmlFor="buyerRfpTimeline" className="text-sm font-medium text-gray-900">
                   Timeline Reminders
                 </label>
-                <p className=\"text-sm text-gray-600\">
+                <p className="text-sm text-gray-600">
                   Deadlines, milestones, and important dates
                 </p>
               </div>
-              <label className=\"relative inline-flex items-center cursor-pointer\">
+              <label className="relative inline-flex items-center cursor-pointer">
                 <input
-                  id=\"buyerRfpTimeline\"
-                  type=\"checkbox\"
+                  id="buyerRfpTimeline"
+                  type="checkbox"
                   checked={preferences.buyerRfpTimeline}
                   onChange={(e) => updatePreference('buyerRfpTimeline', e.target.checked)}
-                  className=\"sr-only peer\"
+                  className="sr-only peer"
                 />
-                <div className=\"w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600\"></div>
+                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
               </label>
             </div>
 
-            <div className=\"flex items-center justify-between\">
-              <div className=\"flex-1\">
-                <label htmlFor=\"buyerSupplierResponses\" className=\"text-sm font-medium text-gray-900\">
+            <div className="flex items-center justify-between">
+              <div className="flex-1">
+                <label htmlFor="buyerSupplierResponses" className="text-sm font-medium text-gray-900">
                   Supplier Responses
                 </label>
-                <p className=\"text-sm text-gray-600\">
+                <p className="text-sm text-gray-600">
                   When suppliers submit or update their responses
                 </p>
               </div>
-              <label className=\"relative inline-flex items-center cursor-pointer\">
+              <label className="relative inline-flex items-center cursor-pointer">
                 <input
-                  id=\"buyerSupplierResponses\"
-                  type=\"checkbox\"
+                  id="buyerSupplierResponses"
+                  type="checkbox"
                   checked={preferences.buyerSupplierResponses}
                   onChange={(e) => updatePreference('buyerSupplierResponses', e.target.checked)}
-                  className=\"sr-only peer\"
+                  className="sr-only peer"
                 />
-                <div className=\"w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600\"></div>
+                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
               </label>
             </div>
 
-            <div className=\"flex items-center justify-between\">
-              <div className=\"flex-1\">
-                <label htmlFor=\"buyerSupplierQuestions\" className=\"text-sm font-medium text-gray-900\">
+            <div className="flex items-center justify-between">
+              <div className="flex-1">
+                <label htmlFor="buyerSupplierQuestions" className="text-sm font-medium text-gray-900">
                   Supplier Questions
                 </label>
-                <p className=\"text-sm text-gray-600\">
+                <p className="text-sm text-gray-600">
                   When suppliers submit new questions
                 </p>
               </div>
-              <label className=\"relative inline-flex items-center cursor-pointer\">
+              <label className="relative inline-flex items-center cursor-pointer">
                 <input
-                  id=\"buyerSupplierQuestions\"
-                  type=\"checkbox\"
+                  id="buyerSupplierQuestions"
+                  type="checkbox"
                   checked={preferences.buyerSupplierQuestions}
                   onChange={(e) => updatePreference('buyerSupplierQuestions', e.target.checked)}
-                  className=\"sr-only peer\"
+                  className="sr-only peer"
                 />
-                <div className=\"w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600\"></div>
+                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
               </label>
             </div>
 
-            <div className=\"flex items-center justify-between\">
-              <div className=\"flex-1\">
-                <label htmlFor=\"buyerQABroadcasts\" className=\"text-sm font-medium text-gray-900\">
+            <div className="flex items-center justify-between">
+              <div className="flex-1">
+                <label htmlFor="buyerQABroadcasts" className="text-sm font-medium text-gray-900">
                   Broadcast Announcements
                 </label>
-                <p className=\"text-sm text-gray-600\">
+                <p className="text-sm text-gray-600">
                   When you send broadcast messages to suppliers
                 </p>
               </div>
-              <label className=\"relative inline-flex items-center cursor-pointer\">
+              <label className="relative inline-flex items-center cursor-pointer">
                 <input
-                  id=\"buyerQABroadcasts\"
-                  type=\"checkbox\"
+                  id="buyerQABroadcasts"
+                  type="checkbox"
                   checked={preferences.buyerQABroadcasts}
                   onChange={(e) => updatePreference('buyerQABroadcasts', e.target.checked)}
-                  className=\"sr-only peer\"
+                  className="sr-only peer"
                 />
-                <div className=\"w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600\"></div>
+                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
               </label>
             </div>
 
-            <div className=\"flex items-center justify-between\">
-              <div className=\"flex-1\">
-                <label htmlFor=\"buyerReadinessChanges\" className=\"text-sm font-medium text-gray-900\">
+            <div className="flex items-center justify-between">
+              <div className="flex-1">
+                <label htmlFor="buyerReadinessChanges" className="text-sm font-medium text-gray-900">
                   Readiness & Comparison Updates
                 </label>
-                <p className=\"text-sm text-gray-600\">
+                <p className="text-sm text-gray-600">
                   When readiness scores and comparison reports are ready
                 </p>
               </div>
-              <label className=\"relative inline-flex items-center cursor-pointer\">
+              <label className="relative inline-flex items-center cursor-pointer">
                 <input
-                  id=\"buyerReadinessChanges\"
-                  type=\"checkbox\"
+                  id="buyerReadinessChanges"
+                  type="checkbox"
                   checked={preferences.buyerReadinessChanges}
                   onChange={(e) => updatePreference('buyerReadinessChanges', e.target.checked)}
-                  className=\"sr-only peer\"
+                  className="sr-only peer"
                 />
-                <div className=\"w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600\"></div>
+                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
               </label>
             </div>
           </div>
         </div>
 
         {/* Save Button */}
-        <div className=\"p-6 border-t border-gray-200 bg-gray-50 flex items-center justify-between\">
-          <p className=\"text-sm text-gray-600\">
+        <div className="p-6 border-t border-gray-200 bg-gray-50 flex items-center justify-between">
+          <p className="text-sm text-gray-600">
             Changes will take effect immediately
           </p>
           <button
             onClick={handleSave}
             disabled={saving}
-            className=\"inline-flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg hover:from-indigo-700 hover:to-purple-700 transition disabled:opacity-50 disabled:cursor-not-allowed font-medium\"
+            className="inline-flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg hover:from-indigo-700 hover:to-purple-700 transition disabled:opacity-50 disabled:cursor-not-allowed font-medium"
           >
             {saving ? (
               <>
-                <Loader2 className=\"h-5 w-5 animate-spin\" />
+                <Loader2 className="h-5 w-5 animate-spin" />
                 Saving...
               </>
             ) : (
               <>
-                <Save className=\"h-5 w-5\" />
+                <Save className="h-5 w-5" />
                 Save Preferences
               </>
             )}

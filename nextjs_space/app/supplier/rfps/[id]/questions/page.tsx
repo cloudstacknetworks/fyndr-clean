@@ -135,11 +135,15 @@ export default function SupplierQuestionsPage() {
   };
   
   // Determine window status and styling
-  const windowStatus = rfpTimeline 
-    ? getQuestionWindowStatus(rfpTimeline)
+  const timelineForCheck = rfpTimeline ? {
+    askQuestionsStart: rfpTimeline.askQuestionsStart ? new Date(rfpTimeline.askQuestionsStart) : null,
+    askQuestionsEnd: rfpTimeline.askQuestionsEnd ? new Date(rfpTimeline.askQuestionsEnd) : null,
+  } : null;
+  const windowStatus = timelineForCheck 
+    ? getQuestionWindowStatus(timelineForCheck)
     : 'NOT_OPEN';
-  const windowMessage = rfpTimeline 
-    ? getQuestionWindowMessage(rfpTimeline)
+  const windowMessage = timelineForCheck 
+    ? getQuestionWindowMessage(timelineForCheck)
     : 'Loading timeline information...';
   const windowStyles = getQuestionWindowStyles(windowStatus);
   const isWindowOpen = windowStatus === 'OPEN';

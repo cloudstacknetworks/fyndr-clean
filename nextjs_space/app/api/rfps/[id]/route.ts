@@ -6,6 +6,8 @@ import { validateStageTransition } from "@/lib/stage-transition-rules";
 import { runStageAutomations } from "@/lib/stage-automation";
 import { getSlaForStage } from "@/lib/stage-sla";
 import { validateTimeline } from "@/lib/rfp-timeline";
+import { logActivityWithRequest } from "@/lib/activity-log";
+import { EVENT_TYPES, ACTOR_ROLES } from "@/lib/activity-types";
 
 const prisma = new PrismaClient();
 
@@ -271,6 +273,49 @@ export async function PUT(
       await runStageAutomations({
         rfpId: params.id,
         newStage: stage
+      });
+    }
+
+    // Log activity (fire-and-forget)
+    await logActivityWithRequest(request, {
+      eventType: EVENT_TYPES.RFP_UPDATED,
+      actorRole: ACTOR_ROLES.BUYER,
+      rfpId: updatedRfp.id,
+      userId: session.user.id,
+      summary: `RFP "${updatedRfp.title}" updated`,
+      details: {
+        rfpId: updatedRfp.id,
+        title: updatedRfp.title,
+        updatedFields: Object.keys(updateData),
+        stageChanged,
+      },
+    });
+
+    // Log timeline update if timeline fields changed
+    const timelineFieldsChanged = [
+      'askQuestionsStart', 'askQuestionsEnd', 'submissionStart', 'submissionEnd',
+      'demoWindowStart', 'demoWindowEnd', 'awardDate'
+    ].some(field => field in updateData);
+
+    if (timelineFieldsChanged) {
+      await logActivityWithRequest(request, {
+        eventType: EVENT_TYPES.RFP_TIMELINE_UPDATED,
+        actorRole: ACTOR_ROLES.BUYER,
+        rfpId: updatedRfp.id,
+        userId: session.user.id,
+        summary: "RFP timeline updated",
+        details: {
+          rfpId: updatedRfp.id,
+          timelineFields: {
+            askQuestionsStart: updatedRfp.askQuestionsStart,
+            askQuestionsEnd: updatedRfp.askQuestionsEnd,
+            submissionStart: updatedRfp.submissionStart,
+            submissionEnd: updatedRfp.submissionEnd,
+            demoWindowStart: updatedRfp.demoWindowStart,
+            demoWindowEnd: updatedRfp.demoWindowEnd,
+            awardDate: updatedRfp.awardDate,
+          },
+        },
       });
     }
 

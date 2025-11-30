@@ -196,7 +196,6 @@ export async function sendEmailNotification(params: SendEmailNotificationParams)
       to: params.toEmail,
       subject: params.subject,
       html: params.htmlBody,
-      text: params.textBody || params.htmlBody.replace(/<[^>]*>/g, ''), // Strip HTML for plain text
     });
     return true;
   } catch (error) {

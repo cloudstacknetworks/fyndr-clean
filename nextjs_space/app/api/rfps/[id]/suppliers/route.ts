@@ -5,6 +5,8 @@ import { PrismaClient } from '@prisma/client';
 import crypto from 'crypto';
 import { sendEmail } from '@/lib/email';
 import { generateSupplierInvitationEmailHtml } from '@/lib/email-templates';
+import { logActivityWithRequest } from '@/lib/activity-log';
+import { EVENT_TYPES, ACTOR_ROLES } from '@/lib/activity-types';
 
 const prisma = new PrismaClient();
 
@@ -181,6 +183,23 @@ export async function POST(
       data: {
         invitationStatus: 'SENT',
         invitedAt: new Date(),
+      },
+    });
+
+    // Log activity (fire-and-forget)
+    await logActivityWithRequest(request, {
+      eventType: EVENT_TYPES.SUPPLIER_INVITATION_SENT,
+      actorRole: ACTOR_ROLES.BUYER,
+      rfpId: rfpId,
+      supplierContactId: updatedSupplierContact.id,
+      userId: session.user.id,
+      summary: `Invitation sent to ${email}`,
+      details: {
+        rfpId,
+        supplierContactId: updatedSupplierContact.id,
+        email,
+        name,
+        organization,
       },
     });
 

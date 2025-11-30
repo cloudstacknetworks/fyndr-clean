@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcryptjs';
 import crypto from 'crypto';
+import { logActivityWithRequest } from '@/lib/activity-log';
+import { EVENT_TYPES, ACTOR_ROLES } from '@/lib/activity-types';
 
 const prisma = new PrismaClient();
 
@@ -99,6 +101,22 @@ export async function POST(request: NextRequest) {
         },
       });
     }
+
+    // Log activity (fire-and-forget)
+    await logActivityWithRequest(request, {
+      eventType: EVENT_TYPES.SUPPLIER_PORTAL_LOGIN,
+      actorRole: ACTOR_ROLES.SUPPLIER,
+      rfpId: supplierContact.rfpId,
+      supplierContactId: supplierContact.id,
+      userId: supplierUser.id,
+      summary: `Supplier ${supplierContact.name} logged in`,
+      details: {
+        rfpId: supplierContact.rfpId,
+        supplierContactId: supplierContact.id,
+        email: supplierContact.email,
+        name: supplierContact.name,
+      },
+    });
 
     // Return success with user details
     return NextResponse.json({

@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth-options";
 import { PrismaClient } from "@prisma/client";
+import { logActivityWithRequest } from "@/lib/activity-log";
+import { EVENT_TYPES, ACTOR_ROLES } from "@/lib/activity-types";
 
 const prisma = new PrismaClient();
 
@@ -162,6 +164,22 @@ export async function POST(request: NextRequest) {
             name: true,
           },
         },
+      },
+    });
+
+    // Log activity (fire-and-forget)
+    await logActivityWithRequest(request, {
+      eventType: EVENT_TYPES.RFP_CREATED,
+      actorRole: ACTOR_ROLES.BUYER,
+      rfpId: rfp.id,
+      userId: session.user.id,
+      summary: `RFP "${rfp.title}" created`,
+      details: {
+        rfpId: rfp.id,
+        title: rfp.title,
+        status: rfp.status,
+        companyName: rfp.company.name,
+        supplierName: rfp.supplier.name,
       },
     });
 

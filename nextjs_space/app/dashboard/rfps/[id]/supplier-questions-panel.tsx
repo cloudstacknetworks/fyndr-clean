@@ -148,8 +148,12 @@ export default function SupplierQuestionsPanel({ rfpId, rfpTimeline }: SupplierQ
   });
   
   // Get window status and styling
-  const windowStatus = getQuestionWindowStatus(rfpTimeline);
-  const windowMessage = getQuestionWindowMessage(rfpTimeline);
+  const timelineForCheck = {
+    askQuestionsStart: rfpTimeline.askQuestionsStart ? new Date(rfpTimeline.askQuestionsStart) : null,
+    askQuestionsEnd: rfpTimeline.askQuestionsEnd ? new Date(rfpTimeline.askQuestionsEnd) : null,
+  };
+  const windowStatus = getQuestionWindowStatus(timelineForCheck);
+  const windowMessage = getQuestionWindowMessage(timelineForCheck);
   const windowStyles = getQuestionWindowStyles(windowStatus);
   
   return (

@@ -334,8 +334,8 @@ export default async function RFPDetailPage({
         <SupplierQuestionsPanel 
           rfpId={rfp.id}
           rfpTimeline={{
-            askQuestionsStart: rfp.askQuestionsStart,
-            askQuestionsEnd: rfp.askQuestionsEnd
+            askQuestionsStart: rfp.askQuestionsStart ? rfp.askQuestionsStart.toISOString() : null,
+            askQuestionsEnd: rfp.askQuestionsEnd ? rfp.askQuestionsEnd.toISOString() : null
           }}
         />
       </div>

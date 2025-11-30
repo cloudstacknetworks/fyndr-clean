@@ -4,6 +4,8 @@ import { authOptions } from '@/lib/auth-options';
 import { PrismaClient } from '@prisma/client';
 import { notifyUserForEvent } from '@/lib/notifications';
 import { SUPPLIER_RESPONSE_SUBMITTED } from '@/lib/notification-types';
+import { logActivityWithRequest } from '@/lib/activity-log';
+import { EVENT_TYPES, ACTOR_ROLES } from '@/lib/activity-types';
 
 const prisma = new PrismaClient();
 
@@ -121,6 +123,25 @@ export async function POST(
       console.error('Error sending response submission notification:', notifError);
       // Don't fail the submission if notification fails
     }
+
+    // Log activity (fire-and-forget)
+    await logActivityWithRequest(request, {
+      eventType: EVENT_TYPES.SUPPLIER_RESPONSE_SUBMITTED,
+      actorRole: ACTOR_ROLES.SUPPLIER,
+      rfpId: rfpId,
+      supplierResponseId: submittedResponse.id,
+      supplierContactId: supplierContact.id,
+      userId: session.user.id,
+      summary: `Response submitted by ${supplierContact.name}`,
+      details: {
+        rfpId,
+        supplierResponseId: submittedResponse.id,
+        supplierContactId: supplierContact.id,
+        supplierName: supplierContact.name,
+        submittedAt: submittedResponse.submittedAt,
+        attachmentCount: submittedResponse.attachments.length,
+      },
+    });
 
     return NextResponse.json({ response: submittedResponse });
   } catch (error) {

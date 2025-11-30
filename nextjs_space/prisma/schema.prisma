@@ -19,6 +19,7 @@ model User {
   supplierPortalAccess SupplierContact?
   notifications          Notification[]
   notificationPreference NotificationPreference?
+  activityLogs ActivityLog[]
 }
 
 model Company {
@@ -115,6 +116,7 @@ model RFP {
   evaluationMatrix  EvaluationMatrix?
   supplierQuestions SupplierQuestion[]
   supplierBroadcastMessages SupplierBroadcastMessage[]
+  activityLogs      ActivityLog[]
 }
 
 model Contact {
@@ -192,6 +194,7 @@ model SupplierContact {
   portalUser       User?            @relation(fields: [portalUserId], references: [id], onDelete: SetNull)
   supplierResponse SupplierResponse?
   supplierQuestions SupplierQuestion[]
+  activityLogs     ActivityLog[]
   
   @@index([rfpId])
   @@index([email, rfpId])
@@ -250,6 +253,7 @@ model SupplierResponse {
   rfp                RFP             @relation(fields: [rfpId], references: [id], onDelete: Cascade)
   supplierContact    SupplierContact @relation(fields: [supplierContactId], references: [id], onDelete: Cascade)
   attachments        SupplierResponseAttachment[]
+  activityLogs       ActivityLog[]
 
   @@index([rfpId])
   @@index([supplierContactId])
@@ -368,4 +372,32 @@ model NotificationPreference {
   updatedAt                  DateTime @updatedAt
   
   user                       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// STEP 23: Activity Log & Audit Trail System
+model ActivityLog {
+  id                 String   @id @default(cuid())
+  
+  rfpId              String?
+  supplierResponseId String?
+  supplierContactId  String?
+  userId             String?
+  actorRole          String    // "BUYER" | "SUPPLIER" | "SYSTEM"
+  
+  eventType          String    // event name
+  summary            String    // short human-readable summary
+  details            Json?     // structured metadata
+  ipAddress          String?
+  userAgent          String?
+  
+  createdAt          DateTime  @default(now())
+  
+  rfp                RFP?              @relation(fields: [rfpId], references: [id], onDelete: Cascade)
+  supplierResponse   SupplierResponse? @relation(fields: [supplierResponseId], references: [id], onDelete: Cascade)
+  supplierContact    SupplierContact?  @relation(fields: [supplierContactId], references: [id], onDelete: Cascade)
+  user               User?             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([rfpId, createdAt])
+  @@index([userId, createdAt])
+  @@index([eventType])
 }

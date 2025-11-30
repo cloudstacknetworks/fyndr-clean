@@ -19,7 +19,7 @@ const prisma = new PrismaClient();
  */
 export async function POST(
   request: NextRequest,
-  { params }: { params: { rfpId: string } }
+  { params }: { params: { id: string } }
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -40,7 +40,7 @@ export async function POST(
       );
     }
     
-    const { rfpId } = params;
+    const rfpId = params.id;
     
     // Verify RFP ownership
     const rfp = await prisma.rFP.findUnique({
