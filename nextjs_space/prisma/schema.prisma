@@ -101,11 +101,12 @@ model RFP {
   companyId        String
   supplier         Supplier  @relation(fields: [supplierId], references: [id])
   supplierId       String
-  summaryShares    SummaryShare[]
-  stageHistory     StageHistory[]
-  stageTasks       StageTask[]
-  supplierContacts SupplierContact[]
+  summaryShares     SummaryShare[]
+  stageHistory      StageHistory[]
+  stageTasks        StageTask[]
+  supplierContacts  SupplierContact[]
   supplierResponses SupplierResponse[]
+  evaluationMatrix  EvaluationMatrix?
 }
 
 model Contact {
@@ -223,6 +224,12 @@ model SupplierResponse {
   extractedDemoSummary          Json?
   extractedFilesMetadata        Json?
 
+  // Comparison Fields (STEP 18)
+  comparisonScore           Int?
+  comparisonBreakdown       Json?
+  comparisonMatrixUsed      Boolean?
+  comparisonAIInsights      Json?
+
   rfp                RFP             @relation(fields: [rfpId], references: [id], onDelete: Cascade)
   supplierContact    SupplierContact @relation(fields: [supplierContactId], references: [id], onDelete: Cascade)
   attachments        SupplierResponseAttachment[]
@@ -230,6 +237,19 @@ model SupplierResponse {
   @@index([rfpId])
   @@index([supplierContactId])
   @@unique([rfpId, supplierContactId])
+}
+
+model EvaluationMatrix {
+  id         String   @id @default(uuid())
+  rfpId      String   @unique
+  name       String
+  criteria   Json     // array of objects: { id, label, weight }
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  
+  rfp        RFP      @relation(fields: [rfpId], references: [id], onDelete: Cascade)
+  
+  @@index([rfpId])
 }
 
 model SupplierResponseAttachment {
