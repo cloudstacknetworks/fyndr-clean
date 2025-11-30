@@ -23,6 +23,8 @@ import {
   CheckCircle2,
   AlertTriangle,
   Loader2,
+  FileText,
+  Download,
 } from 'lucide-react';
 
 interface ComparisonData {
@@ -71,12 +73,29 @@ interface AISummary {
   }>;
 }
 
+interface Narrative {
+  overview: string;
+  supplierSummaries: Record<string, string>;
+  strengths: Record<string, string[]>;
+  requirementsComparison: string;
+  pricingComparison: string;
+  risksComparison: string;
+  differentiatorsComparison: string;
+  demoComparison: string;
+  recommendation: string;
+  tieBreaker?: string | null;
+}
+
 export default function ComparisonPage({ params }: { params: { id: string } }) {
   const router = useRouter();
   const [comparisonData, setComparisonData] = useState<ComparisonData | null>(null);
   const [aiSummary, setAiSummary] = useState<AISummary | null>(null);
+  const [narrative, setNarrative] = useState<Narrative | null>(null);
+  const [reportUrl, setReportUrl] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [aiLoading, setAiLoading] = useState(false);
+  const [narrativeLoading, setNarrativeLoading] = useState(false);
+  const [reportLoading, setReportLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({
     pricing: false,
@@ -84,6 +103,16 @@ export default function ComparisonPage({ params }: { params: { id: string } }) {
     technical: false,
     differentiators: false,
     risks: false,
+    overview: true,
+    supplierSummaries: false,
+    strengths: false,
+    requirementsComparison: false,
+    pricingComparison: false,
+    risksComparison: false,
+    differentiatorsComparison: false,
+    demoComparison: false,
+    recommendation: true,
+    tieBreaker: false,
   });
 
   const rfpId = params.id;
@@ -133,6 +162,54 @@ export default function ComparisonPage({ params }: { params: { id: string } }) {
       setError(err.message);
     } finally {
       setAiLoading(false);
+    }
+  };
+
+  // Generate narrative
+  const handleGenerateNarrative = async () => {
+    setNarrativeLoading(true);
+    setError(null);
+
+    try {
+      const response = await fetch(`/api/rfps/${rfpId}/compare/narrative`, {
+        method: 'POST',
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to generate narrative');
+      }
+
+      const data = await response.json();
+      setNarrative(data.narrative);
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setNarrativeLoading(false);
+    }
+  };
+
+  // Generate report
+  const handleGenerateReport = async () => {
+    setReportLoading(true);
+    setError(null);
+
+    try {
+      const response = await fetch(`/api/rfps/${rfpId}/compare/report`, {
+        method: 'POST',
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to generate report');
+      }
+
+      const data = await response.json();
+      setReportUrl(data.reportUrl);
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setReportLoading(false);
     }
   };
 
@@ -188,7 +265,7 @@ export default function ComparisonPage({ params }: { params: { id: string } }) {
               )}
             </div>
 
-            <div className="flex gap-2">
+            <div className="flex gap-2 flex-wrap">
               <Link
                 href={`/dashboard/rfps/${rfpId}/matrix`}
                 className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
@@ -211,18 +288,62 @@ export default function ComparisonPage({ params }: { params: { id: string } }) {
               </button>
 
               {comparisonData && (
-                <button
-                  onClick={handleGenerateAISummary}
-                  disabled={aiLoading}
-                  className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 disabled:opacity-50"
-                >
-                  {aiLoading ? (
-                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                  ) : (
-                    <Sparkles className="h-4 w-4 mr-2" />
+                <>
+                  <button
+                    onClick={handleGenerateAISummary}
+                    disabled={aiLoading}
+                    className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 disabled:opacity-50"
+                  >
+                    {aiLoading ? (
+                      <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    ) : (
+                      <Sparkles className="h-4 w-4 mr-2" />
+                    )}
+                    Generate AI Summary
+                  </button>
+
+                  <button
+                    onClick={handleGenerateNarrative}
+                    disabled={narrativeLoading}
+                    className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 disabled:opacity-50"
+                  >
+                    {narrativeLoading ? (
+                      <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    ) : (
+                      <FileText className="h-4 w-4 mr-2" />
+                    )}
+                    Generate Narrative
+                  </button>
+
+                  {narrative && (
+                    <>
+                      <button
+                        onClick={handleGenerateReport}
+                        disabled={reportLoading}
+                        className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 disabled:opacity-50"
+                      >
+                        {reportLoading ? (
+                          <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                        ) : (
+                          <FileText className="h-4 w-4 mr-2" />
+                        )}
+                        Generate Report
+                      </button>
+
+                      {reportUrl && (
+                        <a
+                          href={reportUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
+                        >
+                          <Download className="h-4 w-4 mr-2" />
+                          Download PDF
+                        </a>
+                      )}
+                    </>
                   )}
-                  Generate AI Summary
-                </button>
+                </>
               )}
             </div>
           </div>
@@ -662,6 +783,279 @@ export default function ComparisonPage({ params }: { params: { id: string } }) {
                         </div>
                       </div>
                     )}
+                </div>
+              </div>
+            )}
+
+            {/* Executive Narrative Section */}
+            {narrative && (
+              <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+                <div className="px-6 py-4 bg-gradient-to-r from-green-600 to-emerald-600">
+                  <div className="flex items-center gap-2">
+                    <FileText className="h-5 w-5 text-white" />
+                    <h2 className="text-lg font-semibold text-white">
+                      Executive Comparison Narrative
+                    </h2>
+                  </div>
+                </div>
+
+                <div className="p-6 space-y-4">
+                  {/* RFP Overview Context */}
+                  <div className="border border-gray-200 rounded-lg">
+                    <button
+                      onClick={() => toggleSection('overview')}
+                      className="w-full px-4 py-3 flex items-center justify-between hover:bg-gray-50 transition-colors"
+                    >
+                      <h3 className="text-sm font-semibold text-gray-900">
+                        1. RFP Overview Context
+                      </h3>
+                      {expandedSections.overview ? (
+                        <ChevronUp className="h-4 w-4 text-gray-500" />
+                      ) : (
+                        <ChevronDown className="h-4 w-4 text-gray-500" />
+                      )}
+                    </button>
+                    {expandedSections.overview && (
+                      <div className="px-4 pb-4">
+                        <p className="text-sm text-gray-700 whitespace-pre-line">
+                          {narrative.overview}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Summary of All Participating Suppliers */}
+                  <div className="border border-gray-200 rounded-lg">
+                    <button
+                      onClick={() => toggleSection('supplierSummaries')}
+                      className="w-full px-4 py-3 flex items-center justify-between hover:bg-gray-50 transition-colors"
+                    >
+                      <h3 className="text-sm font-semibold text-gray-900">
+                        2. Summary of All Participating Suppliers
+                      </h3>
+                      {expandedSections.supplierSummaries ? (
+                        <ChevronUp className="h-4 w-4 text-gray-500" />
+                      ) : (
+                        <ChevronDown className="h-4 w-4 text-gray-500" />
+                      )}
+                    </button>
+                    {expandedSections.supplierSummaries && (
+                      <div className="px-4 pb-4 space-y-3">
+                        {Object.entries(narrative.supplierSummaries).map(([supplier, summary]) => (
+                          <div key={supplier} className="bg-gray-50 p-3 rounded-md">
+                            <div className="font-medium text-gray-900 mb-1">{supplier}</div>
+                            <p className="text-sm text-gray-700">{summary}</p>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Strengths of Each Supplier */}
+                  <div className="border border-gray-200 rounded-lg">
+                    <button
+                      onClick={() => toggleSection('strengths')}
+                      className="w-full px-4 py-3 flex items-center justify-between hover:bg-gray-50 transition-colors"
+                    >
+                      <h3 className="text-sm font-semibold text-gray-900">
+                        3. Strengths of Each Supplier
+                      </h3>
+                      {expandedSections.strengths ? (
+                        <ChevronUp className="h-4 w-4 text-gray-500" />
+                      ) : (
+                        <ChevronDown className="h-4 w-4 text-gray-500" />
+                      )}
+                    </button>
+                    {expandedSections.strengths && (
+                      <div className="px-4 pb-4 space-y-3">
+                        {Object.entries(narrative.strengths).map(([supplier, strengths]) => (
+                          <div key={supplier} className="bg-green-50 p-3 rounded-md border-l-4 border-green-500">
+                            <div className="font-medium text-gray-900 mb-2">{supplier}</div>
+                            <ul className="space-y-1">
+                              {(strengths as string[]).map((strength, idx) => (
+                                <li key={idx} className="text-sm text-gray-700 flex items-start gap-2">
+                                  <CheckCircle2 className="h-4 w-4 text-green-600 mt-0.5 flex-shrink-0" />
+                                  <span>{strength}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Requirements Coverage Comparison */}
+                  <div className="border border-gray-200 rounded-lg">
+                    <button
+                      onClick={() => toggleSection('requirementsComparison')}
+                      className="w-full px-4 py-3 flex items-center justify-between hover:bg-gray-50 transition-colors"
+                    >
+                      <h3 className="text-sm font-semibold text-gray-900">
+                        4. Requirements Coverage Comparison
+                      </h3>
+                      {expandedSections.requirementsComparison ? (
+                        <ChevronUp className="h-4 w-4 text-gray-500" />
+                      ) : (
+                        <ChevronDown className="h-4 w-4 text-gray-500" />
+                      )}
+                    </button>
+                    {expandedSections.requirementsComparison && (
+                      <div className="px-4 pb-4">
+                        <p className="text-sm text-gray-700 whitespace-pre-line">
+                          {narrative.requirementsComparison}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Pricing Competitiveness Comparison */}
+                  <div className="border border-gray-200 rounded-lg">
+                    <button
+                      onClick={() => toggleSection('pricingComparison')}
+                      className="w-full px-4 py-3 flex items-center justify-between hover:bg-gray-50 transition-colors"
+                    >
+                      <h3 className="text-sm font-semibold text-gray-900">
+                        <DollarSign className="inline h-4 w-4 mr-1" />
+                        5. Pricing Competitiveness Comparison
+                      </h3>
+                      {expandedSections.pricingComparison ? (
+                        <ChevronUp className="h-4 w-4 text-gray-500" />
+                      ) : (
+                        <ChevronDown className="h-4 w-4 text-gray-500" />
+                      )}
+                    </button>
+                    {expandedSections.pricingComparison && (
+                      <div className="px-4 pb-4">
+                        <p className="text-sm text-gray-700 whitespace-pre-line">
+                          {narrative.pricingComparison}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Risks & Assumptions Comparison */}
+                  <div className="border border-gray-200 rounded-lg">
+                    <button
+                      onClick={() => toggleSection('risksComparison')}
+                      className="w-full px-4 py-3 flex items-center justify-between hover:bg-gray-50 transition-colors"
+                    >
+                      <h3 className="text-sm font-semibold text-gray-900">
+                        <AlertTriangle className="inline h-4 w-4 mr-1" />
+                        6. Risks & Assumptions Comparison
+                      </h3>
+                      {expandedSections.risksComparison ? (
+                        <ChevronUp className="h-4 w-4 text-gray-500" />
+                      ) : (
+                        <ChevronDown className="h-4 w-4 text-gray-500" />
+                      )}
+                    </button>
+                    {expandedSections.risksComparison && (
+                      <div className="px-4 pb-4">
+                        <p className="text-sm text-gray-700 whitespace-pre-line">
+                          {narrative.risksComparison}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Differentiators Comparison */}
+                  <div className="border border-gray-200 rounded-lg">
+                    <button
+                      onClick={() => toggleSection('differentiatorsComparison')}
+                      className="w-full px-4 py-3 flex items-center justify-between hover:bg-gray-50 transition-colors"
+                    >
+                      <h3 className="text-sm font-semibold text-gray-900">
+                        7. Differentiators Comparison
+                      </h3>
+                      {expandedSections.differentiatorsComparison ? (
+                        <ChevronUp className="h-4 w-4 text-gray-500" />
+                      ) : (
+                        <ChevronDown className="h-4 w-4 text-gray-500" />
+                      )}
+                    </button>
+                    {expandedSections.differentiatorsComparison && (
+                      <div className="px-4 pb-4">
+                        <p className="text-sm text-gray-700 whitespace-pre-line">
+                          {narrative.differentiatorsComparison}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Demo & Presentation Analysis Comparison */}
+                  <div className="border border-gray-200 rounded-lg">
+                    <button
+                      onClick={() => toggleSection('demoComparison')}
+                      className="w-full px-4 py-3 flex items-center justify-between hover:bg-gray-50 transition-colors"
+                    >
+                      <h3 className="text-sm font-semibold text-gray-900">
+                        8. Demo & Presentation Analysis Comparison
+                      </h3>
+                      {expandedSections.demoComparison ? (
+                        <ChevronUp className="h-4 w-4 text-gray-500" />
+                      ) : (
+                        <ChevronDown className="h-4 w-4 text-gray-500" />
+                      )}
+                    </button>
+                    {expandedSections.demoComparison && (
+                      <div className="px-4 pb-4">
+                        <p className="text-sm text-gray-700 whitespace-pre-line">
+                          {narrative.demoComparison}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Final Recommendation with Rationale */}
+                  <div className="border-2 border-amber-300 rounded-lg bg-amber-50">
+                    <button
+                      onClick={() => toggleSection('recommendation')}
+                      className="w-full px-4 py-3 flex items-center justify-between hover:bg-amber-100 transition-colors"
+                    >
+                      <h3 className="text-sm font-semibold text-amber-900">
+                        📋 9. Final Recommendation with Rationale
+                      </h3>
+                      {expandedSections.recommendation ? (
+                        <ChevronUp className="h-4 w-4 text-amber-700" />
+                      ) : (
+                        <ChevronDown className="h-4 w-4 text-amber-700" />
+                      )}
+                    </button>
+                    {expandedSections.recommendation && (
+                      <div className="px-4 pb-4">
+                        <p className="text-sm text-amber-900 whitespace-pre-line font-medium">
+                          {narrative.recommendation}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Optional Tie-break Analysis */}
+                  {narrative.tieBreaker && (
+                    <div className="border border-orange-300 rounded-lg bg-orange-50">
+                      <button
+                        onClick={() => toggleSection('tieBreaker')}
+                        className="w-full px-4 py-3 flex items-center justify-between hover:bg-orange-100 transition-colors"
+                      >
+                        <h3 className="text-sm font-semibold text-orange-900">
+                          ⚖️ 10. Tie-break Analysis
+                        </h3>
+                        {expandedSections.tieBreaker ? (
+                          <ChevronUp className="h-4 w-4 text-orange-700" />
+                        ) : (
+                          <ChevronDown className="h-4 w-4 text-orange-700" />
+                        )}
+                      </button>
+                      {expandedSections.tieBreaker && (
+                        <div className="px-4 pb-4">
+                          <p className="text-sm text-orange-900 whitespace-pre-line">
+                            {narrative.tieBreaker}
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </div>
               </div>
             )}

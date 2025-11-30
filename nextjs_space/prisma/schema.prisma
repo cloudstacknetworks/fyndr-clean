@@ -95,6 +95,10 @@ model RFP {
   awardDate           DateTime?
   notifications       Json?
   
+  // Supplier Comparison AI Narrative & Report (STEP 19)
+  comparisonNarrative   Json?
+  comparisonReportUrl   String?
+  
   user             User      @relation(fields: [userId], references: [id])
   userId           String
   company          Company   @relation(fields: [companyId], references: [id])
