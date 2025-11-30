@@ -95,6 +95,7 @@ export default function DashboardLayout({ session, children }: DashboardLayoutPr
   };
 
   const sidebarNavigation = [
+    { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
     { name: 'RFPs', href: '/dashboard/rfps', icon: FileText },
     { name: 'Companies', href: '/dashboard/companies', icon: Building2 },
     { name: 'Suppliers', href: '/dashboard/suppliers', icon: Users },
