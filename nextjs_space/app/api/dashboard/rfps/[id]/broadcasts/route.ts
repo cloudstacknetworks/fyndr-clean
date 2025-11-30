@@ -10,6 +10,8 @@ import { authOptions } from '@/lib/auth-options';
 import { PrismaClient } from '@prisma/client';
 import { notifyUserForEvent } from '@/lib/notifications';
 import { SUPPLIER_BROADCAST_CREATED } from '@/lib/notification-types';
+import { logActivityWithRequest } from '@/lib/activity-log';
+import { EVENT_TYPES, ACTOR_ROLES } from '@/lib/activity-types';
 
 const prisma = new PrismaClient();
 
@@ -84,17 +86,17 @@ export async function POST(
     });
     
     // STEP 22: Send notification to all suppliers about broadcast
-    try {
-      const allSupplierContacts = await prisma.supplierContact.findMany({
-        where: {
-          rfpId,
-          portalUserId: { not: null }
-        },
-        include: {
-          portalUser: true
-        }
-      });
+    const allSupplierContacts = await prisma.supplierContact.findMany({
+      where: {
+        rfpId,
+        portalUserId: { not: null }
+      },
+      include: {
+        portalUser: true
+      }
+    });
 
+    try {
       for (const contact of allSupplierContacts) {
         if (contact.portalUser) {
           await notifyUserForEvent(SUPPLIER_BROADCAST_CREATED, contact.portalUser, {
@@ -108,6 +110,21 @@ export async function POST(
       console.error('Error sending broadcast notifications:', notifError);
       // Don't fail the broadcast if notification fails
     }
+
+    // STEP 24: Activity logging
+    await logActivityWithRequest(request, {
+      eventType: EVENT_TYPES.SUPPLIER_BROADCAST_CREATED,
+      actorRole: ACTOR_ROLES.BUYER,
+      rfpId: rfp.id,
+      userId: session.user.id,
+      summary: 'Broadcast message sent to all suppliers',
+      details: {
+        rfpId: rfp.id,
+        broadcastId: broadcast.id,
+        messageLength: message.trim().length,
+        recipientCount: allSupplierContacts.length,
+      },
+    });
     
     return NextResponse.json(
       {

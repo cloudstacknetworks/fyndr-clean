@@ -10,6 +10,8 @@ import { PrismaClient } from '@prisma/client';
 import { classifySupplierReadiness, type ReadinessIndicator } from '@/lib/readiness-engine';
 import { notifyUserForEvent } from '@/lib/notifications';
 import { READINESS_INDICATOR_UPDATED } from '@/lib/notification-types';
+import { logActivityWithRequest } from '@/lib/activity-log';
+import { EVENT_TYPES, ACTOR_ROLES } from '@/lib/activity-types';
 
 const prisma = new PrismaClient();
 
@@ -137,6 +139,24 @@ export async function POST(
       console.error('Error sending readiness update notification:', notifError);
       // Don't fail the readiness calculation if notification fails
     }
+
+    // STEP 24: Activity logging
+    await logActivityWithRequest(req, {
+      eventType: EVENT_TYPES.READINESS_RECALCULATED,
+      actorRole: ACTOR_ROLES.SYSTEM,
+      rfpId: rfp.id,
+      userId: session.user.id,
+      summary: 'Readiness indicators recalculated',
+      details: {
+        rfpId: rfp.id,
+        supplierCount: results.length,
+        readinessScores: {
+          ready: results.filter((r) => r.readinessIndicator === 'READY').length,
+          conditional: results.filter((r) => r.readinessIndicator === 'CONDITIONAL').length,
+          notReady: results.filter((r) => r.readinessIndicator === 'NOT_READY').length,
+        },
+      },
+    });
 
     return NextResponse.json({
       success: true,

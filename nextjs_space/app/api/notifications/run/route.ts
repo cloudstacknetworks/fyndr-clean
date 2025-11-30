@@ -10,6 +10,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth-options';
 import { runTimelineReminders } from '@/lib/notifications';
+import { logActivityWithRequest } from '@/lib/activity-log';
+import { EVENT_TYPES, ACTOR_ROLES } from '@/lib/activity-types';
 
 export async function POST(request: NextRequest) {
   try {
@@ -22,6 +24,19 @@ export async function POST(request: NextRequest) {
 
     // Run the timeline reminders
     const result = await runTimelineReminders();
+
+    // STEP 24: Activity logging
+    await logActivityWithRequest(request, {
+      eventType: EVENT_TYPES.NOTIFICATION_SENT,
+      actorRole: ACTOR_ROLES.SYSTEM,
+      userId: session.user.id,
+      summary: 'Timeline reminders sent',
+      details: {
+        processedRfps: result.processedRfps,
+        notificationsCreated: result.notificationsCreated,
+        timestamp: new Date().toISOString(),
+      },
+    });
 
     return NextResponse.json({
       success: true,

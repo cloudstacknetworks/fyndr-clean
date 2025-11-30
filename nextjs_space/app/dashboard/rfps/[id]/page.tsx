@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { PrismaClient } from "@prisma/client";
-import { ArrowLeft, Calendar, User, Building2, Users, DollarSign, Flag, FileText, Edit, Share2, Mail, Zap } from "lucide-react";
+import { ArrowLeft, Calendar, User, Building2, Users, DollarSign, Flag, FileText, Edit, Share2, Mail, Zap, Activity } from "lucide-react";
 import { notFound } from "next/navigation";
 import AISummary from "./ai-summary";
 import StageTasks from "./stage-tasks";
@@ -180,13 +180,22 @@ export default async function RFPDetailPage({
           <ArrowLeft className="h-5 w-5" />
           Back to RFPs
         </Link>
-        <Link
-          href={`/dashboard/rfps/${rfp.id}/edit`}
-          className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-4 py-2 rounded-lg font-semibold transition-all shadow-md hover:shadow-lg"
-        >
-          <Edit className="h-5 w-5" />
-          Edit RFP
-        </Link>
+        <div className="flex gap-3">
+          <Link
+            href={`/dashboard/rfps/${rfp.id}/activity`}
+            className="inline-flex items-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg font-semibold transition-all"
+          >
+            <Activity className="h-5 w-5" />
+            Activity
+          </Link>
+          <Link
+            href={`/dashboard/rfps/${rfp.id}/edit`}
+            className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-4 py-2 rounded-lg font-semibold transition-all shadow-md hover:shadow-lg"
+          >
+            <Edit className="h-5 w-5" />
+            Edit RFP
+          </Link>
+        </div>
       </div>
 
       <div className="bg-white rounded-xl shadow-lg p-8">

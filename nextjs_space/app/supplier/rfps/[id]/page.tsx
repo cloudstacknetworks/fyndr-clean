@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth-options';
 import { PrismaClient } from '@prisma/client';
-import { Calendar, Building2, DollarSign, AlertCircle, Clock, MessageSquare } from 'lucide-react';
+import { Calendar, Building2, DollarSign, AlertCircle, Clock, MessageSquare, Activity } from 'lucide-react';
 import { STAGE_LABELS } from '@/lib/stages';
 import { formatTimelineDate, getTimelineMilestones, getStatusColor } from '@/lib/rfp-timeline';
 import SupplierResponseForm from './supplier-response-form';
@@ -104,6 +104,13 @@ export default async function SupplierRFPPage({
             </p>
           </div>
           <div className="flex items-center gap-3">
+            <Link
+              href={`/supplier/rfps/${rfpId}/activity`}
+              className="inline-flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 font-semibold rounded-lg hover:bg-gray-200 transition-colors"
+            >
+              <Activity className="h-5 w-5" />
+              Activity
+            </Link>
             <Link
               href={`/supplier/rfps/${rfpId}/questions`}
               className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 transition-colors"

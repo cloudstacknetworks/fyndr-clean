@@ -11,6 +11,8 @@ import { authOptions } from '@/lib/auth-options';
 import { PrismaClient } from '@prisma/client';
 import { notifyUserForEvent } from '@/lib/notifications';
 import { SUPPLIER_QUESTION_ANSWERED, SUPPLIER_BROADCAST_CREATED } from '@/lib/notification-types';
+import { logActivityWithRequest } from '@/lib/activity-log';
+import { EVENT_TYPES, ACTOR_ROLES } from '@/lib/activity-types';
 
 const prisma = new PrismaClient();
 
@@ -246,6 +248,21 @@ export async function POST(
       console.error('Error sending question answer notifications:', notifError);
       // Don't fail the answer if notification fails
     }
+
+    // STEP 24: Activity logging
+    await logActivityWithRequest(request, {
+      eventType: EVENT_TYPES.SUPPLIER_QUESTION_ANSWERED,
+      actorRole: ACTOR_ROLES.BUYER,
+      rfpId: rfp.id,
+      userId: session.user.id,
+      summary: 'Question answered by buyer',
+      details: {
+        rfpId: rfp.id,
+        questionId: updatedQuestion.id,
+        broadcast: broadcast === true,
+        answerText: answer.trim().substring(0, 200), // First 200 chars
+      },
+    });
     
     return NextResponse.json({
       success: true,
