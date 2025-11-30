@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { FileText, Eye, Loader2, AlertCircle, CheckCircle, FileCheck } from 'lucide-react';
+import { getReadinessStyles } from '@/lib/readiness-engine';
 
 interface SupplierResponsesPanelProps {
   rfpId: string;
@@ -16,6 +17,7 @@ interface SupplierResponseData {
   responseStatus: 'Not Started' | 'Draft' | 'Submitted';
   submittedAt: string | null;
   attachmentsCount: number;
+  readinessIndicator: string | null;
 }
 
 export default function SupplierResponsesPanel({ rfpId }: SupplierResponsesPanelProps) {
@@ -133,6 +135,9 @@ export default function SupplierResponsesPanel({ rfpId }: SupplierResponsesPanel
                   Files
                 </th>
                 <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Readiness
+                </th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Action
                 </th>
               </tr>
@@ -173,6 +178,22 @@ export default function SupplierResponsesPanel({ rfpId }: SupplierResponsesPanel
                         '–'
                       )}
                     </div>
+                  </td>
+                  <td className="px-4 py-4 whitespace-nowrap">
+                    {response.readinessIndicator ? (
+                      (() => {
+                        const styles = getReadinessStyles(response.readinessIndicator as any);
+                        return (
+                          <span
+                            className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold ${styles.bgColor} ${styles.textColor}`}
+                          >
+                            {styles.label}
+                          </span>
+                        );
+                      })()
+                    ) : (
+                      <span className="text-sm text-gray-400">–</span>
+                    )}
                   </td>
                   <td className="px-4 py-4 whitespace-nowrap">
                     <Link

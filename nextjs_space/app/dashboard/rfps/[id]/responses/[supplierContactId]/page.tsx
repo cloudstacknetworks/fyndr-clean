@@ -18,6 +18,7 @@ import {
   Download,
 } from 'lucide-react';
 import AIInsightsPanel from './ai-insights-panel';
+import ReadinessPanel from './readiness-panel';
 
 const prisma = new PrismaClient();
 
@@ -345,6 +346,21 @@ export default async function BuyerResponseDetailPage({
             extractedDifferentiators: response.extractedDifferentiators as any,
             extractedDemoSummary: response.extractedDemoSummary as any,
             extractedFilesMetadata: response.extractedFilesMetadata as any,
+          }}
+        />
+      )}
+
+      {/* Supplier Readiness Panel (STEP 20) */}
+      {response && response.status === 'SUBMITTED' && (
+        <ReadinessPanel
+          responseId={response.id}
+          readinessData={{
+            complianceFindings: response.complianceFindings as any,
+            diversityMetadata: response.diversityMetadata as any,
+            mandatoryRequirementsStatus: response.mandatoryRequirementsStatus as any,
+            riskFlags: response.riskFlags as any,
+            readinessIndicator: response.readinessIndicator as any,
+            readinessRationale: response.readinessRationale as any,
           }}
         />
       )}

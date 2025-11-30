@@ -26,6 +26,7 @@ import {
   FileText,
   Download,
 } from 'lucide-react';
+import { getReadinessStyles } from '@/lib/readiness-engine';
 
 interface ComparisonData {
   success: boolean;
@@ -36,6 +37,7 @@ interface ComparisonData {
     supplierEmail: string;
     organization?: string;
     totalScore: number;
+    readinessIndicator?: string | null;
     metrics: {
       requirementsCoverage: number;
       pricingCompetitiveness: number;
@@ -426,6 +428,18 @@ export default function ComparisonPage({ params }: { params: { id: string } }) {
                                   {comparison.organization}
                                 </div>
                               )}
+                              {comparison.readinessIndicator && (() => {
+                                const styles = getReadinessStyles(comparison.readinessIndicator as any);
+                                return (
+                                  <div className="mt-1">
+                                    <span
+                                      className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold ${styles.bgColor} ${styles.textColor}`}
+                                    >
+                                      {styles.label}
+                                    </span>
+                                  </div>
+                                );
+                              })()}
                             </div>
                           </div>
                         </th>

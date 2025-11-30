@@ -109,8 +109,14 @@ export async function POST(
 
     await Promise.all(updatePromises);
 
-    // Step 5: Sort by score descending and return
-    const sortedComparisons = comparisons.sort((a, b) => b.totalScore - a.totalScore);
+    // Step 5: Sort by score descending and include readiness indicators
+    const sortedComparisons = comparisons.map((comparison, idx) => {
+      const response = supplierResponses[idx];
+      return {
+        ...comparison,
+        readinessIndicator: response.readinessIndicator,
+      };
+    }).sort((a, b) => b.totalScore - a.totalScore);
 
     return NextResponse.json({
       success: true,

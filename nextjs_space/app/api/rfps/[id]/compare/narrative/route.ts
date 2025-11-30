@@ -99,6 +99,10 @@ export async function POST(
       organization: sr.supplierContact.organization,
       score: sr.comparisonScore,
       breakdown: sr.comparisonBreakdown,
+      readiness: {
+        indicator: sr.readinessIndicator,
+        rationale: sr.readinessRationale,
+      },
       extracted: {
         requirements: sr.extractedRequirementsCoverage,
         pricing: sr.extractedPricing,
@@ -159,6 +163,8 @@ IMPORTANT:
 - Use supplier names from supplierContact.name or organization
 - Base analysis on actual comparison scores and extracted data
 - Be specific with numbers and percentages
+- Include readiness indicators (READY/CONDITIONAL/NOT_READY) in your analysis and recommendation
+- Readiness indicators provide automated compliance, risk, and requirements assessment
 - Recommendation MUST explicitly state "Recommend [Supplier Name] because..."
 - If only one supplier, adjust language to evaluation rather than comparison
 - Tie-breaker section ONLY if scores differ by less than 5 points`;

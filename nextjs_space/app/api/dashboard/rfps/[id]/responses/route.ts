@@ -73,6 +73,7 @@ export async function GET(
         responseStatus,
         submittedAt: response?.submittedAt?.toISOString() || null,
         attachmentsCount: response?.attachments?.length || 0,
+        readinessIndicator: response?.readinessIndicator || null,
       };
     });
 

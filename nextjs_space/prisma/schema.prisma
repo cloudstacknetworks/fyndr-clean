@@ -234,6 +234,14 @@ model SupplierResponse {
   comparisonMatrixUsed      Boolean?
   comparisonAIInsights      Json?
 
+  // Supplier Readiness Fields (STEP 20)
+  complianceFindings           Json?
+  diversityMetadata            Json?
+  mandatoryRequirementsStatus  Json?
+  riskFlags                    Json?
+  readinessIndicator           String?
+  readinessRationale           String?
+
   rfp                RFP             @relation(fields: [rfpId], references: [id], onDelete: Cascade)
   supplierContact    SupplierContact @relation(fields: [supplierContactId], references: [id], onDelete: Cascade)
   attachments        SupplierResponseAttachment[]
