@@ -11,6 +11,7 @@ import { RFPTimelineDetails } from "./rfp-timeline-details";
 import SupplierContactsPanel from "./supplier-contacts-panel";
 import SupplierResponsesPanel from "./supplier-responses-panel";
 import SupplierQuestionsPanel from "./supplier-questions-panel";
+import ExportBundleButton from "./export-bundle-button";
 import { STAGE_LABELS, STAGE_COLORS } from "@/lib/stages";
 import { isAutomationTask } from "@/lib/stage-automation";
 import { getSlaStatus } from "@/lib/stage-sla";
@@ -188,6 +189,7 @@ export default async function RFPDetailPage({
             <Activity className="h-5 w-5" />
             Activity
           </Link>
+          <ExportBundleButton rfpId={rfp.id} />
           <Link
             href={`/dashboard/rfps/${rfp.id}/edit`}
             className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-4 py-2 rounded-lg font-semibold transition-all shadow-md hover:shadow-lg"
