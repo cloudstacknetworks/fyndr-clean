@@ -17,6 +17,7 @@ import {
   AlertCircle
 } from 'lucide-react';
 import { getQuestionWindowStatus, getQuestionWindowMessage, getQuestionWindowStyles } from '@/lib/qa-timeline';
+import ExportButtonsPanel from './export-buttons-panel';
 
 interface SupplierContact {
   id: string;
@@ -166,6 +167,12 @@ export default function SupplierQuestionsPanel({ rfpId, rfpTimeline }: SupplierQ
             Supplier Questions & Answers
           </h2>
         </div>
+        <ExportButtonsPanel 
+          rfpId={rfpId} 
+          exportType="qa" 
+          label="Export Q&A" 
+          supportsPdf={false}
+        />
       </div>
       
       {/* Window Status Indicator */}

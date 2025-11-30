@@ -7,9 +7,11 @@ import {
   type TimelineMilestone 
 } from "@/lib/rfp-timeline";
 import { RFP } from "@prisma/client";
+import ExportButtonsPanel from './export-buttons-panel';
 
 type TimelineBarProps = {
   rfp: Pick<RFP, 
+    'id' | 
     'askQuestionsStart' | 'askQuestionsEnd' | 
     'submissionStart' | 'submissionEnd' | 
     'demoWindowStart' | 'demoWindowEnd' | 
@@ -38,7 +40,15 @@ export function RFPTimelineBar({ rfp }: TimelineBarProps) {
 
   return (
     <div className="bg-white border border-gray-200 rounded-lg p-6">
-      <h3 className="text-lg font-semibold text-gray-900 mb-4">RFP Timeline</h3>
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-lg font-semibold text-gray-900">RFP Timeline</h3>
+        <ExportButtonsPanel 
+          rfpId={rfp.id} 
+          exportType="timeline" 
+          label="Export Timeline" 
+          supportsPdf={true}
+        />
+      </div>
       
       {/* Timeline bar visualization */}
       <div className="relative">

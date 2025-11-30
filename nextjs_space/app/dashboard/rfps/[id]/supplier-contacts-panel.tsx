@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { UserPlus, Mail, Trash2, Send, Loader2, AlertCircle, CheckCircle2, Building2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import ExportButtonsPanel from './export-buttons-panel';
 
 interface SupplierContact {
   id: string;
@@ -150,13 +151,21 @@ export default function SupplierContactsPanel({ rfpId }: { rfpId: string }) {
           <UserPlus className="w-6 h-6 text-indigo-600" />
           <h2 className="text-2xl font-bold text-gray-900">Supplier Contacts</h2>
         </div>
-        <button
-          onClick={() => setShowInviteModal(true)}
-          className="flex items-center gap-2 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white px-4 py-2 rounded-lg font-semibold transition-all shadow-md hover:shadow-lg"
-        >
-          <Mail className="w-4 h-4" />
-          Invite Supplier
-        </button>
+        <div className="flex gap-3">
+          <ExportButtonsPanel 
+            rfpId={rfpId} 
+            exportType="suppliers" 
+            label="Export Suppliers" 
+            supportsPdf={false}
+          />
+          <button
+            onClick={() => setShowInviteModal(true)}
+            className="flex items-center gap-2 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white px-4 py-2 rounded-lg font-semibold transition-all shadow-md hover:shadow-lg"
+          >
+            <Mail className="w-4 h-4" />
+            Invite Supplier
+          </button>
+        </div>
       </div>
 
       {error && (

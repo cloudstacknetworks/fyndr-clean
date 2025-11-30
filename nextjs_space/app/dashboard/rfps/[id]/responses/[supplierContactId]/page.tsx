@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import AIInsightsPanel from './ai-insights-panel';
 import ReadinessPanel from './readiness-panel';
+import ExportResponseButton from '../../export-response-button';
 
 const prisma = new PrismaClient();
 
@@ -142,21 +143,27 @@ export default async function BuyerResponseDetailPage({
               Supplier Response: {supplierContact.name}
             </h2>
           </div>
-          {response && (
-            <div>
-              {response.status === 'SUBMITTED' ? (
-                <span className="inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold bg-green-100 text-green-700">
-                  <CheckCircle className="w-4 h-4 mr-2" />
-                  Submitted on {new Date(response.submittedAt!).toLocaleDateString()}
-                </span>
-              ) : (
-                <span className="inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold bg-amber-100 text-amber-700">
-                  <FileText className="w-4 h-4 mr-2" />
-                  Draft – not submitted
-                </span>
-              )}
-            </div>
-          )}
+          <div className="flex items-center gap-3">
+            <ExportResponseButton 
+              rfpId={rfp.id} 
+              supplierContactId={supplierContact.id}
+            />
+            {response && (
+              <div>
+                {response.status === 'SUBMITTED' ? (
+                  <span className="inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold bg-green-100 text-green-700">
+                    <CheckCircle className="w-4 h-4 mr-2" />
+                    Submitted on {new Date(response.submittedAt!).toLocaleDateString()}
+                  </span>
+                ) : (
+                  <span className="inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold bg-amber-100 text-amber-700">
+                    <FileText className="w-4 h-4 mr-2" />
+                    Draft – not submitted
+                  </span>
+                )}
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Supplier Info */}

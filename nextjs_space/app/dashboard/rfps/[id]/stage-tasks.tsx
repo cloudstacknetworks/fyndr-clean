@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { CheckCircle2, Circle, Loader2, RefreshCw } from 'lucide-react';
 import { STAGE_LABELS } from '@/lib/stages';
+import ExportButtonsPanel from './export-buttons-panel';
 
 interface StageTask {
   id: string;
@@ -106,12 +107,20 @@ export default function StageTasks({ rfpId, stage, initialTasks }: StageTasksPro
             Current Stage: <span className="font-medium">{stageLabel}</span>
           </p>
         </div>
-        {tasks.length > 0 && (
-          <div className="text-sm text-gray-600">
-            <span className="font-semibold text-indigo-600">{completedCount}</span> of{' '}
-            <span className="font-semibold">{totalCount}</span> completed
-          </div>
-        )}
+        <div className="flex items-center gap-3">
+          {tasks.length > 0 && (
+            <div className="text-sm text-gray-600">
+              <span className="font-semibold text-indigo-600">{completedCount}</span> of{' '}
+              <span className="font-semibold">{totalCount}</span> completed
+            </div>
+          )}
+          <ExportButtonsPanel 
+            rfpId={rfpId} 
+            exportType="tasks" 
+            label="Export Tasks" 
+            supportsPdf={false}
+          />
+        </div>
       </div>
 
       {error && (

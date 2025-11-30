@@ -4,6 +4,7 @@ import { Plus } from "lucide-react";
 import { getSlaStatus } from "@/lib/stage-sla";
 import { STAGE_LABELS } from "@/lib/stages";
 import { getOpportunityRating } from "@/lib/opportunity-scoring";
+import ExportRFPsButton from "./export-rfps-button";
 
 const prisma = new PrismaClient();
 
@@ -64,6 +65,7 @@ export default async function RFPsPage() {
             <p className="text-gray-600">Manage your Requests for Proposals (RFPs) here.</p>
           </div>
           <div className="flex gap-3">
+            <ExportRFPsButton />
             <Link
               href="/dashboard/rfps/board"
               className="flex items-center gap-2 px-6 py-3 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 font-semibold transition-all shadow-sm hover:shadow-md"
