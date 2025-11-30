@@ -84,6 +84,16 @@ export async function POST(
       );
     }
 
+    // Load broadcast messages for Q&A context (STEP 21)
+    const broadcasts = await prisma.supplierBroadcastMessage.findMany({
+      where: { rfpId },
+      orderBy: { createdAt: 'desc' },
+      select: {
+        message: true,
+        createdAt: true,
+      },
+    });
+
     // Check for OpenAI API key
     if (!process.env.OPENAI_API_KEY) {
       return NextResponse.json(
@@ -138,7 +148,10 @@ export async function POST(
 **Supplier Comparison Data:**
 ${JSON.stringify(supplierSummaries, null, 2)}
 
-Generate a structured narrative with the following 10 sections. Return ONLY valid JSON in this exact format:
+**Buyer Q&A Context (STEP 21):**
+${broadcasts.length > 0 ? 'The following clarifications were broadcast to all suppliers during the RFP process:\n' + broadcasts.map((b, i) => `${i + 1}. [${new Date(b.createdAt).toLocaleDateString()}] ${b.message}`).join('\n') : 'No Q&A clarifications were broadcast during this RFP.'}
+
+Generate a structured narrative with the following 11 sections. Return ONLY valid JSON in this exact format:
 
 {
   "overview": "Brief RFP overview including title, opportunity score, timeline, and number of participating suppliers.",
@@ -155,6 +168,7 @@ Generate a structured narrative with the following 10 sections. Return ONLY vali
   "risksComparison": "Risk profiles comparison including severity levels and mitigation recommendations.",
   "differentiatorsComparison": "Unique value propositions and competitive advantages per supplier.",
   "demoComparison": "Demo quality assessment including capabilities demonstrated and gaps observed.",
+  "qaContext": ${broadcasts.length > 0 ? '"Summary of key clarifications and announcements broadcast to all suppliers during the RFP process. This provides important context but does not directly impact scoring."' : 'null'},
   "recommendation": "EXPLICIT recommendation: 'Recommend Supplier X because...' with detailed rationale covering all dimensions.",
   "tieBreaker": ${supplierResponses.length > 1 && Math.abs(supplierResponses[0].comparisonScore! - supplierResponses[1].comparisonScore!) < 5 ? '"Detailed tie-break analysis since scores are within 5 points of each other."' : 'null'}
 }

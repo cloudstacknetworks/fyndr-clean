@@ -1,11 +1,13 @@
 import { notFound, redirect } from 'next/navigation';
+import Link from 'next/link';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth-options';
 import { PrismaClient } from '@prisma/client';
-import { Calendar, Building2, DollarSign, AlertCircle, Clock } from 'lucide-react';
+import { Calendar, Building2, DollarSign, AlertCircle, Clock, MessageSquare } from 'lucide-react';
 import { STAGE_LABELS } from '@/lib/stages';
 import { formatTimelineDate, getTimelineMilestones, getStatusColor } from '@/lib/rfp-timeline';
 import SupplierResponseForm from './supplier-response-form';
+import BroadcastsPanel from './broadcasts-panel';
 
 const prisma = new PrismaClient();
 
@@ -101,8 +103,17 @@ export default async function SupplierRFPPage({
               Invited by <span className="font-semibold">{rfp.company.name}</span>
             </p>
           </div>
-          <div className="px-4 py-2 bg-purple-100 text-purple-700 text-sm font-semibold rounded-full">
-            Read-Only Access
+          <div className="flex items-center gap-3">
+            <Link
+              href={`/supplier/rfps/${rfpId}/questions`}
+              className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 transition-colors"
+            >
+              <MessageSquare className="h-5 w-5" />
+              Questions & Answers
+            </Link>
+            <div className="px-4 py-2 bg-purple-100 text-purple-700 text-sm font-semibold rounded-full">
+              Read-Only Access
+            </div>
           </div>
         </div>
       </div>
@@ -252,6 +263,9 @@ export default async function SupplierRFPPage({
         initialResponse={response}
         initialAttachments={attachments}
       />
+
+      {/* Buyer Messages & Announcements */}
+      <BroadcastsPanel rfpId={rfpId} />
 
       {/* Contact Information */}
       <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg border border-gray-200 p-6">

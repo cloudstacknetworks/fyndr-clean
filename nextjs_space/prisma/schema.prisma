@@ -111,6 +111,8 @@ model RFP {
   supplierContacts  SupplierContact[]
   supplierResponses SupplierResponse[]
   evaluationMatrix  EvaluationMatrix?
+  supplierQuestions SupplierQuestion[]
+  supplierBroadcastMessages SupplierBroadcastMessage[]
 }
 
 model Contact {
@@ -187,6 +189,7 @@ model SupplierContact {
   rfp              RFP              @relation(fields: [rfpId], references: [id], onDelete: Cascade)
   portalUser       User?            @relation(fields: [portalUserId], references: [id], onDelete: SetNull)
   supplierResponse SupplierResponse?
+  supplierQuestions SupplierQuestion[]
   
   @@index([rfpId])
   @@index([email, rfpId])
@@ -278,4 +281,40 @@ model SupplierResponseAttachment {
   supplierResponse   SupplierResponse @relation(fields: [supplierResponseId], references: [id], onDelete: Cascade)
 
   @@index([supplierResponseId])
+}
+
+// STEP 21: Supplier Q&A Dialogue System
+enum QuestionStatus {
+  PENDING
+  ANSWERED
+}
+
+model SupplierQuestion {
+  id                String         @id @default(cuid())
+  rfpId             String
+  supplierContactId String
+  question          String
+  answer            String?
+  status            QuestionStatus @default(PENDING)
+  askedAt           DateTime       @default(now())
+  answeredAt        DateTime?
+  
+  rfp               RFP            @relation(fields: [rfpId], references: [id], onDelete: Cascade)
+  supplierContact   SupplierContact @relation(fields: [supplierContactId], references: [id], onDelete: Cascade)
+  
+  @@index([rfpId])
+  @@index([supplierContactId])
+}
+
+model SupplierBroadcastMessage {
+  id                  String   @id @default(cuid())
+  rfpId               String
+  message             String   @db.Text
+  createdAt           DateTime @default(now())
+  createdBy           String
+  supplierVisibility  Json?
+  
+  rfp                 RFP      @relation(fields: [rfpId], references: [id], onDelete: Cascade)
+  
+  @@index([rfpId])
 }
