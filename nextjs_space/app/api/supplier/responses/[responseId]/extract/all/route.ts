@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth-options';
 import { prisma } from '@/lib/prisma';
+import { logActivityWithRequest } from '@/lib/activity-log';
+import { EVENT_TYPES, ACTOR_ROLES } from '@/lib/activity-types';
 
 /**
  * Run all extraction endpoints sequentially
@@ -109,6 +111,21 @@ export async function POST(
         extractedDemoSummary: true,
         extractedFilesMetadata: true
       }
+    });
+
+    // Log activity
+    await logActivityWithRequest(req, {
+      rfpId: response.rfpId,
+      supplierResponseId: responseId,
+      userId: session.user.id,
+      actorRole: ACTOR_ROLES.SYSTEM,
+      eventType: EVENT_TYPES.AI_EXTRACTION_RUN,
+      summary: 'AI extraction completed for response',
+      details: {
+        rfpId: response.rfpId,
+        supplierResponseId: responseId,
+        extractedFieldCount: updatedResponse ? Object.keys(updatedResponse).filter(k => updatedResponse[k as keyof typeof updatedResponse] !== null).length : 0,
+      },
     });
 
     return NextResponse.json({

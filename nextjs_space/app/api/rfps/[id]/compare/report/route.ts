@@ -7,6 +7,8 @@ import path from 'path';
 import fs from 'fs/promises';
 import { notifyUserForEvent } from '@/lib/notifications';
 import { COMPARISON_REPORT_READY } from '@/lib/notification-types';
+import { logActivityWithRequest } from '@/lib/activity-log';
+import { EVENT_TYPES, ACTOR_ROLES } from '@/lib/activity-types';
 
 const prisma = new PrismaClient();
 
@@ -146,6 +148,20 @@ export async function POST(
       console.error('Error sending report ready notification:', notifError);
       // Don't fail the report generation if notification fails
     }
+
+    // Log activity
+    await logActivityWithRequest(req, {
+      rfpId,
+      userId: user.id,
+      actorRole: ACTOR_ROLES.BUYER,
+      eventType: EVENT_TYPES.COMPARISON_REPORT_GENERATED,
+      summary: 'Comparison report PDF generated',
+      details: {
+        rfpId,
+        reportUrl,
+        supplierCount: supplierResponses.length,
+      },
+    });
 
     return NextResponse.json({
       success: true,

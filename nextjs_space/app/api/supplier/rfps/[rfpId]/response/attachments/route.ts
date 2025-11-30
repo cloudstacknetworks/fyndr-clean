@@ -4,6 +4,8 @@ import { authOptions } from '@/lib/auth-options';
 import { PrismaClient } from '@prisma/client';
 import { writeFile, mkdir } from 'fs/promises';
 import path from 'path';
+import { logActivityWithRequest } from '@/lib/activity-log';
+import { EVENT_TYPES, ACTOR_ROLES } from '@/lib/activity-types';
 
 const prisma = new PrismaClient();
 
@@ -139,6 +141,25 @@ export async function POST(
     const updatedAttachments = await prisma.supplierResponseAttachment.findMany({
       where: { supplierResponseId: response.id },
       orderBy: { createdAt: 'desc' },
+    });
+
+    // Log activity
+    await logActivityWithRequest(request, {
+      rfpId,
+      supplierResponseId: response.id,
+      supplierContactId: supplierContact.id,
+      userId: session.user.id,
+      actorRole: ACTOR_ROLES.SUPPLIER,
+      eventType: EVENT_TYPES.SUPPLIER_ATTACHMENT_UPLOADED,
+      summary: `Attachment '${file.name}' uploaded`,
+      details: {
+        rfpId,
+        supplierResponseId: response.id,
+        fileName: file.name,
+        fileSize: file.size,
+        attachmentId: attachment.id,
+        attachmentType,
+      },
     });
 
     return NextResponse.json({ 

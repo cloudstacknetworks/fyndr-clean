@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth-options';
 import { PrismaClient } from '@prisma/client';
+import { logActivityWithRequest } from '@/lib/activity-log';
+import { EVENT_TYPES, ACTOR_ROLES } from '@/lib/activity-types';
 
 const prisma = new PrismaClient();
 
@@ -158,6 +160,23 @@ export async function POST(
         },
       });
     }
+
+    // Log activity
+    await logActivityWithRequest(request, {
+      rfpId,
+      supplierResponseId: response.id,
+      supplierContactId: supplierContact.id,
+      userId: session.user.id,
+      actorRole: ACTOR_ROLES.SUPPLIER,
+      eventType: EVENT_TYPES.SUPPLIER_RESPONSE_SAVED_DRAFT,
+      summary: 'Response draft saved',
+      details: {
+        rfpId,
+        supplierResponseId: response.id,
+        supplierContactId: supplierContact.id,
+        isUpdate: !!existingResponse,
+      },
+    });
 
     return NextResponse.json({ response });
   } catch (error) {

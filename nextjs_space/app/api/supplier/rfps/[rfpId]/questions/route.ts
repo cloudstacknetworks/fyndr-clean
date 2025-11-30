@@ -12,6 +12,8 @@ import { PrismaClient } from '@prisma/client';
 import { isQuestionWindowOpen } from '@/lib/qa-timeline';
 import { notifyUserForEvent } from '@/lib/notifications';
 import { SUPPLIER_QUESTION_CREATED } from '@/lib/notification-types';
+import { logActivityWithRequest } from '@/lib/activity-log';
+import { EVENT_TYPES, ACTOR_ROLES } from '@/lib/activity-types';
 
 const prisma = new PrismaClient();
 
@@ -197,6 +199,22 @@ export async function POST(
       console.error('Error sending question created notification:', notifError);
       // Don't fail the question submission if notification fails
     }
+
+    // Log activity
+    await logActivityWithRequest(request, {
+      rfpId,
+      supplierContactId: supplierContact.id,
+      userId: session.user.id,
+      actorRole: ACTOR_ROLES.SUPPLIER,
+      eventType: EVENT_TYPES.SUPPLIER_QUESTION_CREATED,
+      summary: 'Supplier asked a question',
+      details: {
+        rfpId,
+        questionId: newQuestion.id,
+        supplierContactId: supplierContact.id,
+        questionText: question.trim().substring(0, 100), // First 100 chars for privacy
+      },
+    });
     
     return NextResponse.json(
       {

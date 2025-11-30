@@ -17,6 +17,8 @@ import {
   matrixCriteriaToWeights,
   DEFAULT_WEIGHTS,
 } from '@/lib/supplier-comparison';
+import { logActivityWithRequest } from '@/lib/activity-log';
+import { EVENT_TYPES, ACTOR_ROLES } from '@/lib/activity-types';
 
 const prisma = new PrismaClient();
 
@@ -117,6 +119,21 @@ export async function POST(
         readinessIndicator: response.readinessIndicator,
       };
     }).sort((a, b) => b.totalScore - a.totalScore);
+
+    // Log activity
+    await logActivityWithRequest(request, {
+      rfpId,
+      userId: session.user.id,
+      actorRole: ACTOR_ROLES.BUYER,
+      eventType: EVENT_TYPES.SUPPLIER_COMPARISON_RUN,
+      summary: 'Supplier comparison completed',
+      details: {
+        rfpId,
+        supplierCount: supplierResponses.length,
+        comparisonType: matrixUsed ? 'custom_matrix' : 'default_weights',
+        matrixName: matrix?.name || 'Default Weights',
+      },
+    });
 
     return NextResponse.json({
       success: true,

@@ -9,6 +9,8 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth-options';
 import { PrismaClient } from '@prisma/client';
 import OpenAI from 'openai';
+import { logActivityWithRequest } from '@/lib/activity-log';
+import { EVENT_TYPES, ACTOR_ROLES } from '@/lib/activity-types';
 
 const prisma = new PrismaClient();
 
@@ -176,6 +178,20 @@ Focus on actionable insights and be objective in your analysis.`;
     );
 
     await Promise.all(updatePromises);
+
+    // Log activity
+    await logActivityWithRequest(request, {
+      rfpId,
+      userId: session.user.id,
+      actorRole: ACTOR_ROLES.SYSTEM,
+      eventType: EVENT_TYPES.COMPARISON_AI_SUMMARY_RUN,
+      summary: 'AI comparison summary generated',
+      details: {
+        rfpId,
+        summaryLength: JSON.stringify(aiSummary).length,
+        supplierCount: supplierResponses.length,
+      },
+    });
 
     return NextResponse.json({
       success: true,

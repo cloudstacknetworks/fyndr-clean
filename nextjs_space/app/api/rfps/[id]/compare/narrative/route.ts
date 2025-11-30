@@ -3,6 +3,8 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth-options';
 import { PrismaClient } from '@prisma/client';
 import OpenAI from 'openai';
+import { logActivityWithRequest } from '@/lib/activity-log';
+import { EVENT_TYPES, ACTOR_ROLES } from '@/lib/activity-types';
 
 const prisma = new PrismaClient();
 
@@ -229,6 +231,20 @@ IMPORTANT:
       where: { id: rfpId },
       data: {
         comparisonNarrative: narrative,
+      },
+    });
+
+    // Log activity
+    await logActivityWithRequest(req, {
+      rfpId,
+      userId: user.id,
+      actorRole: ACTOR_ROLES.SYSTEM,
+      eventType: EVENT_TYPES.COMPARISON_NARRATIVE_GENERATED,
+      summary: 'Comparison narrative generated',
+      details: {
+        rfpId,
+        narrativeLength: JSON.stringify(narrative).length,
+        supplierCount: supplierResponses.length,
       },
     });
 

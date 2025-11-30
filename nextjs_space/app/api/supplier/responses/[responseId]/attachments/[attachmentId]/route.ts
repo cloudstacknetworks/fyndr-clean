@@ -4,6 +4,8 @@ import { authOptions } from '@/lib/auth-options';
 import { PrismaClient } from '@prisma/client';
 import { unlink } from 'fs/promises';
 import path from 'path';
+import { logActivityWithRequest } from '@/lib/activity-log';
+import { EVENT_TYPES, ACTOR_ROLES } from '@/lib/activity-types';
 
 const prisma = new PrismaClient();
 
@@ -86,6 +88,23 @@ export async function DELETE(
     // Delete attachment record
     await prisma.supplierResponseAttachment.delete({
       where: { id: attachmentId },
+    });
+
+    // Log activity
+    await logActivityWithRequest(request, {
+      rfpId: response.rfpId,
+      supplierResponseId: response.id,
+      supplierContactId: response.supplierContactId,
+      userId: session.user.id,
+      actorRole: ACTOR_ROLES.SUPPLIER,
+      eventType: EVENT_TYPES.SUPPLIER_ATTACHMENT_DELETED,
+      summary: `Attachment '${attachment.fileName}' deleted`,
+      details: {
+        rfpId: response.rfpId,
+        supplierResponseId: response.id,
+        fileName: attachment.fileName,
+        attachmentId: attachment.id,
+      },
     });
 
     return NextResponse.json({ success: true });
