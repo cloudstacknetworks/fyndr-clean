@@ -9,6 +9,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth-options';
 import { PrismaClient } from '@prisma/client';
+import { notifyUserForEvent } from '@/lib/notifications';
+import { SUPPLIER_QUESTION_ANSWERED, SUPPLIER_BROADCAST_CREATED } from '@/lib/notification-types';
 
 const prisma = new PrismaClient();
 
@@ -184,6 +186,13 @@ export async function POST(
         answer: answer.trim(),
         status: 'ANSWERED',
         answeredAt: new Date()
+      },
+      include: {
+        supplierContact: {
+          include: {
+            portalUser: true
+          }
+        }
       }
     });
     
@@ -198,6 +207,44 @@ export async function POST(
           createdAt: new Date()
         }
       });
+    }
+    
+    // STEP 22: Send notifications
+    try {
+      if (broadcast === true) {
+        // Notify all suppliers about broadcast
+        const allSupplierContacts = await prisma.supplierContact.findMany({
+          where: {
+            rfpId,
+            portalUserId: { not: null }
+          },
+          include: {
+            portalUser: true
+          }
+        });
+
+        for (const contact of allSupplierContacts) {
+          if (contact.portalUser) {
+            await notifyUserForEvent(SUPPLIER_BROADCAST_CREATED, contact.portalUser, {
+              rfpId: rfp.id,
+              rfpTitle: rfp.title,
+              broadcastId: broadcastMessage?.id,
+            });
+          }
+        }
+      } else {
+        // Notify specific supplier about their answered question
+        if (updatedQuestion.supplierContact.portalUser) {
+          await notifyUserForEvent(SUPPLIER_QUESTION_ANSWERED, updatedQuestion.supplierContact.portalUser, {
+            rfpId: rfp.id,
+            rfpTitle: rfp.title,
+            questionId: updatedQuestion.id,
+          });
+        }
+      }
+    } catch (notifError) {
+      console.error('Error sending question answer notifications:', notifError);
+      // Don't fail the answer if notification fails
     }
     
     return NextResponse.json({

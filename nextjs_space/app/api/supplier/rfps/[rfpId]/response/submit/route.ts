@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth-options';
 import { PrismaClient } from '@prisma/client';
+import { notifyUserForEvent } from '@/lib/notifications';
+import { SUPPLIER_RESPONSE_SUBMITTED } from '@/lib/notification-types';
 
 const prisma = new PrismaClient();
 
@@ -98,6 +100,27 @@ export async function POST(
         attachments: true,
       },
     });
+
+    // STEP 22: Send notification to buyer about supplier response submission
+    try {
+      const rfp = await prisma.rFP.findUnique({
+        where: { id: rfpId },
+        include: { user: true },
+      });
+
+      if (rfp && rfp.user) {
+        await notifyUserForEvent(SUPPLIER_RESPONSE_SUBMITTED, rfp.user, {
+          rfpId: rfp.id,
+          rfpTitle: rfp.title,
+          supplierName: supplierContact.name,
+          supplierContactId: supplierContact.id,
+          supplierResponseId: submittedResponse.id,
+        });
+      }
+    } catch (notifError) {
+      console.error('Error sending response submission notification:', notifError);
+      // Don't fail the submission if notification fails
+    }
 
     return NextResponse.json({ response: submittedResponse });
   } catch (error) {

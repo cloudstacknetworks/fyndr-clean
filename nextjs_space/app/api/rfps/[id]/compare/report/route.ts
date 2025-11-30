@@ -5,6 +5,8 @@ import { PrismaClient } from '@prisma/client';
 import puppeteer from 'puppeteer';
 import path from 'path';
 import fs from 'fs/promises';
+import { notifyUserForEvent } from '@/lib/notifications';
+import { COMPARISON_REPORT_READY } from '@/lib/notification-types';
 
 const prisma = new PrismaClient();
 
@@ -127,6 +129,23 @@ export async function POST(
         comparisonReportUrl: reportUrl,
       },
     });
+
+    // STEP 22: Send notification to buyer about report ready
+    try {
+      const buyer = await prisma.user.findUnique({
+        where: { id: rfp.userId },
+      });
+
+      if (buyer) {
+        await notifyUserForEvent(COMPARISON_REPORT_READY, buyer, {
+          rfpId: rfp.id,
+          rfpTitle: rfp.title,
+        });
+      }
+    } catch (notifError) {
+      console.error('Error sending report ready notification:', notifError);
+      // Don't fail the report generation if notification fails
+    }
 
     return NextResponse.json({
       success: true,

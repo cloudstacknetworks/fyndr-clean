@@ -8,6 +8,8 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth-options';
 import { PrismaClient } from '@prisma/client';
 import { classifySupplierReadiness, type ReadinessIndicator } from '@/lib/readiness-engine';
+import { notifyUserForEvent } from '@/lib/notifications';
+import { READINESS_INDICATOR_UPDATED } from '@/lib/notification-types';
 
 const prisma = new PrismaClient();
 
@@ -118,6 +120,23 @@ export async function POST(
 
     // Sort by readiness score (highest first)
     results.sort((a, b) => b.readinessScore - a.readinessScore);
+
+    // STEP 22: Send notification to buyer about readiness update
+    try {
+      const buyer = await prisma.user.findUnique({
+        where: { id: rfp.userId },
+      });
+
+      if (buyer) {
+        await notifyUserForEvent(READINESS_INDICATOR_UPDATED, buyer, {
+          rfpId: rfp.id,
+          rfpTitle: rfp.title,
+        });
+      }
+    } catch (notifError) {
+      console.error('Error sending readiness update notification:', notifError);
+      // Don't fail the readiness calculation if notification fails
+    }
 
     return NextResponse.json({
       success: true,

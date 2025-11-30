@@ -8,6 +8,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth-options';
 import { PrismaClient } from '@prisma/client';
+import { notifyUserForEvent } from '@/lib/notifications';
+import { SUPPLIER_BROADCAST_CREATED } from '@/lib/notification-types';
 
 const prisma = new PrismaClient();
 
@@ -80,6 +82,32 @@ export async function POST(
         createdAt: new Date()
       }
     });
+    
+    // STEP 22: Send notification to all suppliers about broadcast
+    try {
+      const allSupplierContacts = await prisma.supplierContact.findMany({
+        where: {
+          rfpId,
+          portalUserId: { not: null }
+        },
+        include: {
+          portalUser: true
+        }
+      });
+
+      for (const contact of allSupplierContacts) {
+        if (contact.portalUser) {
+          await notifyUserForEvent(SUPPLIER_BROADCAST_CREATED, contact.portalUser, {
+            rfpId: rfp.id,
+            rfpTitle: rfp.title,
+            broadcastId: broadcast.id,
+          });
+        }
+      }
+    } catch (notifError) {
+      console.error('Error sending broadcast notifications:', notifError);
+      // Don't fail the broadcast if notification fails
+    }
     
     return NextResponse.json(
       {

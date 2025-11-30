@@ -2,6 +2,7 @@
 
 import { signOut } from 'next-auth/react';
 import { LogOut, User } from 'lucide-react';
+import SupplierBellIcon from './bell-icon';
 
 export default function SupplierLayout({
   session,
@@ -28,6 +29,9 @@ export default function SupplierLayout({
 
             {/* User Info & Sign Out */}
             <div className="flex items-center space-x-4">
+              {/* STEP 22: Notification Bell Icon */}
+              <SupplierBellIcon />
+              
               <div className="flex items-center space-x-2 text-sm text-gray-600">
                 <User className="w-4 h-4" />
                 <span>{session.user.email}</span>

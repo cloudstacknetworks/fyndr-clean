@@ -17,6 +17,8 @@ model User {
   rfps      RFP[]
   contacts  Contact[]
   supplierPortalAccess SupplierContact?
+  notifications          Notification[]
+  notificationPreference NotificationPreference?
 }
 
 model Company {
@@ -317,4 +319,53 @@ model SupplierBroadcastMessage {
   rfp                 RFP      @relation(fields: [rfpId], references: [id], onDelete: Cascade)
   
   @@index([rfpId])
+}
+
+// STEP 22: Notifications & Reminders Engine
+model Notification {
+  id                 String    @id @default(cuid())
+  userId             String
+  rfpId              String?
+  supplierResponseId String?
+  supplierContactId  String?
+  
+  type               String
+  category           String
+  title              String
+  message            String
+  channel            String
+  metadata           Json?
+  
+  readAt             DateTime?
+  createdAt          DateTime  @default(now())
+  
+  user               User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId, createdAt])
+  @@index([rfpId])
+}
+
+model NotificationPreference {
+  id                         String   @id @default(cuid())
+  userId                     String   @unique
+  emailEnabled               Boolean  @default(true)
+  inAppEnabled               Boolean  @default(true)
+  
+  // Buyer-specific toggles
+  buyerRfpTimeline           Boolean  @default(true)
+  buyerSupplierResponses     Boolean  @default(true)
+  buyerSupplierQuestions     Boolean  @default(true)
+  buyerQABroadcasts          Boolean  @default(true)
+  buyerReadinessChanges      Boolean  @default(true)
+  
+  // Supplier-specific toggles
+  supplierQATimeline         Boolean  @default(true)
+  supplierSubmissionTimeline Boolean  @default(true)
+  supplierBroadcasts         Boolean  @default(true)
+  supplierResponseStatus     Boolean  @default(true)
+  
+  createdAt                  DateTime @default(now())
+  updatedAt                  DateTime @updatedAt
+  
+  user                       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

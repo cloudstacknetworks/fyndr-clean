@@ -10,6 +10,8 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth-options';
 import { PrismaClient } from '@prisma/client';
 import { isQuestionWindowOpen } from '@/lib/qa-timeline';
+import { notifyUserForEvent } from '@/lib/notifications';
+import { SUPPLIER_QUESTION_CREATED } from '@/lib/notification-types';
 
 const prisma = new PrismaClient();
 
@@ -176,6 +178,25 @@ export async function POST(
         askedAt: new Date()
       }
     });
+    
+    // STEP 22: Send notification to buyer about new supplier question
+    try {
+      const rfp = await prisma.rFP.findUnique({
+        where: { id: rfpId },
+        include: { user: true },
+      });
+
+      if (rfp && rfp.user) {
+        await notifyUserForEvent(SUPPLIER_QUESTION_CREATED, rfp.user, {
+          rfpId: rfp.id,
+          rfpTitle: rfp.title,
+          questionId: newQuestion.id,
+        });
+      }
+    } catch (notifError) {
+      console.error('Error sending question created notification:', notifError);
+      // Don't fail the question submission if notification fails
+    }
     
     return NextResponse.json(
       {

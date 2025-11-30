@@ -7,6 +7,7 @@ import { LogOut, FileText, Building2, Users, Settings, LayoutDashboard, ChevronL
 import { useState, useEffect } from 'react';
 import GlobalSearch from './global-search';
 import CommandPalette from './command-palette';
+import BellIcon from './bell-icon';
 
 interface DashboardLayoutProps {
   session: any;
@@ -268,6 +269,9 @@ export default function DashboardLayout({ session, children }: DashboardLayoutPr
                   ⌘K
                 </kbd>
               </button>
+              
+              {/* STEP 22: Notification Bell Icon */}
+              <BellIcon />
               
               {/* Navigation Toggle Button */}
               <div className="relative group">
