@@ -33,6 +33,7 @@ export type ActivityEventType =
   | "SUPPLIER_RESPONSE_SUBMITTED"
   | "SUPPLIER_ATTACHMENT_UPLOADED"
   | "SUPPLIER_ATTACHMENT_DELETED"
+  | "ATTACHMENT_PREVIEWED"
   
   // AI / Comparison Events
   | "AI_EXTRACTION_RUN"
@@ -71,6 +72,7 @@ export const EVENT_TYPES = {
   SUPPLIER_RESPONSE_SUBMITTED: "SUPPLIER_RESPONSE_SUBMITTED" as ActivityEventType,
   SUPPLIER_ATTACHMENT_UPLOADED: "SUPPLIER_ATTACHMENT_UPLOADED" as ActivityEventType,
   SUPPLIER_ATTACHMENT_DELETED: "SUPPLIER_ATTACHMENT_DELETED" as ActivityEventType,
+  ATTACHMENT_PREVIEWED: "ATTACHMENT_PREVIEWED" as ActivityEventType,
   
   // AI / Comparison Events
   AI_EXTRACTION_RUN: "AI_EXTRACTION_RUN" as ActivityEventType,
@@ -165,6 +167,7 @@ export const EVENT_TYPE_LABELS: Record<ActivityEventType, string> = {
   SUPPLIER_RESPONSE_SUBMITTED: "Response Submitted",
   SUPPLIER_ATTACHMENT_UPLOADED: "Attachment Uploaded",
   SUPPLIER_ATTACHMENT_DELETED: "Attachment Deleted",
+  ATTACHMENT_PREVIEWED: "Attachment Previewed",
   
   // AI / Comparison Events
   AI_EXTRACTION_RUN: "AI Extraction Completed",

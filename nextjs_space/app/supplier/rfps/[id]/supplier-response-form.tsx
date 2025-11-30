@@ -12,8 +12,10 @@ import {
   FileSpreadsheet,
   Presentation,
   Video,
-  File
+  File,
+  Eye
 } from 'lucide-react';
+import { FilePreviewModal } from '@/app/components/file-preview-modal';
 
 interface SupplierResponseFormProps {
   rfpId: string;
@@ -46,6 +48,7 @@ export default function SupplierResponseForm({
   const [showSubmitModal, setShowSubmitModal] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+  const [previewAttachmentId, setPreviewAttachmentId] = useState<string | null>(null);
 
   const isSubmitted = response?.status === 'SUBMITTED';
   const isReadOnly = isSubmitted;
@@ -492,6 +495,13 @@ export default function SupplierResponseForm({
                   </div>
                 </div>
                 <div className="flex items-center space-x-2">
+                  <button
+                    onClick={() => setPreviewAttachmentId(attachment.id)}
+                    className="flex items-center gap-1 text-purple-600 hover:text-purple-700 text-sm font-medium"
+                  >
+                    <Eye className="w-4 h-4" />
+                    Preview
+                  </button>
                   <a
                     href={`/api/attachments/${attachment.id}/download`}
                     download
@@ -608,6 +618,13 @@ export default function SupplierResponseForm({
           </div>
         </div>
       )}
+
+      {/* File Preview Modal */}
+      <FilePreviewModal
+        attachmentId={previewAttachmentId || ""}
+        isOpen={!!previewAttachmentId}
+        onClose={() => setPreviewAttachmentId(null)}
+      />
     </div>
   );
 }

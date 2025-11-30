@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth-options';
 import { PrismaClient } from '@prisma/client';
-import { readFile } from 'fs/promises';
+import { readFile, stat } from 'fs/promises';
 import path from 'path';
 
 const prisma = new PrismaClient();
@@ -10,6 +10,7 @@ const prisma = new PrismaClient();
 /**
  * GET /api/attachments/[attachmentId]/download
  * Download an attachment file (accessible to supplier who owns it or buyer who owns the RFP)
+ * Supports Range headers for video streaming (206 Partial Content)
  */
 export async function GET(
   request: NextRequest,
@@ -55,16 +56,54 @@ export async function GET(
       );
     }
 
-    // Read file from disk
+    // Get file path and stats
     const filePath = path.join(process.cwd(), 'uploads', attachment.storageKey);
+    const fileStat = await stat(filePath);
+    const fileSize = fileStat.size;
+
+    // Check for Range header (for video streaming)
+    const range = request.headers.get('range');
+    
+    if (range) {
+      // Parse range header
+      const parts = range.replace(/bytes=/, '').split('-');
+      const start = parseInt(parts[0], 10);
+      const end = parts[1] ? parseInt(parts[1], 10) : fileSize - 1;
+      const chunkSize = end - start + 1;
+
+      // Read only the requested chunk
+      const fileBuffer = await readFile(filePath);
+      const chunk = fileBuffer.slice(start, end + 1);
+
+      // Return 206 Partial Content
+      return new NextResponse(chunk, {
+        status: 206,
+        headers: {
+          'Content-Type': attachment.fileType,
+          'Content-Range': `bytes ${start}-${end}/${fileSize}`,
+          'Accept-Ranges': 'bytes',
+          'Content-Length': chunkSize.toString(),
+          'Content-Disposition': `inline; filename="${attachment.fileName}"`,
+        },
+      });
+    }
+
+    // Read full file
     const fileBuffer = await readFile(filePath);
 
-    // Return file with appropriate headers
+    // Determine if file should be inline (for preview) or attachment (for download)
+    const isVideo = attachment.fileType.startsWith('video/');
+    const isImage = attachment.fileType.startsWith('image/');
+    const isPdf = attachment.fileType === 'application/pdf';
+    const disposition = (isVideo || isImage || isPdf) ? 'inline' : 'attachment';
+
+    // Return full file with appropriate headers
     return new NextResponse(fileBuffer, {
       headers: {
         'Content-Type': attachment.fileType,
-        'Content-Disposition': `attachment; filename="${attachment.fileName}"`,
-        'Content-Length': attachment.fileSize.toString(),
+        'Content-Disposition': `${disposition}; filename="${attachment.fileName}"`,
+        'Content-Length': fileSize.toString(),
+        'Accept-Ranges': 'bytes',
       },
     });
   } catch (error) {
