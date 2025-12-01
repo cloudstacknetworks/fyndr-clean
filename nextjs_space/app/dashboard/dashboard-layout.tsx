@@ -9,6 +9,7 @@ import GlobalSearch from './global-search';
 import CommandPalette from './command-palette';
 import BellIcon from './bell-icon';
 import { SearchBar } from '../components/search-bar';
+import { DemoButton } from '../components/demo/demo-button';
 
 interface DashboardLayoutProps {
   session: any;
@@ -263,6 +264,9 @@ export default function DashboardLayout({ session, children }: DashboardLayoutPr
               
               {/* STEP 22: Notification Bell Icon */}
               <BellIcon />
+              
+              {/* STEP 32: Demo Button */}
+              <DemoButton variant="buyer" />
               
               {/* Navigation Toggle Button */}
               <div className="relative group">

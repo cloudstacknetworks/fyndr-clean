@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { signOut } from "next-auth/react";
 import SupplierBellIcon from './bell-icon';
+import { DemoButton } from '../components/demo/demo-button';
 
 const navigation = [
   { name: "Dashboard", href: "/supplier", icon: LayoutDashboard },
@@ -81,9 +82,15 @@ export default function SupplierLayout({
       {/* Desktop sidebar */}
       <div className="hidden lg:fixed lg:inset-y-0 lg:flex lg:w-64 lg:flex-col">
         <div className="flex flex-col flex-1 bg-white border-r">
-          <div className="flex items-center h-16 px-6 border-b">
-            <span className="text-2xl font-bold text-indigo-600">FYNDR</span>
-            <span className="ml-2 text-sm text-gray-500">Supplier</span>
+          <div className="flex items-center justify-between h-16 px-6 border-b">
+            <div>
+              <span className="text-2xl font-bold text-indigo-600">FYNDR</span>
+              <span className="ml-2 text-sm text-gray-500">Supplier</span>
+            </div>
+            <SupplierBellIcon />
+          </div>
+          <div className="px-4 pt-4">
+            <DemoButton variant="supplier" />
           </div>
           <nav className="flex-1 space-y-1 p-4">
             {navigation.map((item) => {
@@ -128,7 +135,10 @@ export default function SupplierLayout({
           </button>
           <div className="flex items-center flex-1 px-4 justify-between">
             <span className="text-xl font-bold text-indigo-600">FYNDR</span>
-            <SupplierBellIcon />
+            <div className="flex items-center gap-3">
+              <DemoButton variant="supplier" />
+              <SupplierBellIcon />
+            </div>
           </div>
         </div>
 

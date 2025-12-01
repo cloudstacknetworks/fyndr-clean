@@ -1,7 +1,11 @@
 'use client';
 
 import { SessionProvider } from 'next-auth/react';
-import { ReactNode, useEffect, useState } from 'react';
+import { ReactNode, useEffect, useState, Suspense } from 'react';
+import { DemoProvider } from './components/demo/demo-context';
+import { DemoPlayer } from './components/demo/demo-player';
+import { DemoOverlay } from './components/demo/demo-overlay';
+import { DemoInitializer } from './components/demo/demo-initializer';
 
 interface ProvidersProps {
   children: ReactNode;
@@ -18,5 +22,16 @@ export function Providers({ children }: ProvidersProps) {
     return <>{children}</>;
   }
 
-  return <SessionProvider>{children}</SessionProvider>;
+  return (
+    <SessionProvider>
+      <DemoProvider>
+        <Suspense fallback={null}>
+          <DemoInitializer />
+        </Suspense>
+        <DemoPlayer />
+        <DemoOverlay />
+        {children}
+      </DemoProvider>
+    </SessionProvider>
+  );
 }

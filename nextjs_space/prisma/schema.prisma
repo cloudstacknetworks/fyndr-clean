@@ -14,6 +14,7 @@ model User {
   name                   String?
   role                   String                  @default("buyer") // "buyer" or "supplier"
   createdAt              DateTime                @default(now())
+  isDemo                 Boolean                 @default(false)
   rfps                   RFP[]
   contacts               Contact[]
   supplierPortalAccess   SupplierContact?
@@ -27,6 +28,7 @@ model Company {
   name        String
   description String?
   createdAt   DateTime @default(now())
+  isDemo      Boolean  @default(false)
   rfps        RFP[]
 }
 
@@ -101,6 +103,9 @@ model RFP {
   // Supplier Comparison AI Narrative & Report (STEP 19)
   comparisonNarrative Json?
   comparisonReportUrl String?
+
+  // Demo Mode Flag (STEP 32)
+  isDemo Boolean @default(false)
 
   user                      User                       @relation(fields: [userId], references: [id])
   userId                    String
@@ -207,6 +212,9 @@ model SupplierContact {
   avgPricingCompetitiveness Float?
   reliabilityIndex         Float?
 
+  // Demo Mode Flag (STEP 32)
+  isDemo Boolean @default(false)
+
   rfp               RFP                @relation(fields: [rfpId], references: [id], onDelete: Cascade)
   portalUser        User?              @relation(fields: [portalUserId], references: [id], onDelete: SetNull)
   supplierResponse  SupplierResponse?
@@ -282,6 +290,9 @@ model SupplierResponse {
   submissionSpeedDays      Int?
   requirementsCoverage     Float?
 
+  // Demo Mode Flag (STEP 32)
+  isDemo Boolean @default(false)
+
   rfp             RFP                          @relation(fields: [rfpId], references: [id], onDelete: Cascade)
   supplierContact SupplierContact              @relation(fields: [supplierContactId], references: [id], onDelete: Cascade)
   attachments     SupplierResponseAttachment[]
@@ -339,6 +350,7 @@ model SupplierQuestion {
   status            QuestionStatus @default(PENDING)
   askedAt           DateTime       @default(now())
   answeredAt        DateTime?
+  isDemo            Boolean        @default(false)
 
   rfp             RFP             @relation(fields: [rfpId], references: [id], onDelete: Cascade)
   supplierContact SupplierContact @relation(fields: [supplierContactId], references: [id], onDelete: Cascade)
@@ -357,6 +369,7 @@ model SupplierBroadcastMessage {
   createdAt          DateTime @default(now())
   createdBy          String
   supplierVisibility Json?
+  isDemo             Boolean  @default(false)
 
   rfp RFP @relation(fields: [rfpId], references: [id], onDelete: Cascade)
 
@@ -427,6 +440,7 @@ model ActivityLog {
   details   Json? // structured metadata
   ipAddress String?
   userAgent String?
+  isDemo    Boolean @default(false)
 
   createdAt DateTime @default(now())
 
