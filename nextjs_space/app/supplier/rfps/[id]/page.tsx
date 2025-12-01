@@ -1,292 +1,209 @@
-import { notFound, redirect } from 'next/navigation';
-import Link from 'next/link';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth-options';
-import { PrismaClient } from '@prisma/client';
-import { Calendar, Building2, DollarSign, AlertCircle, Clock, MessageSquare, Activity } from 'lucide-react';
-import { STAGE_LABELS } from '@/lib/stages';
-import { formatTimelineDate, getTimelineMilestones, getStatusColor } from '@/lib/rfp-timeline';
-import SupplierResponseForm from './supplier-response-form';
-import BroadcastsPanel from './broadcasts-panel';
+import { Suspense } from "react";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth-options";
+import { redirect } from "next/navigation";
+import { Download, MessageSquare, FileText, HelpCircle, Activity } from "lucide-react";
+import Link from "next/link";
+import { prisma } from "@/lib/prisma";
+import SupplierTimelineBar from "../../components/supplier-timeline-bar";
+import SubmissionProgressTracker from "../../components/submission-progress-tracker";
 
-const prisma = new PrismaClient();
-
-async function getSupplierRFPAccess(rfpId: string, userId: string) {
-  // Check if this user has access to this RFP via SupplierContact
+async function getRFPOverview(rfpId: string, userId: string) {
   const supplierContact = await prisma.supplierContact.findFirst({
     where: {
       rfpId,
       portalUserId: userId,
-    },
-    include: {
-      rfp: {
-        include: {
-          company: true,
-          supplier: true,
-        },
-      },
-    },
+    }
   });
 
-  return supplierContact;
-}
+  if (!supplierContact) return null;
 
-async function getSupplierResponse(supplierContactId: string) {
+  const rfp = await prisma.rFP.findUnique({
+    where: { id: rfpId },
+    include: {
+      company: true,
+      supplier: true,
+      supplierBroadcastMessages: { orderBy: { createdAt: "desc" }, take: 5 }
+    }
+  });
+
   const response = await prisma.supplierResponse.findUnique({
-    where: {
-      supplierContactId,
-    },
+    where: { supplierContactId: supplierContact.id },
     include: {
-      attachments: {
-        orderBy: { createdAt: 'desc' },
-      },
-    },
+      attachments: true
+    }
   });
 
-  return response;
+  return {
+    supplierContact,
+    rfp,
+    response
+  };
 }
 
-export default async function SupplierRFPPage({
-  params,
+export default async function SupplierRFPOverviewPage({
+  params
 }: {
   params: { id: string };
 }) {
   const session = await getServerSession(authOptions);
-  
-  if (!session?.user?.id) {
-    redirect('/login');
+  if (!session || session.user.role !== "supplier") {
+    redirect("/login");
   }
 
-  const rfpId = params.id;
-
-  // Verify access
-  const supplierAccess = await getSupplierRFPAccess(rfpId, session.user.id);
-
-  if (!supplierAccess) {
-    return (
-      <div className="max-w-4xl mx-auto">
-        <div className="bg-red-50 border border-red-200 rounded-lg p-8 text-center">
-          <AlertCircle className="w-16 h-16 text-red-600 mx-auto mb-4" />
-          <h2 className="text-2xl font-bold text-red-900 mb-2">Access Denied</h2>
-          <p className="text-red-700">
-            You don't have permission to view this RFP.
-          </p>
-        </div>
-      </div>
-    );
+  const data = await getRFPOverview(params.id, session.user.id);
+  if (!data || !data.rfp) {
+    return <div className="p-6">RFP not found or access denied.</div>;
   }
 
-  const rfp = supplierAccess.rfp;
-  const milestones = getTimelineMilestones(rfp);
-
-  // Fetch supplier response and attachments
-  const responseData = await getSupplierResponse(supplierAccess.id);
-  const response = responseData ? {
-    id: responseData.id,
-    status: responseData.status,
-    submittedAt: responseData.submittedAt,
-    structuredAnswers: responseData.structuredAnswers,
-    notesFromSupplier: responseData.notesFromSupplier,
-  } : null;
-  const attachments = responseData?.attachments || [];
+  const { supplierContact, rfp, response } = data;
+  const now = new Date();
+  const qaOpen = rfp.askQuestionsStart && rfp.askQuestionsEnd && 
+                 rfp.askQuestionsStart <= now && rfp.askQuestionsEnd >= now;
+  const submissionOpen = rfp.submissionStart && rfp.submissionEnd &&
+                         rfp.submissionStart <= now && rfp.submissionEnd >= now;
 
   return (
-    <div className="max-w-5xl mx-auto space-y-6">
+    <div className="p-6 space-y-6" data-demo-section="supplier-rfp-overview">
       {/* Header */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+      <div className="bg-white rounded-lg shadow p-6">
         <div className="flex items-start justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">
-              {rfp.title}
-            </h1>
-            <p className="text-gray-600">
-              Invited by <span className="font-semibold">{rfp.company.name}</span>
-            </p>
+            <h1 className="text-3xl font-bold">{rfp.title}</h1>
+            <p className="text-gray-600 mt-1">{rfp.company.name}</p>
+            {rfp.description && (
+              <p className="text-gray-700 mt-3">{rfp.description}</p>
+            )}
           </div>
-          <div className="flex items-center gap-3">
-            <Link
-              href={`/supplier/rfps/${rfpId}/activity`}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 font-semibold rounded-lg hover:bg-gray-200 transition-colors"
-            >
-              <Activity className="h-5 w-5" />
-              Activity
-            </Link>
-            <Link
-              href={`/supplier/rfps/${rfpId}/questions`}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 transition-colors"
-            >
-              <MessageSquare className="h-5 w-5" />
-              Questions & Answers
-            </Link>
-            <div className="px-4 py-2 bg-purple-100 text-purple-700 text-sm font-semibold rounded-full">
-              Read-Only Access
-            </div>
-          </div>
+          <OptionUpgradeIcon />
         </div>
       </div>
 
+      {/* Timeline */}
+      <SupplierTimelineBar
+        inviteDate={supplierContact.createdAt}
+        qaWindowStart={rfp.askQuestionsStart}
+        qaWindowEnd={rfp.askQuestionsEnd}
+        submissionWindowStart={rfp.submissionStart}
+        submissionWindowEnd={rfp.submissionEnd}
+        demoWindowStart={rfp.demoWindowStart}
+        demoWindowEnd={rfp.demoWindowEnd}
+        awardDate={rfp.awardDate}
+      />
 
+      {/* Main Actions */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Progress Tracker */}
+        <SubmissionProgressTracker
+          structuredData={response?.structuredAnswers}
+          attachments={response?.attachments}
+          submittedAt={response?.submittedAt}
+        />
 
-      {/* RFP Details */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-        <h2 className="text-xl font-bold text-gray-900 mb-4">RFP Details</h2>
-        
-        <div className="space-y-4">
-          {/* Description */}
-          {rfp.description && (
-            <div>
-              <h3 className="text-sm font-semibold text-gray-700 mb-2">Description</h3>
-              <p className="text-gray-900 whitespace-pre-wrap">{rfp.description}</p>
-            </div>
-          )}
-
-          {/* Stage */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <h3 className="text-sm font-semibold text-gray-700 mb-2">Current Stage</h3>
-              <div className="flex items-center space-x-2">
-                <span className="px-3 py-1 bg-blue-100 text-blue-700 text-sm font-medium rounded-full">
-                  {STAGE_LABELS[rfp.stage] || rfp.stage}
-                </span>
-              </div>
-            </div>
-
-            {rfp.priority && (
-              <div>
-                <h3 className="text-sm font-semibold text-gray-700 mb-2">Priority</h3>
-                <div className="flex items-center space-x-2">
-                  <span className={`px-3 py-1 text-sm font-medium rounded-full ${
-                    rfp.priority === 'HIGH' ? 'bg-red-100 text-red-700' :
-                    rfp.priority === 'MEDIUM' ? 'bg-amber-100 text-amber-700' :
-                    'bg-gray-100 text-gray-700'
-                  }`}>
-                    {rfp.priority}
+        {/* Quick Actions */}
+        <div className="bg-white rounded-lg shadow p-6">
+          <h3 className="text-lg font-semibold mb-4">Quick Actions</h3>
+          <div className="space-y-3">
+            {submissionOpen && !response?.submittedAt && (
+              <Link
+                href={`/supplier/rfps/${params.id}`}
+                className="flex items-center justify-between p-4 bg-indigo-50 border-2 border-indigo-200 rounded-lg hover:bg-indigo-100"
+                data-demo-action="start-response"
+              >
+                <div className="flex items-center gap-3">
+                  <FileText className="h-5 w-5 text-indigo-600" />
+                  <span className="font-medium text-indigo-900">
+                    {response?.structuredAnswers ? "Continue Response" : "Start Response"}
                   </span>
                 </div>
+                <span className="text-indigo-600">→</span>
+              </Link>
+            )}
+
+            {qaOpen && (
+              <Link
+                href={`/supplier/rfps/${params.id}/questions`}
+                className="flex items-center justify-between p-4 bg-green-50 border-2 border-green-200 rounded-lg hover:bg-green-100"
+                data-demo-action="ask-question"
+              >
+                <div className="flex items-center gap-3">
+                  <MessageSquare className="h-5 w-5 text-green-600" />
+                  <span className="font-medium text-green-900">Ask a Question</span>
+                </div>
+                <span className="text-green-600">→</span>
+              </Link>
+            )}
+
+            <Link
+              href={`/supplier/rfps/${params.id}/activity`}
+              className="flex items-center justify-between p-4 bg-gray-50 border-2 border-gray-200 rounded-lg hover:bg-gray-100"
+              data-demo-action="view-activity"
+            >
+              <div className="flex items-center gap-3">
+                <Activity className="h-5 w-5 text-gray-600" />
+                <span className="font-medium text-gray-900">View Activity</span>
               </div>
-            )}
-          </div>
+              <span className="text-gray-600">→</span>
+            </Link>
 
-          {/* Budget */}
-          {rfp.budget && (
-            <div>
-              <h3 className="text-sm font-semibold text-gray-700 mb-2 flex items-center">
-                <DollarSign className="w-4 h-4 mr-1" />
-                Budget
-              </h3>
-              <p className="text-gray-900 text-lg font-semibold">
-                ${rfp.budget.toLocaleString()}
-              </p>
-            </div>
-          )}
-
-          {/* Due Date */}
-          {rfp.dueDate && (
-            <div>
-              <h3 className="text-sm font-semibold text-gray-700 mb-2 flex items-center">
-                <Calendar className="w-4 h-4 mr-1" />
-                Due Date
-              </h3>
-              <p className="text-gray-900">
-                {new Date(rfp.dueDate).toLocaleDateString('en-US', {
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric'
-                })}
-              </p>
-            </div>
-          )}
-
-          {/* Buyer Organization */}
-          <div>
-            <h3 className="text-sm font-semibold text-gray-700 mb-2 flex items-center">
-              <Building2 className="w-4 h-4 mr-1" />
-              Buyer Organization
-            </h3>
-            <p className="text-gray-900 font-medium">{rfp.company.name}</p>
-            {rfp.company.description && (
-              <p className="text-gray-600 text-sm mt-1">{rfp.company.description}</p>
-            )}
+            <button 
+              className="flex items-center justify-between p-4 bg-gray-50 border-2 border-gray-200 rounded-lg hover:bg-gray-100 w-full"
+              data-demo-action="download-documents"
+            >
+              <div className="flex items-center gap-3">
+                <Download className="h-5 w-5 text-gray-600" />
+                <span className="font-medium text-gray-900">Download Documents</span>
+              </div>
+              <span className="text-gray-600">→</span>
+            </button>
           </div>
         </div>
       </div>
 
-      {/* Timeline & Milestones */}
-      {milestones.length > 0 && (
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-          <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center">
-            <Clock className="w-5 h-5 mr-2" />
-            Timeline & Important Dates
-          </h2>
-          
+      {/* Buyer Messages */}
+      {rfp.supplierBroadcastMessages && rfp.supplierBroadcastMessages.length > 0 && (
+        <div className="bg-white rounded-lg shadow p-6" data-demo-section="buyer-messages">
+          <h3 className="text-lg font-semibold mb-4">Buyer Messages</h3>
           <div className="space-y-3">
-            {milestones.map((milestone, index) => {
-              const statusColor = getStatusColor(milestone.status);
-              
-              return (
-                <div
-                  key={index}
-                  className={`border-l-4 pl-4 py-2 ${statusColor.border}`}
-                >
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <h3 className="font-semibold text-gray-900">{milestone.label}</h3>
-                      <p className="text-sm text-gray-600 mt-1">
-                        {milestone.start && milestone.end
-                          ? `${formatTimelineDate(milestone.start)} - ${formatTimelineDate(milestone.end)}`
-                          : milestone.start
-                          ? formatTimelineDate(milestone.start)
-                          : milestone.end
-                          ? formatTimelineDate(milestone.end)
-                          : 'Not specified'}
-                      </p>
-                    </div>
-                    <div className="flex flex-col items-end space-y-1">
-                      <span className={`px-2 py-1 text-xs font-semibold rounded-full ${statusColor.bg} ${statusColor.text}`}>
-                        {milestone.status === 'future' && '⚪ Upcoming'}
-                        {milestone.status === 'active' && '🔵 Active'}
-                        {milestone.status === 'overdue' && '🔴 Overdue'}
-                        {milestone.status === 'completed' && '🟢 Completed'}
-                      </span>
-                      {milestone.daysRemaining !== null && milestone.daysRemaining !== undefined && (
-                        <span className="text-xs text-gray-500">
-                          {milestone.daysRemaining > 0
-                            ? `${milestone.daysRemaining} days remaining`
-                            : `${Math.abs(milestone.daysRemaining)} days overdue`}
-                        </span>
-                      )}
-                    </div>
-                  </div>
+            {rfp.supplierBroadcastMessages.map((broadcast: any) => (
+              <div key={broadcast.id} className="border-l-4 border-indigo-600 pl-4 py-2">
+                <div className="text-sm text-gray-600">{broadcast.message}</div>
+                <div className="text-xs text-gray-500 mt-2">
+                  {new Date(broadcast.createdAt).toLocaleDateString()}
                 </div>
-              );
-            })}
+              </div>
+            ))}
           </div>
         </div>
       )}
 
-      {/* Your Response Section */}
-      <SupplierResponseForm
-        rfpId={rfpId}
-        initialResponse={response}
-        initialAttachments={attachments}
-      />
-
-      {/* Buyer Messages & Announcements */}
-      <BroadcastsPanel rfpId={rfpId} />
-
-      {/* Contact Information */}
-      <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg border border-gray-200 p-6">
-        <h2 className="text-lg font-bold text-gray-900 mb-3">Need Help?</h2>
-        <p className="text-gray-700 mb-4">
-          If you have any questions about this RFP or need clarification on any requirements, 
-          please contact the buyer organization directly.
-        </p>
-        <div className="bg-white rounded-lg p-4 border border-gray-200">
-          <p className="text-sm text-gray-600">
-            <span className="font-semibold">Buyer Organization:</span> {rfp.company.name}
-          </p>
+      {/* Help Sidebar */}
+      <div className="bg-blue-50 border border-blue-200 rounded-lg p-6" data-demo-element="help-sidebar">
+        <div className="flex items-start gap-3">
+          <HelpCircle className="h-6 w-6 text-blue-600 flex-shrink-0 mt-1" />
+          <div>
+            <h4 className="font-semibold text-blue-900 mb-2">Need Help?</h4>
+            <ul className="text-sm text-blue-800 space-y-1">
+              <li>• Review the RFP requirements carefully</li>
+              <li>• Ask questions before the Q&A window closes</li>
+              <li>• Submit your response before the deadline</li>
+              <li>• Check buyer messages regularly</li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
+  );
+}
+
+function OptionUpgradeIcon() {
+  return (
+    <button
+      className="p-2 text-gray-400 hover:text-gray-600"
+      title="Additional features available in Option 3"
+      data-demo-trigger="option-upgrade"
+    >
+      <HelpCircle className="h-5 w-5" />
+    </button>
   );
 }
