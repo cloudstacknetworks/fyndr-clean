@@ -258,6 +258,80 @@ export async function createDemoScenarioData(): Promise<DemoScenario> {
   ];
 
   for (const rd of responseData) {
+    // Generate sample readiness breakdown based on score
+    const generateReadinessBreakdown = (score: number) => {
+      const variance = score >= 90 ? 5 : score >= 80 ? 10 : 15;
+      return [
+        { category: "Functional Requirements", score: Math.min(100, score + Math.floor(Math.random() * variance)), totalItems: 10, completedItems: Math.floor(10 * score / 100), percentage: score, weight: 0.25 },
+        { category: "Technical Requirements", score: Math.max(0, score - Math.floor(Math.random() * variance)), totalItems: 8, completedItems: Math.floor(8 * score / 100), percentage: score, weight: 0.25 },
+        { category: "Integration Requirements", score: Math.max(0, score - Math.floor(Math.random() * variance)), totalItems: 6, completedItems: Math.floor(6 * score / 100), percentage: score, weight: 0.10 },
+        { category: "Compliance & Security", score: Math.max(0, score - Math.floor(Math.random() * variance)), totalItems: 12, completedItems: Math.floor(12 * score / 100), percentage: score, weight: 0.30 },
+        { category: "Support & SLAs", score: Math.min(100, score + Math.floor(Math.random() * variance)), totalItems: 6, completedItems: Math.floor(6 * score / 100), percentage: score, weight: 0.10 },
+        { category: "Pricing Structure", score: Math.min(100, score + Math.floor(Math.random() * variance)), totalItems: 5, completedItems: Math.floor(5 * score / 100), percentage: score, weight: 0 }
+      ];
+    };
+
+    // Generate compliance flags based on readiness
+    const generateComplianceFlags = (score: number) => {
+      if (score >= 90) return [];
+      const flags = [];
+      if (score < 85) {
+        flags.push({ flagType: "Missing Certification", severity: "high", message: "SOC 2 Type II certification not provided", requirement: "Security Compliance" });
+      }
+      if (score < 80) {
+        flags.push({ flagType: "Data Privacy", severity: "high", message: "GDPR compliance not fully documented", requirement: "Data Privacy & Protection" });
+      }
+      if (score < 75) {
+        flags.push({ flagType: "Business Continuity", severity: "medium", message: "Disaster recovery plan incomplete", requirement: "Business Continuity" });
+      }
+      return flags;
+    };
+
+    // Generate missing requirements based on readiness
+    const generateMissingRequirements = (score: number) => {
+      if (score >= 90) return [];
+      const missing = [];
+      if (score < 85) {
+        missing.push({ requirement: "Compliance Certifications", category: "Compliance & Security", severity: "critical", suggestedFix: "Upload SOC 2, ISO 27001, and other relevant certifications" });
+      }
+      if (score < 80) {
+        missing.push({ requirement: "Security Documentation", category: "Compliance & Security", severity: "critical", suggestedFix: "Provide security whitepaper and penetration test results" });
+      }
+      if (score < 75) {
+        missing.push({ requirement: "Solution Architecture", category: "Technical Requirements", severity: "important", suggestedFix: "Provide architecture diagrams and technical specifications" });
+      }
+      return missing;
+    };
+
+    // Generate AI insights
+    const generateInsights = (score: number, supplierName: string) => {
+      if (score >= 90) {
+        return {
+          summary: `${supplierName} demonstrates exceptional readiness with comprehensive documentation across all critical areas. Their response shows strong compliance posture and technical depth.`,
+          topRisks: ["Minor gaps in disaster recovery documentation", "Pricing model requires additional clarification"],
+          mitigation: ["Request updated DR runbook", "Schedule pricing deep-dive call"],
+          standpointAnalysis: `${supplierName} is fully ready to proceed to the next evaluation stage with minimal risk.`,
+          competitivePositioning: "Above average readiness compared to typical enterprise software vendors."
+        };
+      } else if (score >= 80) {
+        return {
+          summary: `${supplierName} shows solid readiness but has notable gaps in compliance documentation and security certifications that need addressing.`,
+          topRisks: ["Missing SOC 2 certification", "Incomplete GDPR documentation", "Limited disaster recovery details"],
+          mitigation: ["Request certification timeline", "Obtain GDPR compliance attestation", "Schedule security review call"],
+          standpointAnalysis: `${supplierName} is conditionally ready but requires documentation completion before final evaluation.`,
+          competitivePositioning: "Average readiness level for this market segment."
+        };
+      } else {
+        return {
+          summary: `${supplierName} has significant readiness gaps across multiple critical areas including security, compliance, and technical architecture.`,
+          topRisks: ["Missing critical security certifications", "Incomplete compliance documentation", "Architectural concerns", "Limited integration details"],
+          mitigation: ["Comprehensive security review required", "Request full compliance package", "Technical deep-dive session needed", "Integration workshop recommended"],
+          standpointAnalysis: `${supplierName} is not ready for evaluation and requires substantial documentation improvements.`,
+          competitivePositioning: "Below typical readiness standards for enterprise vendors."
+        };
+      }
+    };
+
     await prisma.supplierResponse.create({
       data: {
         rfpId: primaryRfp.id,
@@ -271,6 +345,11 @@ export async function createDemoScenarioData(): Promise<DemoScenario> {
         submissionSpeedDays: rd.submissionSpeedDays,
         structuredAnswers: rd.structuredData,
         readinessIndicator: rd.readiness >= 90 ? "READY" : rd.readiness >= 80 ? "CONDITIONAL" : "NOT_READY",
+        // STEP 33: Add readiness detail fields
+        readinessBreakdown: generateReadinessBreakdown(rd.readiness) as any,
+        complianceFlags: generateComplianceFlags(rd.readiness) as any,
+        missingRequirements: generateMissingRequirements(rd.readiness) as any,
+        readinessInsights: generateInsights(rd.readiness, rd.supplier.name) as any,
         isDemo: true
       }
     });

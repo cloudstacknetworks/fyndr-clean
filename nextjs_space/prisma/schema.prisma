@@ -283,6 +283,12 @@ model SupplierResponse {
   readinessIndicator          String?
   readinessRationale          String?
 
+  // STEP 33: Readiness Detail View & Risk Analyzer
+  readinessBreakdown   Json? // Structured breakdown by category
+  complianceFlags      Json? // Compliance/policy red flags
+  missingRequirements  Json? // Missing/incomplete requirements
+  readinessInsights    Json? // AI-generated explanations
+
   // Performance Metrics (STEP 30)
   finalScore               Float?
   readinessScore           Float?
