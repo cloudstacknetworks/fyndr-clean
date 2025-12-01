@@ -21,7 +21,7 @@ export async function GET(
     const response = await prisma.supplierResponse.findFirst({
       where: {
         rfpId: params.id,
-        supplierContact: { userId: session.user.id }
+        supplierContact: { portalUserId: session.user.id }
       }
     });
 

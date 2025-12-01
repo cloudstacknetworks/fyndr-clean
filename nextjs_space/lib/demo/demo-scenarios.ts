@@ -100,10 +100,75 @@ export const DEMO_SCENARIOS: Record<string, DemoScenarioConfig> = {
         duration: 5000
       },
 
+      // STEP 35: PORTFOLIO OVERVIEW
+      {
+        id: "buyer_navigate_portfolio",
+        timeOffsetMs: 32000,
+        targetSelector: "a[href='/dashboard/portfolio']",
+        action: "click",
+        text: "Let's explore the Portfolio Overview for cross-RFP insights...",
+        role: "buyer",
+        duration: 2000
+      },
+      {
+        id: "buyer_portfolio_intro",
+        timeOffsetMs: 34000,
+        route: "/dashboard/portfolio",
+        action: "navigate",
+        text: "Portfolio Overview provides a high-level view of all RFPs in your pipeline with comprehensive analytics.",
+        role: "buyer",
+        duration: 4000
+      },
+      {
+        id: "buyer_portfolio_kpis",
+        timeOffsetMs: 38000,
+        targetSelector: "[data-demo='portfolio-kpis']",
+        action: "highlight",
+        text: "These KPI cards show total RFPs, active RFPs, awarded RFPs, total budget, and in-flight budget across your entire portfolio.",
+        role: "buyer",
+        duration: 5000
+      },
+      {
+        id: "buyer_portfolio_stages",
+        timeOffsetMs: 43000,
+        targetSelector: "[data-demo='portfolio-stages']",
+        action: "scrollIntoView",
+        text: "The Stage Distribution shows how many RFPs are in each stage (Intake, Sourcing, Evaluation, Awarded) with budget breakdowns.",
+        role: "buyer",
+        duration: 5000
+      },
+      {
+        id: "buyer_portfolio_risk",
+        timeOffsetMs: 48000,
+        targetSelector: "[data-demo='portfolio-risk-readiness']",
+        action: "scrollIntoView",
+        text: "Risk Bands classify RFPs by risk level (low/medium/high), while Readiness Distribution shows supplier preparation scores.",
+        role: "buyer",
+        duration: 5000
+      },
+      {
+        id: "buyer_portfolio_suppliers",
+        timeOffsetMs: 53000,
+        targetSelector: "[data-demo='portfolio-top-suppliers']",
+        action: "scrollIntoView",
+        text: "Top Suppliers shows performance metrics across all RFPs: participation, wins, scores, readiness, and reliability indices.",
+        role: "buyer",
+        duration: 5000
+      },
+      {
+        id: "buyer_portfolio_milestones",
+        timeOffsetMs: 58000,
+        targetSelector: "[data-demo='portfolio-milestones']",
+        action: "scrollIntoView",
+        text: "Upcoming Milestones highlights critical dates across all RFPs in the next 30 days (Q&A closes, submission deadlines, awards).",
+        role: "buyer",
+        duration: 5000
+      },
+
       // TRANSITION TO SUPPLIER PERSPECTIVE
       {
         id: "transition_to_supplier",
-        timeOffsetMs: 32000,
+        timeOffsetMs: 63000,
         route: "/supplier",
         action: "navigate",
         text: "Now let's switch to the Supplier Portal to see how vendors experience FYNDR...",
@@ -114,14 +179,14 @@ export const DEMO_SCENARIOS: Record<string, DemoScenarioConfig> = {
       // SUPPLIER PERSPECTIVE - Dashboard
       {
         id: "supplier_dashboard_intro",
-        timeOffsetMs: 35000,
+        timeOffsetMs: 66000,
         text: "Welcome to the Supplier Portal! Suppliers see a clean, action-oriented dashboard with priority RFPs and deadlines.",
         role: "supplier",
         duration: 5000
       },
       {
         id: "supplier_dashboard_actions",
-        timeOffsetMs: 40000,
+        timeOffsetMs: 71000,
         targetSelector: "h2:has-text('Priority Actions')",
         action: "highlight",
         text: "Priority Actions highlight RFPs that need immediate attention, with clear 'Start Response' or 'Continue Response' buttons.",
@@ -130,7 +195,7 @@ export const DEMO_SCENARIOS: Record<string, DemoScenarioConfig> = {
       },
       {
         id: "supplier_navigate_rfp",
-        timeOffsetMs: 45000,
+        timeOffsetMs: 76000,
         targetSelector: "a[href*='/supplier/rfps/']",
         action: "click",
         text: "Let's view an RFP details...",
@@ -141,14 +206,14 @@ export const DEMO_SCENARIOS: Record<string, DemoScenarioConfig> = {
       // SUPPLIER PERSPECTIVE - RFP Overview
       {
         id: "supplier_rfp_timeline",
-        timeOffsetMs: 47000,
+        timeOffsetMs: 78000,
         text: "Suppliers see a simplified timeline showing invite date, Q&A window, submission deadline, demo window, and award date.",
         role: "supplier",
         duration: 5000
       },
       {
         id: "supplier_rfp_progress",
-        timeOffsetMs: 52000,
+        timeOffsetMs: 83000,
         targetSelector: "h3:has-text('Submission Progress')",
         action: "highlight",
         text: "The Submission Progress Tracker shows a checklist of required sections: Executive Summary, Requirements, Pricing, Attachments, etc.",
@@ -157,7 +222,7 @@ export const DEMO_SCENARIOS: Record<string, DemoScenarioConfig> = {
       },
       {
         id: "supplier_rfp_quick_actions",
-        timeOffsetMs: 57000,
+        timeOffsetMs: 88000,
         targetSelector: "h3:has-text('Quick Actions')",
         action: "highlight",
         text: "Quick Actions provide one-click access to start/continue response, ask questions, or download documents.",
@@ -168,7 +233,7 @@ export const DEMO_SCENARIOS: Record<string, DemoScenarioConfig> = {
       // RETURN TO BUYER PERSPECTIVE
       {
         id: "return_to_buyer",
-        timeOffsetMs: 62000,
+        timeOffsetMs: 93000,
         route: "/dashboard",
         action: "navigate",
         text: "Back to the Buyer Dashboard to see how responses are evaluated...",
@@ -179,7 +244,7 @@ export const DEMO_SCENARIOS: Record<string, DemoScenarioConfig> = {
       // BUYER PERSPECTIVE - Final Insights
       {
         id: "buyer_final_overview",
-        timeOffsetMs: 65000,
+        timeOffsetMs: 96000,
         text: "FYNDR streamlines the entire RFP lifecycle for both buyers and suppliers with AI-powered insights, automated workflows, and comprehensive tracking.",
         role: "buyer",
         duration: 5000
@@ -188,7 +253,7 @@ export const DEMO_SCENARIOS: Record<string, DemoScenarioConfig> = {
       // DEMO COMPLETE
       {
         id: "demo_complete",
-        timeOffsetMs: 70000,
+        timeOffsetMs: 101000,
         text: "Demo complete! FYNDR manages everything from RFP creation to supplier selection. Thank you for watching!",
         role: "buyer",
         duration: 5000

@@ -128,7 +128,7 @@ export async function composeDecisionBriefForRfp(
       const minutesSinceGeneration = (now.getTime() - generatedAt.getTime()) / (1000 * 60);
 
       if (minutesSinceGeneration < freshnessThresholdMinutes) {
-        return rfp.decisionBriefSnapshot as DecisionBriefSnapshot;
+        return rfp.decisionBriefSnapshot as unknown as DecisionBriefSnapshot;
       }
     }
 
@@ -138,7 +138,7 @@ export async function composeDecisionBriefForRfp(
         supplierContact: {
           rfpId: rfpId,
         },
-        responseStatus: 'SUBMITTED',
+        status: 'SUBMITTED',
       },
       include: {
         supplierContact: {

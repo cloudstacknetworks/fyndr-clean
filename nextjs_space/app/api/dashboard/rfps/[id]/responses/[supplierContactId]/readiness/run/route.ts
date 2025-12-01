@@ -36,8 +36,9 @@ export async function POST(
       data: {
         rfpId: params.id,
         userId: session.user.id,
+        actorRole: "BUYER",
         eventType: "READINESS_ANALYZED",
-        description: `Readiness analysis run for ${response.supplierContact.name}`
+        summary: `Readiness analysis run for ${response.supplierContact.name}`
       }
     });
 

@@ -578,6 +578,150 @@ export async function createDemoScenarioData(): Promise<DemoScenario> {
     });
   }
 
+  // STEP 35: Create Portfolio Snapshot Demo Data
+  const portfolioSnapshot = {
+    companyId: demoBuyerOrg.id,
+    asOf: new Date().toISOString(),
+    generatedUsingAI: false,
+    version: 1,
+    timeRange: {
+      from: new Date(now.getTime() - 18 * 30 * 24 * 60 * 60 * 1000).toISOString(),
+      to: new Date().toISOString()
+    },
+    kpis: {
+      totalRfps: 12,
+      activeRfps: 7,
+      awardedRfps: 5,
+      averageReadiness: 82.5,
+      averageCycleTimeDays: 45
+    },
+    stages: [
+      {
+        stage: "INTAKE",
+        count: 2,
+        totalBudget: 800000,
+        activeRfps: 2,
+        exampleRfpTitles: ["Enterprise CRM System", "Cloud Infrastructure Upgrade"]
+      },
+      {
+        stage: "SOURCING",
+        count: 3,
+        totalBudget: 1500000,
+        activeRfps: 3,
+        exampleRfpTitles: [primaryRfp.title, "Cybersecurity Assessment", "Data Analytics Platform"]
+      },
+      {
+        stage: "EVALUATION",
+        count: 2,
+        totalBudget: 900000,
+        activeRfps: 2,
+        exampleRfpTitles: ["Marketing Automation Suite", "HR Management System"]
+      },
+      {
+        stage: "AWARDED",
+        count: 5,
+        totalBudget: 2200000,
+        activeRfps: 0,
+        exampleRfpTitles: ["IT Support Services", "Office Space Lease", "Catering Services"]
+      }
+    ],
+    riskBands: [
+      { band: "low" as const, rfps: 6, suppliers: 18, topRiskLabels: [] },
+      { band: "medium" as const, rfps: 4, suppliers: 12, topRiskLabels: ["Timeline Risk", "Budget Constraints"] },
+      { band: "high" as const, rfps: 2, suppliers: 6, topRiskLabels: ["Compliance Gap", "Technical Complexity"] }
+    ],
+    readinessDistribution: {
+      excellentCount: 8,
+      goodCount: 12,
+      moderateCount: 6,
+      lowCount: 2,
+      averageReadiness: 82.5,
+      sampleRfpIds: [primaryRfp.id]
+    },
+    topSuppliers: [
+      {
+        supplierId: "demo-supplier-1",
+        supplierName: "Apex Telecommunications",
+        organization: "Apex Corp",
+        totalRfpsParticipated: 8,
+        totalWins: 4,
+        avgFinalScore: 88.5,
+        avgReadiness: 91.2,
+        avgPricingCompetitiveness: 85.0,
+        reliabilityIndex: 50.0,
+        headlinePerformanceTier: "strategic" as const
+      },
+      {
+        supplierId: "demo-supplier-2",
+        supplierName: "GlobalComm Solutions",
+        organization: "GlobalComm Inc",
+        totalRfpsParticipated: 6,
+        totalWins: 2,
+        avgFinalScore: 82.0,
+        avgReadiness: 85.5,
+        avgPricingCompetitiveness: 78.0,
+        reliabilityIndex: 33.3,
+        headlinePerformanceTier: "preferred" as const
+      },
+      {
+        supplierId: "demo-supplier-3",
+        supplierName: "TechBridge Communications",
+        organization: "TechBridge LLC",
+        totalRfpsParticipated: 5,
+        totalWins: 2,
+        avgFinalScore: 80.5,
+        avgReadiness: 83.0,
+        avgPricingCompetitiveness: 82.0,
+        reliabilityIndex: 40.0,
+        headlinePerformanceTier: "preferred" as const
+      }
+    ],
+    upcomingMilestones: [
+      {
+        date: new Date(now.getTime() + 5 * 24 * 60 * 60 * 1000).toISOString(),
+        milestone: "Q&A Window Closes",
+        rfpId: primaryRfp.id,
+        rfpTitle: primaryRfp.title
+      },
+      {
+        date: new Date(now.getTime() + 12 * 24 * 60 * 60 * 1000).toISOString(),
+        milestone: "Submission Deadline",
+        rfpId: primaryRfp.id,
+        rfpTitle: primaryRfp.title
+      },
+      {
+        date: new Date(now.getTime() + 18 * 24 * 60 * 60 * 1000).toISOString(),
+        milestone: "Award Date",
+        rfpId: "demo-rfp-crm",
+        rfpTitle: "Enterprise CRM System"
+      }
+    ],
+    spendSummary: {
+      totalBudgetAllRfps: 5400000,
+      totalAwardedSoFar: 2200000,
+      inFlightBudget: 3200000,
+      awardedCount: 5,
+      inFlightCount: 7
+    }
+  };
+
+  const portfolioMeta = {
+    version: 1,
+    lastGeneratedAt: new Date().toISOString(),
+    generatedUsingAI: false,
+    isDemo: true,
+    snapshotAgeMinutes: 0
+  };
+
+  // Update the demo company with portfolio data
+  await prisma.company.update({
+    where: { id: demoBuyerOrg.id },
+    data: {
+      portfolioSnapshot: portfolioSnapshot as any,
+      portfolioMeta: portfolioMeta as any
+    }
+  });
+
   return {
     demoBuyerUser,
     demoBuyerOrg,

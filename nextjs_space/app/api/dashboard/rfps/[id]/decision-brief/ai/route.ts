@@ -100,7 +100,7 @@ export async function POST(
         }
       } catch (aiError) {
         console.error('AI generation failed, using template-based narrative:', aiError);
-        enrichedNarrative = generateTemplateBased Narrative(snapshot);
+        enrichedNarrative = generateTemplateBasedNarrative(snapshot);
       }
     } else {
       // No OpenAI key, use template-based narrative

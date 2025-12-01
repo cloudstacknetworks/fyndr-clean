@@ -199,24 +199,24 @@ export default function DecisionBriefPage() {
 
   if (loading) {
     return (
-      <div className=\"flex items-center justify-center min-h-screen\">
-        <Loader2 className=\"w-8 h-8 animate-spin text-indigo-600\" />
+      <div className="flex items-center justify-center min-h-screen">
+        <Loader2 className="w-8 h-8 animate-spin text-indigo-600" />
       </div>
     );
   }
 
   if (error || !data) {
     return (
-      <div className=\"p-6\">
-        <div className=\"bg-red-50 border border-red-200 rounded-lg p-4\">
-          <div className=\"flex items-start space-x-3\">
-            <AlertTriangle className=\"w-5 h-5 text-red-600 flex-shrink-0 mt-0.5\" />
+      <div className="p-6">
+        <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+          <div className="flex items-start space-x-3">
+            <AlertTriangle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
             <div>
-              <h3 className=\"font-semibold text-red-900\">Error Loading Decision Brief</h3>
-              <p className=\"text-sm text-red-700 mt-1\">{error || 'Unable to load decision brief data'}</p>
+              <h3 className="font-semibold text-red-900">Error Loading Decision Brief</h3>
+              <p className="text-sm text-red-700 mt-1">{error || 'Unable to load decision brief data'}</p>
               <button
                 onClick={fetchDecisionBrief}
-                className=\"mt-3 text-sm text-red-600 hover:text-red-700 underline\"
+                className="mt-3 text-sm text-red-600 hover:text-red-700 underline"
               >
                 Try Again
               </button>
@@ -230,86 +230,86 @@ export default function DecisionBriefPage() {
   const { snapshot, meta } = data;
 
   return (
-    <div className=\"p-6 space-y-6\">
+    <div className="p-6 space-y-6">
       {/* Header */}
-      <div className=\"bg-white border border-gray-200 rounded-lg p-6\">
-        <div className=\"flex items-start justify-between mb-4\">
-          <div className=\"flex items-center space-x-3\">
+      <div className="bg-white border border-gray-200 rounded-lg p-6">
+        <div className="flex items-start justify-between mb-4">
+          <div className="flex items-center space-x-3">
             <Link href={`/dashboard/rfps/${rfpId}`}>
-              <button className=\"p-2 hover:bg-gray-100 rounded-lg transition-colors\">
-                <ArrowLeft className=\"w-5 h-5 text-gray-600\" />
+              <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+                <ArrowLeft className="w-5 h-5 text-gray-600" />
               </button>
             </Link>
             <div>
-              <h1 className=\"text-2xl font-bold text-gray-900\">Executive Decision Brief</h1>
-              <p className=\"text-sm text-gray-600 mt-1\">{snapshot.rfpTitle}</p>
+              <h1 className="text-2xl font-bold text-gray-900">Executive Decision Brief</h1>
+              <p className="text-sm text-gray-600 mt-1">{snapshot.rfpTitle}</p>
             </div>
           </div>
           <Option3Indicator />
         </div>
 
         {/* Meta Info */}
-        <div className=\"flex items-center space-x-6 text-sm text-gray-600\">
-          <div className=\"flex items-center space-x-2\">
-            <FileText className=\"w-4 h-4\" />
+        <div className="flex items-center space-x-6 text-sm text-gray-600">
+          <div className="flex items-center space-x-2">
+            <FileText className="w-4 h-4" />
             <span>Stage: {snapshot.rfpStage}</span>
           </div>
-          <div className=\"flex items-center space-x-2\">
-            <Clock className=\"w-4 h-4\" />
+          <div className="flex items-center space-x-2">
+            <Clock className="w-4 h-4" />
             <span>Generated: {new Date(snapshot.generatedAt).toLocaleString()}</span>
           </div>
           {snapshot.rfpBudget && (
-            <div className=\"flex items-center space-x-2\">
-              <TrendingUp className=\"w-4 h-4\" />
+            <div className="flex items-center space-x-2">
+              <TrendingUp className="w-4 h-4" />
               <span>Budget: ${snapshot.rfpBudget.toLocaleString()}</span>
             </div>
           )}
         </div>
 
         {/* Action Buttons */}
-        <div className=\"flex items-center space-x-3 mt-4\">
+        <div className="flex items-center space-x-3 mt-4">
           <button
             onClick={handleRegenerateSummary}
             disabled={regenerating || !meta.canGenerateAI}
-            className=\"flex items-center space-x-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors\"
+            className="flex items-center space-x-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
             {regenerating ? (
-              <Loader2 className=\"w-4 h-4 animate-spin\" />
+              <Loader2 className="w-4 h-4 animate-spin" />
             ) : (
-              <RefreshCw className=\"w-4 h-4\" />
+              <RefreshCw className="w-4 h-4" />
             )}
             <span>{regenerating ? 'Regenerating...' : 'Regenerate Summary'}</span>
           </button>
 
           <button
             onClick={handleDownloadPDF}
-            className=\"flex items-center space-x-2 px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors\"
+            className="flex items-center space-x-2 px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
           >
-            <Download className=\"w-4 h-4\" />
+            <Download className="w-4 h-4" />
             <span>Download PDF</span>
           </button>
 
           <Link href={`/dashboard/rfps/${rfpId}/compare`}>
-            <button className=\"flex items-center space-x-2 px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors\"
+            <button className="flex items-center space-x-2 px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
             >
-              <ExternalLink className=\"w-4 h-4\" />
+              <ExternalLink className="w-4 h-4" />
               <span>Open Comparison</span>
             </button>
           </Link>
 
           <Link href={`/dashboard/rfps/${rfpId}/activity`}>
-            <button className=\"flex items-center space-x-2 px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors\"
+            <button className="flex items-center space-x-2 px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
             >
-              <FileText className=\"w-4 h-4\" />
+              <FileText className="w-4 h-4" />
               <span>Activity Log</span>
             </button>
           </Link>
         </div>
 
         {!meta.hasAiNarrative && (
-          <div className=\"mt-4 bg-blue-50 border border-blue-200 rounded-lg p-3 flex items-start space-x-2\">
-            <Info className=\"w-4 h-4 text-blue-600 flex-shrink-0 mt-0.5\" />
-            <p className=\"text-sm text-blue-800\">
+          <div className="mt-4 bg-blue-50 border border-blue-200 rounded-lg p-3 flex items-start space-x-2">
+            <Info className="w-4 h-4 text-blue-600 flex-shrink-0 mt-0.5" />
+            <p className="text-sm text-blue-800">
               This brief contains template-based narratives. Click "Regenerate Summary" to generate AI-powered insights.
             </p>
           </div>
@@ -317,32 +317,32 @@ export default function DecisionBriefPage() {
       </div>
 
       {/* 1. Recommendation Card */}
-      <div className=\"bg-white border border-gray-200 rounded-lg p-6\">
-        <div className=\"flex items-center space-x-2 mb-4\">
-          <CheckCircle className=\"w-5 h-5 text-indigo-600\" />
-          <h2 className=\"text-lg font-semibold text-gray-900\">Recommendation</h2>
+      <div className="bg-white border border-gray-200 rounded-lg p-6">
+        <div className="flex items-center space-x-2 mb-4">
+          <CheckCircle className="w-5 h-5 text-indigo-600" />
+          <h2 className="text-lg font-semibold text-gray-900">Recommendation</h2>
         </div>
 
         <div className={`border-l-4 p-4 rounded-r-lg ${getRecommendationColor(snapshot.coreRecommendation.recommendationType)}`}>
-          <div className=\"flex items-center justify-between mb-2\">
-            <h3 className=\"font-semibold text-lg\">
+          <div className="flex items-center justify-between mb-2">
+            <h3 className="font-semibold text-lg">
               {snapshot.coreRecommendation.recommendationType.replace('_', ' ').toUpperCase()}
             </h3>
-            <span className=\"text-sm font-medium\">
+            <span className="text-sm font-medium">
               Confidence: {snapshot.coreRecommendation.confidenceScore}%
             </span>
           </div>
 
           {snapshot.coreRecommendation.recommendedSupplierName && (
-            <p className=\"font-medium mb-2\">
+            <p className="font-medium mb-2">
               Recommended Supplier: {snapshot.coreRecommendation.recommendedSupplierName}
             </p>
           )}
 
-          <ul className=\"space-y-1 text-sm\">
+          <ul className="space-y-1 text-sm">
             {snapshot.coreRecommendation.primaryRationaleBullets.map((bullet, index) => (
-              <li key={index} className=\"flex items-start space-x-2\">
-                <span className=\"flex-shrink-0 mt-1\">•</span>
+              <li key={index} className="flex items-start space-x-2">
+                <span className="flex-shrink-0 mt-1">•</span>
                 <span>{bullet}</span>
               </li>
             ))}
@@ -351,26 +351,26 @@ export default function DecisionBriefPage() {
       </div>
 
       {/* 2. Supplier Summary Grid */}
-      <div className=\"bg-white border border-gray-200 rounded-lg p-6\">
-        <div className=\"flex items-center space-x-2 mb-4\">
-          <TrendingUp className=\"w-5 h-5 text-indigo-600\" />
-          <h2 className=\"text-lg font-semibold text-gray-900\">Supplier Summary</h2>
+      <div className="bg-white border border-gray-200 rounded-lg p-6">
+        <div className="flex items-center space-x-2 mb-4">
+          <TrendingUp className="w-5 h-5 text-indigo-600" />
+          <h2 className="text-lg font-semibold text-gray-900">Supplier Summary</h2>
         </div>
 
         {snapshot.supplierSummaries.length === 0 ? (
-          <p className=\"text-sm text-gray-600\">No supplier responses submitted yet.</p>
+          <p className="text-sm text-gray-600">No supplier responses submitted yet.</p>
         ) : (
-          <div className=\"grid grid-cols-1 md:grid-cols-2 gap-4\">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {snapshot.supplierSummaries.map((supplier) => (
               <div
                 key={supplier.supplierId}
-                className=\"border border-gray-200 rounded-lg p-4 hover:border-indigo-300 transition-colors\"
+                className="border border-gray-200 rounded-lg p-4 hover:border-indigo-300 transition-colors"
               >
-                <div className=\"flex items-start justify-between mb-3\">
+                <div className="flex items-start justify-between mb-3">
                   <div>
-                    <h3 className=\"font-semibold text-gray-900\">{supplier.supplierName}</h3>
+                    <h3 className="font-semibold text-gray-900">{supplier.supplierName}</h3>
                     {supplier.organization && (
-                      <p className=\"text-xs text-gray-600\">{supplier.organization}</p>
+                      <p className="text-xs text-gray-600">{supplier.organization}</p>
                     )}
                   </div>
                   <span className={`px-2 py-1 rounded text-xs font-medium ${getRiskColor(supplier.headlineRiskLevel)}`}>
@@ -378,36 +378,36 @@ export default function DecisionBriefPage() {
                   </span>
                 </div>
 
-                <div className=\"grid grid-cols-2 gap-3 text-sm\">
+                <div className="grid grid-cols-2 gap-3 text-sm">
                   <div>
-                    <span className=\"text-gray-600\">Final Score:</span>
-                    <p className=\"font-semibold text-gray-900\">{supplier.finalScore || 'N/A'}</p>
+                    <span className="text-gray-600">Final Score:</span>
+                    <p className="font-semibold text-gray-900">{supplier.finalScore || 'N/A'}</p>
                   </div>
                   <div>
-                    <span className=\"text-gray-600\">Readiness:</span>
-                    <p className=\"font-semibold\">
+                    <span className="text-gray-600">Readiness:</span>
+                    <p className="font-semibold">
                       <span className={`px-2 py-0.5 rounded text-xs ${getReadinessColor(supplier.readinessTier)}`}>
                         {supplier.readinessTier || 'N/A'}
                       </span>
                     </p>
                   </div>
                   <div>
-                    <span className=\"text-gray-600\">Pricing:</span>
-                    <p className=\"font-semibold text-gray-900\">{supplier.pricingPosition || 'N/A'}</p>
+                    <span className="text-gray-600">Pricing:</span>
+                    <p className="font-semibold text-gray-900">{supplier.pricingPosition || 'N/A'}</p>
                   </div>
                   <div>
-                    <span className=\"text-gray-600\">Speed:</span>
-                    <p className=\"font-semibold text-gray-900\">
+                    <span className="text-gray-600">Speed:</span>
+                    <p className="font-semibold text-gray-900">
                       {supplier.submissionSpeedDays !== null ? `${supplier.submissionSpeedDays} days` : 'N/A'}
                     </p>
                   </div>
                 </div>
 
                 {supplier.reliabilityIndex !== null && (
-                  <div className=\"mt-3 pt-3 border-t border-gray-200\">
-                    <div className=\"flex items-center justify-between text-xs\">
-                      <span className=\"text-gray-600\">Reliability Index:</span>
-                      <span className=\"font-semibold text-indigo-600\">{supplier.reliabilityIndex}/100</span>
+                  <div className="mt-3 pt-3 border-t border-gray-200">
+                    <div className="flex items-center justify-between text-xs">
+                      <span className="text-gray-600">Reliability Index:</span>
+                      <span className="font-semibold text-indigo-600">{supplier.reliabilityIndex}/100</span>
                     </div>
                   </div>
                 )}
@@ -418,41 +418,41 @@ export default function DecisionBriefPage() {
       </div>
 
       {/* 3. Risk Summary */}
-      <div className=\"bg-white border border-gray-200 rounded-lg p-6\">
-        <div className=\"flex items-center space-x-2 mb-4\">
-          <Shield className=\"w-5 h-5 text-indigo-600\" />
-          <h2 className=\"text-lg font-semibold text-gray-900\">Risk & Mitigation</h2>
+      <div className="bg-white border border-gray-200 rounded-lg p-6">
+        <div className="flex items-center space-x-2 mb-4">
+          <Shield className="w-5 h-5 text-indigo-600" />
+          <h2 className="text-lg font-semibold text-gray-900">Risk & Mitigation</h2>
         </div>
 
         <div className={`border-l-4 p-4 rounded-r-lg mb-4 ${getRiskColor(snapshot.riskSummary.overallRiskLevel)}`}>
-          <p className=\"font-semibold mb-2\">
+          <p className="font-semibold mb-2">
             Overall Risk Level: {snapshot.riskSummary.overallRiskLevel.toUpperCase()}
           </p>
 
-          <div className=\"space-y-3\">
+          <div className="space-y-3">
             <div>
-              <h3 className=\"font-medium text-sm mb-1\">Key Risks:</h3>
-              <ul className=\"space-y-1 text-sm\">
+              <h3 className="font-medium text-sm mb-1">Key Risks:</h3>
+              <ul className="space-y-1 text-sm">
                 {snapshot.riskSummary.keyRisks.length > 0 ? (
                   snapshot.riskSummary.keyRisks.map((risk, index) => (
-                    <li key={index} className=\"flex items-start space-x-2\">
-                      <AlertTriangle className=\"w-3 h-3 flex-shrink-0 mt-1\" />
+                    <li key={index} className="flex items-start space-x-2">
+                      <AlertTriangle className="w-3 h-3 flex-shrink-0 mt-1" />
                       <span>{risk}</span>
                     </li>
                   ))
                 ) : (
-                  <li className=\"text-sm\">No significant risks identified</li>
+                  <li className="text-sm">No significant risks identified</li>
                 )}
               </ul>
             </div>
 
             {snapshot.riskSummary.mitigationActions.length > 0 && (
               <div>
-                <h3 className=\"font-medium text-sm mb-1\">Mitigation Actions:</h3>
-                <ul className=\"space-y-1 text-sm\">
+                <h3 className="font-medium text-sm mb-1">Mitigation Actions:</h3>
+                <ul className="space-y-1 text-sm">
                   {snapshot.riskSummary.mitigationActions.map((action, index) => (
-                    <li key={index} className=\"flex items-start space-x-2\">
-                      <CheckCircle className=\"w-3 h-3 flex-shrink-0 mt-1\" />
+                    <li key={index} className="flex items-start space-x-2">
+                      <CheckCircle className="w-3 h-3 flex-shrink-0 mt-1" />
                       <span>{action}</span>
                     </li>
                   ))}
@@ -464,23 +464,23 @@ export default function DecisionBriefPage() {
       </div>
 
       {/* 4. Timeline Summary */}
-      <div className=\"bg-white border border-gray-200 rounded-lg p-6\">
-        <div className=\"flex items-center space-x-2 mb-4\">
-          <Clock className=\"w-5 h-5 text-indigo-600\" />
-          <h2 className=\"text-lg font-semibold text-gray-900\">Timeline & Next Steps</h2>
+      <div className="bg-white border border-gray-200 rounded-lg p-6">
+        <div className="flex items-center space-x-2 mb-4">
+          <Clock className="w-5 h-5 text-indigo-600" />
+          <h2 className="text-lg font-semibold text-gray-900">Timeline & Next Steps</h2>
         </div>
 
-        <div className=\"space-y-4\">
+        <div className="space-y-4">
           <div>
-            <h3 className=\"font-medium text-sm text-gray-700 mb-2\">Upcoming Milestones:</h3>
+            <h3 className="font-medium text-sm text-gray-700 mb-2">Upcoming Milestones:</h3>
             {snapshot.timelineSummary.upcomingMilestones.length > 0 ? (
-              <div className=\"space-y-2\">
+              <div className="space-y-2">
                 {snapshot.timelineSummary.upcomingMilestones.map((milestone, index) => (
-                  <div key={index} className=\"flex items-center justify-between text-sm border-b border-gray-100 pb-2\">
-                    <span className=\"font-medium\">{milestone.label}</span>
-                    <div className=\"flex items-center space-x-3\">
+                  <div key={index} className="flex items-center justify-between text-sm border-b border-gray-100 pb-2">
+                    <span className="font-medium">{milestone.label}</span>
+                    <div className="flex items-center space-x-3">
                       {milestone.date && (
-                        <span className=\"text-gray-600\">
+                        <span className="text-gray-600">
                           {new Date(milestone.date).toLocaleDateString()}
                         </span>
                       )}
@@ -501,16 +501,16 @@ export default function DecisionBriefPage() {
                 ))}
               </div>
             ) : (
-              <p className=\"text-sm text-gray-600\">No upcoming milestones scheduled</p>
+              <p className="text-sm text-gray-600">No upcoming milestones scheduled</p>
             )}
           </div>
 
           <div>
-            <h3 className=\"font-medium text-sm text-gray-700 mb-2\">Suggested Next Steps:</h3>
-            <ul className=\"space-y-1 text-sm\">
+            <h3 className="font-medium text-sm text-gray-700 mb-2">Suggested Next Steps:</h3>
+            <ul className="space-y-1 text-sm">
               {snapshot.timelineSummary.suggestedNextSteps.map((step, index) => (
-                <li key={index} className=\"flex items-start space-x-2\">
-                  <span className=\"flex-shrink-0 mt-1\">→</span>
+                <li key={index} className="flex items-start space-x-2">
+                  <span className="flex-shrink-0 mt-1">→</span>
                   <span>{step}</span>
                 </li>
               ))}
@@ -520,29 +520,29 @@ export default function DecisionBriefPage() {
       </div>
 
       {/* 5. AI Narrative Panel */}
-      <div className=\"bg-white border border-gray-200 rounded-lg p-6\">
-        <div className=\"flex items-center justify-between mb-4\">
-          <div className=\"flex items-center space-x-2\">
-            <Sparkles className=\"w-5 h-5 text-indigo-600\" />
-            <h2 className=\"text-lg font-semibold text-gray-900\">AI Narrative</h2>
+      <div className="bg-white border border-gray-200 rounded-lg p-6">
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center space-x-2">
+            <Sparkles className="w-5 h-5 text-indigo-600" />
+            <h2 className="text-lg font-semibold text-gray-900">AI Narrative</h2>
             {snapshot.generatedUsingAI && (
-              <span className=\"px-2 py-1 bg-purple-100 text-purple-800 text-xs font-medium rounded\">
+              <span className="px-2 py-1 bg-purple-100 text-purple-800 text-xs font-medium rounded">
                 AI Generated
               </span>
             )}
           </div>
           <button
             onClick={() => handleCopySection('executive', snapshot.narrative.executiveSummary)}
-            className=\"flex items-center space-x-1 text-sm text-gray-600 hover:text-gray-900\"
+            className="flex items-center space-x-1 text-sm text-gray-600 hover:text-gray-900"
           >
             {copiedSection === 'executive' ? (
               <>
-                <CheckCircle className=\"w-4 h-4 text-green-600\" />
-                <span className=\"text-green-600\">Copied!</span>
+                <CheckCircle className="w-4 h-4 text-green-600" />
+                <span className="text-green-600">Copied!</span>
               </>
             ) : (
               <>
-                <Copy className=\"w-4 h-4\" />
+                <Copy className="w-4 h-4" />
                 <span>Copy</span>
               </>
             )}
@@ -550,14 +550,14 @@ export default function DecisionBriefPage() {
         </div>
 
         {/* Executive Summary (Always Visible) */}
-        <div className=\"bg-gray-50 border border-gray-200 rounded-lg p-4\">
-          <h3 className=\"font-medium text-sm text-gray-700 mb-2\">Executive Summary</h3>
-          <p className=\"text-sm text-gray-900 whitespace-pre-wrap\">{snapshot.narrative.executiveSummary}</p>
+        <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+          <h3 className="font-medium text-sm text-gray-700 mb-2">Executive Summary</h3>
+          <p className="text-sm text-gray-900 whitespace-pre-wrap">{snapshot.narrative.executiveSummary}</p>
         </div>
 
         {/* Persona-Specific Tabs (Option 3 Upgrade) */}
-        <div className=\"mt-4\">
-          <div className=\"flex space-x-1 border-b border-gray-200 mb-4\">
+        <div className="mt-4">
+          <div className="flex space-x-1 border-b border-gray-200 mb-4">
             {['executive', 'procurement', 'it', 'finance'].map((tab) => (
               <button
                 key={tab}
@@ -570,15 +570,15 @@ export default function DecisionBriefPage() {
                 } ${tab !== 'executive' ? 'opacity-50 cursor-not-allowed' : ''}`}
               >
                 {tab.charAt(0).toUpperCase() + tab.slice(1)}
-                {tab !== 'executive' && <span className=\"ml-1 text-xs\">(Option 3)</span>}
+                {tab !== 'executive' && <span className="ml-1 text-xs">(Option 3)</span>}
               </button>
             ))}
           </div>
 
           {activeTab !== 'executive' && (
-            <div className=\"bg-amber-50 border border-amber-200 rounded-lg p-4 text-center\">
-              <Info className=\"w-5 h-5 text-amber-600 mx-auto mb-2\" />
-              <p className=\"text-sm text-amber-800\">
+            <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 text-center">
+              <Info className="w-5 h-5 text-amber-600 mx-auto mb-2" />
+              <p className="text-sm text-amber-800">
                 Persona-specific narratives are available in Option 3 upgrade. Contact your sales representative for more information.
               </p>
             </div>

@@ -3,7 +3,7 @@
 import { signOut } from 'next-auth/react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { LogOut, FileText, Building2, Users, Settings, LayoutDashboard, ChevronLeft, ChevronRight, Search } from 'lucide-react';
+import { LogOut, FileText, Building2, Users, Settings, LayoutDashboard, ChevronLeft, ChevronRight, Search, TrendingUp } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import GlobalSearch from './global-search';
 import CommandPalette from './command-palette';
@@ -97,6 +97,7 @@ export default function DashboardLayout({ session, children }: DashboardLayoutPr
 
   const sidebarNavigation = [
     { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
+    { name: 'Portfolio', href: '/dashboard/portfolio', icon: TrendingUp },
     { name: 'RFPs', href: '/dashboard/rfps', icon: FileText },
     { name: 'Companies', href: '/dashboard/companies', icon: Building2 },
     { name: 'Suppliers', href: '/dashboard/suppliers', icon: Users },
@@ -105,6 +106,7 @@ export default function DashboardLayout({ session, children }: DashboardLayoutPr
 
   const topNavigation = [
     { name: 'Dashboard', href: '/dashboard' },
+    { name: 'Portfolio', href: '/dashboard/portfolio' },
     { name: 'RFPs', href: '/dashboard/rfps' },
     { name: 'Companies', href: '/dashboard/companies' },
     { name: 'Suppliers', href: '/dashboard/suppliers' },

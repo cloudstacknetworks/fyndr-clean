@@ -99,8 +99,9 @@ Return ONLY valid JSON, no markdown formatting.`;
       data: {
         rfpId: response.rfpId,
         userId: session.user.id,
+        actorRole: "BUYER",
         eventType: "READINESS_AI_GENERATED",
-        description: `AI readiness insights generated for ${response.supplierContact.name}`
+        summary: `AI readiness insights generated for ${response.supplierContact.name}`
       }
     });
 

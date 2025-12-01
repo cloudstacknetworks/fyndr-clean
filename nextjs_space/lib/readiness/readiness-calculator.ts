@@ -54,7 +54,7 @@ export async function calculateDetailedReadiness(
     throw new Error("Response not found");
   }
 
-  const structuredData = response.structuredData as any || {};
+  const structuredData = (response as any).structuredData || {};
   
   // Calculate category-by-category coverage
   const categories: CategoryBreakdown[] = [

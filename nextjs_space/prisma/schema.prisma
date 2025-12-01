@@ -24,12 +24,16 @@ model User {
 }
 
 model Company {
-  id          String   @id @default(uuid())
-  name        String
-  description String?
-  createdAt   DateTime @default(now())
-  isDemo      Boolean  @default(false)
-  rfps        RFP[]
+  id                String   @id @default(uuid())
+  name              String
+  description       String?
+  createdAt         DateTime @default(now())
+  isDemo            Boolean  @default(false)
+  rfps              RFP[]
+  
+  // STEP 35: Portfolio Overview & Multi-RFP Insights
+  portfolioSnapshot Json?    // Cached portfolio-wide metrics snapshot
+  portfolioMeta     Json?    // Metadata about snapshot generation
 }
 
 model Supplier {
