@@ -45,6 +45,32 @@ export async function createDemoScenarioData(): Promise<DemoScenario> {
 
   // 4. Create Primary RFP
   const now = new Date();
+  // STEP 36: Timeline configuration for demo RFP
+  const timelineConfig = {
+    version: 1,
+    timezone: "America/New_York",
+    keyDates: {
+      invitationSentAt: new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000).toISOString(),
+      qaOpenAt: new Date(now.getTime() - 20 * 24 * 60 * 60 * 1000).toISOString(),
+      qaCloseAt: new Date(now.getTime() - 10 * 24 * 60 * 60 * 1000).toISOString(),
+      submissionDeadlineAt: new Date(now.getTime() + 15 * 24 * 60 * 60 * 1000).toISOString(),
+      evaluationStartAt: new Date(now.getTime() + 15 * 24 * 60 * 60 * 1000).toISOString(),
+      demoWindowStartAt: new Date(now.getTime() + 16 * 24 * 60 * 60 * 1000).toISOString(),
+      demoWindowEndAt: new Date(now.getTime() + 25 * 24 * 60 * 60 * 1000).toISOString(),
+      awardTargetAt: new Date(now.getTime() + 35 * 24 * 60 * 60 * 1000).toISOString(),
+    },
+    automation: {
+      enableQaWindowAutoToggle: true,
+      enableSubmissionAutoLock: true,
+      enableDemoAutoWindow: true,
+      enableAwardTargetReminder: true,
+      reminderRules: {
+        submissionReminderDaysBefore: 3,
+        demoReminderDaysBefore: 2,
+      },
+    },
+  };
+
   const primaryRfp = await prisma.rFP.create({
     data: {
       title: "Unified Communications & Contact Center RFP – 2025",
@@ -69,7 +95,8 @@ export async function createDemoScenarioData(): Promise<DemoScenario> {
       enteredStageAt: new Date(now.getTime() - 5 * 24 * 60 * 60 * 1000),
       stageSlaDays: 14,
       opportunityScore: 85,
-      isDemo: true
+      isDemo: true,
+      timelineConfig: timelineConfig as any,
     }
   });
 

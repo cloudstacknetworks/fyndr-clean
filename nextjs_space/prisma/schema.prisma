@@ -21,6 +21,7 @@ model User {
   notifications          Notification[]
   notificationPreference NotificationPreference?
   activityLogs           ActivityLog[]
+  timelineEventsCreated  RfpTimelineEvent[]
 }
 
 model Company {
@@ -115,6 +116,10 @@ model RFP {
   // Demo Mode Flag (STEP 32)
   isDemo Boolean @default(false)
 
+  // STEP 36: Timeline Orchestration Engine (pre-award)
+  timelineConfig        Json?  // Buyer-defined timeline + automation rules
+  timelineStateSnapshot Json?  // Cached current state + next events
+
   user                      User                       @relation(fields: [userId], references: [id])
   userId                    String
   company                   Company                    @relation(fields: [companyId], references: [id])
@@ -130,6 +135,7 @@ model RFP {
   supplierQuestions         SupplierQuestion[]
   supplierBroadcastMessages SupplierBroadcastMessage[]
   activityLogs              ActivityLog[]
+  timelineEvents            RfpTimelineEvent[]
   // Note: PostgreSQL full-text search implemented via case-insensitive contains queries
 
   @@index([title])
@@ -193,6 +199,19 @@ model StageTask {
 
   @@index([rfpId])
   @@index([stage])
+}
+
+model RfpTimelineEvent {
+  id          String   @id @default(cuid())
+  rfpId       String
+  rfp         RFP      @relation(fields: [rfpId], references: [id], onDelete: Cascade)
+  eventType   String   // e.g., "Q_AND_A_OPENED", "Q_AND_A_CLOSED", "SUBMISSIONS_LOCKED", "DEMO_WINDOW_OPENED", "AWARD_TARGET_REACHED"
+  occurredAt  DateTime @default(now())
+  payload     Json?
+  createdById String?  // user that triggered or system
+  createdBy   User?    @relation(fields: [createdById], references: [id], onDelete: SetNull)
+
+  @@index([rfpId, occurredAt])
 }
 
 model SupplierContact {

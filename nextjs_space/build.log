@@ -1,0 +1,166 @@
+
+> fyndr@0.1.0 build
+> next build
+
+  ▲ Next.js 14.2.28
+  - Environments: .env
+  - Experiments (use with caution):
+    · outputFileTracingRoot
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully
+   Skipping linting
+   Checking validity of types ...
+
+
+===== TS errors =====
+
+[Test Mode] ./app/api/dashboard/rfps/[id]/responses/[supplierContactId]/readiness/ai/route.ts:99:7
+Type error: Type '{ rfpId: string; userId: string; eventType: string; summary: string; }' is not assignable to type '(Without<ActivityLogCreateInput, ActivityLogUncheckedCreateInput> & ActivityLogUncheckedCreateInput) | (Without<...> & ActivityLogCreateInput)'.
+  Type '{ rfpId: string; userId: string; eventType: string; summary: string; }' is not assignable to type 'Without<ActivityLogCreateInput, ActivityLogUncheckedCreateInput> & ActivityLogUncheckedCreateInput'.
+    Property 'actorRole' is missing in type '{ rfpId: string; userId: string; eventType: string; summary: string; }' but required in type 'ActivityLogUncheckedCreateInput'.
+
+[0m [90m  97 |[39m     [90m// Log activity[39m[0m
+[0m [90m  98 |[39m     [36mawait[39m prisma[33m.[39mactivityLog[33m.[39mcreate({[0m
+[0m[31m[1m>[22m[39m[90m  99 |[39m       data[33m:[39m {[0m
+[0m [90m     |[39m       [31m[1m^[22m[39m[0m
+[0m [90m 100 |[39m         rfpId[33m:[39m response[33m.[39mrfpId[33m,[39m[0m
+[0m [90m 101 |[39m         userId[33m:[39m session[33m.[39muser[33m.[39mid[33m,[39m[0m
+[0m [90m 102 |[39m         eventType[33m:[39m [32m"READINESS_AI_GENERATED"[39m[33m,[39m[0m
+
+[Test Mode] ./app/api/dashboard/rfps/[id]/responses/[supplierContactId]/readiness/run/route.ts:36:7
+Type error: Type '{ rfpId: string; userId: string; eventType: string; summary: string; }' is not assignable to type '(Without<ActivityLogCreateInput, ActivityLogUncheckedCreateInput> & ActivityLogUncheckedCreateInput) | (Without<...> & ActivityLogCreateInput)'.
+  Type '{ rfpId: string; userId: string; eventType: string; summary: string; }' is not assignable to type 'Without<ActivityLogCreateInput, ActivityLogUncheckedCreateInput> & ActivityLogUncheckedCreateInput'.
+    Property 'actorRole' is missing in type '{ rfpId: string; userId: string; eventType: string; summary: string; }' but required in type 'ActivityLogUncheckedCreateInput'.
+
+[0m [90m 34 |[39m     [90m// Log activity[39m[0m
+[0m [90m 35 |[39m     [36mawait[39m prisma[33m.[39mactivityLog[33m.[39mcreate({[0m
+[0m[31m[1m>[22m[39m[90m 36 |[39m       data[33m:[39m {[0m
+[0m [90m    |[39m       [31m[1m^[22m[39m[0m
+[0m [90m 37 |[39m         rfpId[33m:[39m params[33m.[39mid[33m,[39m[0m
+[0m [90m 38 |[39m         userId[33m:[39m session[33m.[39muser[33m.[39mid[33m,[39m[0m
+[0m [90m 39 |[39m         eventType[33m:[39m [32m"READINESS_ANALYZED"[39m[33m,[39m[0m
+
+[Test Mode] ./lib/decision-brief/composer.ts:131:16
+Type error: Conversion of type 'string | number | boolean | JsonObject | JsonArray' to type 'DecisionBriefSnapshot' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first.
+  Type 'JsonValue[]' is missing the following properties from type 'DecisionBriefSnapshot': rfpId, rfpTitle, rfpOwnerName, rfpBudget, and 12 more.
+
+[0m [90m 129 |[39m[0m
+[0m [90m 130 |[39m       [36mif[39m (minutesSinceGeneration [33m<[39m freshnessThresholdMinutes) {[0m
+[0m[31m[1m>[22m[39m[90m 131 |[39m         [36mreturn[39m rfp[33m.[39mdecisionBriefSnapshot [36mas[39m [33mDecisionBriefSnapshot[39m[33m;[39m[0m
+[0m [90m     |[39m                [31m[1m^[22m[39m[0m
+[0m [90m 132 |[39m       }[0m
+[0m [90m 133 |[39m     }[0m
+[0m [90m 134 |[39m[0m
+
+[Test Mode] ./lib/decision-brief/composer.ts:141:9
+Type error: Type '{ supplierContact: { rfpId: string; }; responseStatus: string; }' is not assignable to type 'SupplierResponseWhereInput'.
+  Object literal may only specify known properties, and 'responseStatus' does not exist in type 'SupplierResponseWhereInput'.
+
+[0m [90m 139 |[39m           rfpId[33m:[39m rfpId[33m,[39m[0m
+[0m [90m 140 |[39m         }[33m,[39m[0m
+[0m[31m[1m>[22m[39m[90m 141 |[39m         responseStatus[33m:[39m [32m'SUBMITTED'[39m[33m,[39m[0m
+[0m [90m     |[39m         [31m[1m^[22m[39m[0m
+[0m [90m 142 |[39m       }[33m,[39m[0m
+[0m [90m 143 |[39m       include[33m:[39m {[0m
+[0m [90m 144 |[39m         supplierContact[33m:[39m {[0m
+
+[Test Mode] ./lib/decision-brief/composer.ts:164:34
+Type error: Property 'supplierContact' does not exist on type '{ status: SupplierResponseStatus; id: string; createdAt: Date; isDemo: boolean; submittedAt: Date | null; rfpId: string; supplierContactId: string; ... 29 more ...; requirementsCoverage: number | null; }'. Did you mean 'supplierContactId'?
+
+[0m [90m 162 |[39m       [0m
+[0m [90m 163 |[39m       [90m// Calculate submission speed[39m[0m
+[0m[31m[1m>[22m[39m[90m 164 |[39m       [36mconst[39m invitedAt [33m=[39m response[33m.[39msupplierContact[33m.[39minvitedAt[33m;[39m[0m
+[0m [90m     |[39m                                  [31m[1m^[22m[39m[0m
+[0m [90m 165 |[39m       [36mconst[39m submittedAt [33m=[39m response[33m.[39msubmittedAt[33m;[39m[0m
+[0m [90m 166 |[39m       [36mlet[39m submissionSpeedDays [33m=[39m [36mnull[39m[33m;[39m[0m
+[0m [90m 167 |[39m       [36mif[39m (invitedAt [33m&&[39m submittedAt) {[0m
+
+[Test Mode] ./lib/decision-brief/composer.ts:181:32
+Type error: Property 'supplierContact' does not exist on type '{ status: SupplierResponseStatus; id: string; createdAt: Date; isDemo: boolean; submittedAt: Date | null; rfpId: string; supplierContactId: string; ... 29 more ...; requirementsCoverage: number | null; }'. Did you mean 'supplierContactId'?
+
+[0m [90m 179 |[39m       [36mreturn[39m {[0m
+[0m [90m 180 |[39m         supplierId[33m:[39m response[33m.[39mid[33m,[39m[0m
+[0m[31m[1m>[22m[39m[90m 181 |[39m         supplierName[33m:[39m response[33m.[39msupplierContact[33m.[39mname[33m,[39m[0m
+[0m [90m     |[39m                                [31m[1m^[22m[39m[0m
+[0m [90m 182 |[39m         organization[33m:[39m response[33m.[39msupplierContact[33m.[39morganization[33m,[39m[0m
+[0m [90m 183 |[39m         finalScore[33m,[39m[0m
+[0m [90m 184 |[39m         readinessScore[33m,[39m[0m
+
+[Test Mode] ./lib/decision-brief/composer.ts:182:32
+Type error: Property 'supplierContact' does not exist on type '{ status: SupplierResponseStatus; id: string; createdAt: Date; isDemo: boolean; submittedAt: Date | null; rfpId: string; supplierContactId: string; ... 29 more ...; requirementsCoverage: number | null; }'. Did you mean 'supplierContactId'?
+
+[0m [90m 180 |[39m         supplierId[33m:[39m response[33m.[39mid[33m,[39m[0m
+[0m [90m 181 |[39m         supplierName[33m:[39m response[33m.[39msupplierContact[33m.[39mname[33m,[39m[0m
+[0m[31m[1m>[22m[39m[90m 182 |[39m         organization[33m:[39m response[33m.[39msupplierContact[33m.[39morganization[33m,[39m[0m
+[0m [90m     |[39m                                [31m[1m^[22m[39m[0m
+[0m [90m 183 |[39m         finalScore[33m,[39m[0m
+[0m [90m 184 |[39m         readinessScore[33m,[39m[0m
+[0m [90m 185 |[39m         readinessTier[33m,[39m[0m
+
+[Test Mode] ./lib/portfolio/portfolio-composer.ts:178:23
+Type error: Conversion of type 'string | number | boolean | JsonObject | JsonArray' to type 'PortfolioSnapshot' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first.
+  Type 'JsonValue[]' is missing the following properties from type 'PortfolioSnapshot': companyId, asOf, generatedUsingAI, version, and 8 more.
+
+[0m [90m 176 |[39m           [90m// Return cached snapshot[39m[0m
+[0m [90m 177 |[39m           [36mreturn[39m {[0m
+[0m[31m[1m>[22m[39m[90m 178 |[39m             snapshot[33m:[39m company[33m.[39mportfolioSnapshot [36mas[39m [33mPortfolioSnapshot[39m[33m,[39m[0m
+[0m [90m     |[39m                       [31m[1m^[22m[39m[0m
+[0m [90m 179 |[39m             meta[33m:[39m {[0m
+[0m [90m 180 |[39m               [33m...[39mmeta[33m,[39m[0m
+[0m [90m 181 |[39m               snapshotAgeMinutes[33m:[39m [33mMath[39m[33m.[39mfloor(ageMinutes)[33m,[39m[0m
+
+[Test Mode] ./lib/portfolio/portfolio-composer.ts:323:36
+Type error: Property 'supplierContact' does not exist on type '{ supplierResponse: { submittedAt: Date | null; comparisonScore: number | null; riskFlags: JsonValue; readinessScore: number | null; } | null; } & { name: string; ... 20 more ...; reliabilityIndex: number | null; }'.
+
+[0m [90m 321 |[39m     [36mfor[39m ([36mconst[39m rfp [36mof[39m rfps) {[0m
+[0m [90m 322 |[39m       [36mfor[39m ([36mconst[39m contact [36mof[39m rfp[33m.[39msupplierContacts) {[0m
+[0m[31m[1m>[22m[39m[90m 323 |[39m         [36mconst[39m supplierId [33m=[39m contact[33m.[39msupplierContact[33m?[39m[33m.[39mid [33m||[39m contact[33m.[39mid[33m;[39m[0m
+[0m [90m     |[39m                                    [31m[1m^[22m[39m[0m
+[0m [90m 324 |[39m         [36mconst[39m supplierName [33m=[39m contact[33m.[39mname[33m;[39m[0m
+[0m [90m 325 |[39m         [36mconst[39m org [33m=[39m contact[33m.[39morganization [33m||[39m undefined[33m;[39m[0m
+[0m [90m 326 |[39m[0m
+
+[Test Mode] ./lib/portfolio/portfolio-composer.ts:357:11
+Type error: Type '{ supplierId: string; supplierName: string; organization: string | undefined; totalRfpsParticipated: number; totalWins: number; avgFinalScore: number | undefined; avgReadiness: number | undefined; reliabilityIndex: number | undefined; headlinePerformanceTier: string; }[]' is not assignable to type 'PortfolioSupplierPortfolioSummary[]'.
+  Type '{ supplierId: string; supplierName: string; organization: string | undefined; totalRfpsParticipated: number; totalWins: number; avgFinalScore: number | undefined; avgReadiness: number | undefined; reliabilityIndex: number | undefined; headlinePerformanceTier: string; }' is not assignable to type 'PortfolioSupplierPortfolioSummary'.
+    Types of property 'headlinePerformanceTier' are incompatible.
+      Type 'string' is not assignable to type '"strategic" | "preferred" | "opportunistic" | "watchlist" | undefined'.
+
+[0m [90m 355 |[39m     }[0m
+[0m [90m 356 |[39m[0m
+[0m[31m[1m>[22m[39m[90m 357 |[39m     [36mconst[39m topSuppliers[33m:[39m [33mPortfolioSupplierPortfolioSummary[39m[] [33m=[39m [33mArray[39m[33m.[39m[36mfrom[39m(supplierMap[33m.[39mentries())[0m
+[0m [90m     |[39m           [31m[1m^[22m[39m[0m
+[0m [90m 358 |[39m       [33m.[39mmap(([id[33m,[39m data]) [33m=>[39m ({[0m
+[0m [90m 359 |[39m         supplierId[33m:[39m id[33m,[39m[0m
+[0m [90m 360 |[39m         supplierName[33m:[39m data[33m.[39mname[33m,[39m[0m
+
+[Test Mode] ./lib/readiness/readiness-calculator.ts:57:35
+Type error: Property 'structuredData' does not exist on type '{ supplierContact: { name: string; id: string; email: string; createdAt: Date; isDemo: boolean; rfpId: string; updatedAt: Date; organization: string | null; invitedAt: Date | null; ... 12 more ...; reliabilityIndex: number | null; }; rfp: { ...; }; attachments: { ...; }[]; } & { ...; }'.
+
+[0m [90m 55 |[39m   }[0m
+[0m [90m 56 |[39m[0m
+[0m[31m[1m>[22m[39m[90m 57 |[39m   [36mconst[39m structuredData [33m=[39m response[33m.[39mstructuredData [36mas[39m any [33m||[39m {}[33m;[39m[0m
+[0m [90m    |[39m                                   [31m[1m^[22m[39m[0m
+[0m [90m 58 |[39m   [0m
+[0m [90m 59 |[39m   [90m// Calculate category-by-category coverage[39m[0m
+[0m [90m 60 |[39m   [36mconst[39m categories[33m:[39m [33mCategoryBreakdown[39m[] [33m=[39m [[0m
+
+===== TS errors =====
+
+
+Failed to compile.
+
+./app/api/dashboard/rfps/[id]/responses/[supplierContactId]/readiness/ai/route.ts:99:7
+Type error: Type '{ rfpId: string; userId: string; eventType: string; summary: string; }' is not assignable to type '(Without<ActivityLogCreateInput, ActivityLogUncheckedCreateInput> & ActivityLogUncheckedCreateInput) | (Without<...> & ActivityLogCreateInput)'.
+  Type '{ rfpId: string; userId: string; eventType: string; summary: string; }' is not assignable to type 'Without<ActivityLogCreateInput, ActivityLogUncheckedCreateInput> & ActivityLogUncheckedCreateInput'.
+    Property 'actorRole' is missing in type '{ rfpId: string; userId: string; eventType: string; summary: string; }' but required in type 'ActivityLogUncheckedCreateInput'.
+
+[0m [90m  97 |[39m     [90m// Log activity[39m[0m
+[0m [90m  98 |[39m     [36mawait[39m prisma[33m.[39mactivityLog[33m.[39mcreate({[0m
+[0m[31m[1m>[22m[39m[90m  99 |[39m       data[33m:[39m {[0m
+[0m [90m     |[39m       [31m[1m^[22m[39m[0m
+[0m [90m 100 |[39m         rfpId[33m:[39m response[33m.[39mrfpId[33m,[39m[0m
+[0m [90m 101 |[39m         userId[33m:[39m session[33m.[39muser[33m.[39mid[33m,[39m[0m
+[0m [90m 102 |[39m         eventType[33m:[39m [32m"READINESS_AI_GENERATED"[39m[33m,[39m[0m
+Next.js build worker exited with code: 1 and signal: null
