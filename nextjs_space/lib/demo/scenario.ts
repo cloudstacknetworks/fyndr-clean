@@ -409,6 +409,149 @@ export async function createDemoScenarioData(): Promise<DemoScenario> {
     }
   });
 
+  // STEP 34: Create Decision Brief Snapshot for Demo
+  const demoDecisionBriefSnapshot = {
+    rfpId: primaryRfp.id,
+    rfpTitle: primaryRfp.title,
+    rfpOwnerName: demoBuyerUser.name,
+    rfpBudget: primaryRfp.budget,
+    rfpStatus: primaryRfp.status,
+    rfpStage: primaryRfp.stage,
+    coreRecommendation: {
+      recommendedSupplierId: suppliers[2].id,
+      recommendedSupplierName: "Contoso Cloud Communications",
+      recommendationType: "recommend_award",
+      confidenceScore: 91,
+      primaryRationaleBullets: [
+        "Contoso demonstrates exceptional performance with the highest final score of 9.1 and 95% readiness.",
+        "All 47 requirements exceeded with advanced AI-powered features including sentiment analysis and predictive routing.",
+        "Strong enterprise references including Fortune 500 clients (Apple, Tesla, Netflix).",
+        "Fastest submission speed (6 days) indicates high responsiveness and organizational maturity.",
+        "Pricing is competitive for the value delivered, with comprehensive feature set and 24/7 premium support."
+      ]
+    },
+    supplierSummaries: [
+      {
+        supplierId: suppliers[2].id,
+        supplierName: "Contoso Cloud Communications",
+        organization: "Contoso Corporation",
+        finalScore: 9.1,
+        readinessScore: 95,
+        readinessTier: "Ready",
+        pricingScore: 88,
+        pricingPosition: "Competitive",
+        submissionSpeedDays: 6,
+        reliabilityIndex: 93,
+        headlineRiskLevel: "low" as const
+      },
+      {
+        supplierId: suppliers[0].id,
+        supplierName: "Acme Connect Solutions",
+        organization: "Acme Connect Inc.",
+        finalScore: 8.5,
+        readinessScore: 92,
+        readinessTier: "Ready",
+        pricingScore: 82,
+        pricingPosition: "Competitive",
+        submissionSpeedDays: 8,
+        reliabilityIndex: 88,
+        headlineRiskLevel: "low" as const
+      },
+      {
+        supplierId: suppliers[1].id,
+        supplierName: "Northwind Voice Systems",
+        organization: "Northwind Technologies",
+        finalScore: 7.8,
+        readinessScore: 85,
+        readinessTier: "Conditional",
+        pricingScore: 91,
+        pricingPosition: "Highly Competitive",
+        submissionSpeedDays: 12,
+        reliabilityIndex: 75,
+        headlineRiskLevel: "medium" as const
+      },
+      {
+        supplierId: suppliers[3].id,
+        supplierName: "Fabrikam Unified Solutions",
+        organization: "Fabrikam Inc.",
+        finalScore: 7.2,
+        readinessScore: 78,
+        readinessTier: "Not Ready",
+        pricingScore: 95,
+        pricingPosition: "Highly Competitive",
+        submissionSpeedDays: 15,
+        reliabilityIndex: 72,
+        headlineRiskLevel: "high" as const
+      }
+    ],
+    riskSummary: {
+      overallRiskLevel: "low" as const,
+      keyRisks: [
+        "Fabrikam: Missing SOC 2 Type II certification and incomplete disaster recovery documentation.",
+        "Northwind: GDPR compliance not fully documented; requires additional security validation.",
+        "All suppliers: Integration testing with existing Salesforce instance needs validation during pilot phase."
+      ],
+      mitigationActions: [
+        "Request updated compliance certifications from Fabrikam and Northwind during negotiation phase.",
+        "Include 30-day pilot phase in contract to validate integration capabilities.",
+        "Establish clear SLA penalties for security incidents and data breaches.",
+        "Require quarterly security audits and annual penetration testing."
+      ]
+    },
+    timelineSummary: {
+      currentStage: primaryRfp.stage,
+      upcomingMilestones: [
+        {
+          label: "Submission Deadline",
+          date: primaryRfp.submissionEnd?.toISOString() || null,
+          daysRemaining: 15
+        },
+        {
+          label: "Demo Window Opens",
+          date: primaryRfp.demoWindowStart?.toISOString() || null,
+          daysRemaining: 16
+        },
+        {
+          label: "Award Date",
+          date: primaryRfp.awardDate?.toISOString() || null,
+          daysRemaining: 35
+        }
+      ],
+      suggestedNextSteps: [
+        "Schedule executive review meeting with CIO and CTO to present Contoso recommendation.",
+        "Initiate contract negotiation with Contoso focusing on pricing optimization and implementation timeline.",
+        "Prepare debrief communications for non-selected suppliers (Acme, Northwind, Fabrikam).",
+        "Coordinate with IT team to begin pre-implementation infrastructure planning."
+      ]
+    },
+    narrative: {
+      executiveSummary: "CloudStack Networks received 4 high-quality responses for the Unified Communications & Contact Center RFP. Contoso Cloud Communications emerges as the clear leader with a 9.1 final score, 95% readiness, and exceptional enterprise credentials. Their AI-powered omnichannel solution exceeds all 47 requirements and offers the most comprehensive feature set. While priced at $495,000 (within our $500,000 budget), Contoso delivers superior value with Fortune 500 references and fastest implementation timeline. Recommendation: Proceed with contract award to Contoso pending final executive approval and contract negotiation.",
+      procurementNotes: "Evaluation process completed successfully with 4 submitted responses. Contoso demonstrates strongest overall value proposition despite being the highest-priced option. Acme Connect is a solid alternative if budget constraints arise (15% lower cost). Northwind and Fabrikam have significant readiness gaps requiring additional due diligence. Recommend focusing negotiation efforts on Contoso's Year 2+ pricing and implementation support terms. All suppliers responded within acceptable timeframes, indicating strong market interest.",
+      itNotes: "Technical evaluation confirms Contoso's architecture meets all integration requirements including native Salesforce and Azure AD connectors. Their 99.99% uptime SLA with AI-powered predictive maintenance is industry-leading. Acme's solution is also technically sound but lacks advanced AI features. Northwind requires custom development for 5 requirements, increasing risk. Fabrikam's solution is functionally limited and would require significant customization. IT recommends Contoso with 30-day pilot phase to validate real-world performance.",
+      financeNotes: "Pricing analysis shows Contoso at $495,000 is 99% of our $500,000 budget. TCO over 3 years is competitive at $693,000 including maintenance ($99K/year). Acme offers 14% savings at $425,000 but with reduced capabilities. Northwind ($380,000) and Fabrikam ($350,000) appear cheaper but carry hidden costs for customization and additional licensing. Recommend Contoso with negotiation focus on Year 2-3 pricing lock and volume discounts for potential expansion."
+    },
+    generatedAt: new Date(now.getTime() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+    generatedByUserId: demoBuyerUser.id,
+    generatedUsingAI: true,
+    version: 1,
+    audiences: ["executive" as const]
+  };
+
+  const demoDecisionBriefMeta = {
+    lastGeneratedAt: new Date(now.getTime() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+    audiences: ["executive"],
+    version: 1,
+    generatedUsingAI: true
+  };
+
+  await prisma.rFP.update({
+    where: { id: primaryRfp.id },
+    data: {
+      decisionBriefSnapshot: demoDecisionBriefSnapshot as any,
+      decisionBriefMeta: demoDecisionBriefMeta
+    }
+  });
+
   // 10. Create Activity Log Entries
   const activityEvents = [
     { eventType: "RFP_CREATED", summary: "RFP created and moved to INTAKE stage", role: "BUYER" },

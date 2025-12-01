@@ -43,6 +43,10 @@ export type ActivityEventType =
   | "COMPARISON_REPORT_GENERATED"
   | "READINESS_RECALCULATED"
   
+  // Decision Brief Events (STEP 34)
+  | "DECISION_BRIEF_AI_GENERATED"
+  | "DECISION_BRIEF_PDF_EXPORTED"
+  
   // Supplier Q&A Events
   | "SUPPLIER_QUESTION_CREATED"
   | "SUPPLIER_QUESTION_ANSWERED"
@@ -81,6 +85,10 @@ export const EVENT_TYPES = {
   COMPARISON_NARRATIVE_GENERATED: "COMPARISON_NARRATIVE_GENERATED" as ActivityEventType,
   COMPARISON_REPORT_GENERATED: "COMPARISON_REPORT_GENERATED" as ActivityEventType,
   READINESS_RECALCULATED: "READINESS_RECALCULATED" as ActivityEventType,
+  
+  // Decision Brief Events (STEP 34)
+  DECISION_BRIEF_AI_GENERATED: "DECISION_BRIEF_AI_GENERATED" as ActivityEventType,
+  DECISION_BRIEF_PDF_EXPORTED: "DECISION_BRIEF_PDF_EXPORTED" as ActivityEventType,
   
   // Supplier Q&A Events
   SUPPLIER_QUESTION_CREATED: "SUPPLIER_QUESTION_CREATED" as ActivityEventType,
@@ -176,6 +184,10 @@ export const EVENT_TYPE_LABELS: Record<ActivityEventType, string> = {
   COMPARISON_NARRATIVE_GENERATED: "Narrative Generated",
   COMPARISON_REPORT_GENERATED: "Report Generated",
   READINESS_RECALCULATED: "Readiness Recalculated",
+  
+  // Decision Brief Events (STEP 34)
+  DECISION_BRIEF_AI_GENERATED: "Decision Brief AI Generated",
+  DECISION_BRIEF_PDF_EXPORTED: "Decision Brief PDF Exported",
   
   // Supplier Q&A Events
   SUPPLIER_QUESTION_CREATED: "Question Asked",

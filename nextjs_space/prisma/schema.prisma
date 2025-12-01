@@ -104,6 +104,10 @@ model RFP {
   comparisonNarrative Json?
   comparisonReportUrl String?
 
+  // STEP 34: Executive Decision Briefs
+  decisionBriefSnapshot Json?  // Cached decision brief content
+  decisionBriefMeta     Json?  // Metadata about the brief
+
   // Demo Mode Flag (STEP 32)
   isDemo Boolean @default(false)
 
