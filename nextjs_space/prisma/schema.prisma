@@ -197,6 +197,16 @@ model SupplierContact {
   createdAt          DateTime         @default(now())
   updatedAt          DateTime         @updatedAt
 
+  // Performance Scorecard Fields (STEP 30)
+  totalRFPsParticipated    Int   @default(0)
+  totalWins                Int   @default(0)
+  totalLosses              Int   @default(0)
+  avgScore                 Float?
+  avgReadiness             Float?
+  avgSubmissionSpeedDays   Float?
+  avgPricingCompetitiveness Float?
+  reliabilityIndex         Float?
+
   rfp               RFP                @relation(fields: [rfpId], references: [id], onDelete: Cascade)
   portalUser        User?              @relation(fields: [portalUserId], references: [id], onDelete: SetNull)
   supplierResponse  SupplierResponse?
@@ -210,6 +220,9 @@ model SupplierContact {
   @@index([name])
   @@index([organization])
   @@index([invitationStatus])
+  @@index([avgScore])
+  @@index([avgReadiness])
+  @@index([reliabilityIndex])
 }
 
 enum SupplierResponseStatus {
@@ -262,6 +275,13 @@ model SupplierResponse {
   readinessIndicator          String?
   readinessRationale          String?
 
+  // Performance Metrics (STEP 30)
+  finalScore               Float?
+  readinessScore           Float?
+  pricingScore             Float?
+  submissionSpeedDays      Int?
+  requirementsCoverage     Float?
+
   rfp             RFP                          @relation(fields: [rfpId], references: [id], onDelete: Cascade)
   supplierContact SupplierContact              @relation(fields: [supplierContactId], references: [id], onDelete: Cascade)
   attachments     SupplierResponseAttachment[]
@@ -272,6 +292,7 @@ model SupplierResponse {
   @@index([supplierContactId])
   @@index([status])
   @@index([submittedAt])
+  @@index([supplierContactId, submissionSpeedDays])
 }
 
 model EvaluationMatrix {
