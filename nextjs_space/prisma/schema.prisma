@@ -26,6 +26,9 @@ model User {
   // STEP 38B: Template editing relations
   templatesEdited       RfpTemplate[]           @relation("TemplateEditor")
   clauseLinksCreated    RfpTemplateClauseLink[]
+  
+  // STEP 40: Executive Summary relations
+  executiveSummaries    ExecutiveSummaryDocument[]
 }
 
 model Company {
@@ -151,6 +154,7 @@ model RFP {
   supplierBroadcastMessages SupplierBroadcastMessage[]
   activityLogs              ActivityLog[]
   timelineEvents            RfpTimelineEvent[]
+  executiveSummaries        ExecutiveSummaryDocument[]
   // Note: PostgreSQL full-text search implemented via case-insensitive contains queries
 
   @@index([title])
@@ -593,4 +597,35 @@ model RfpTemplateClauseLink {
   @@index([templateId])
   @@index([clauseId])
   @@index([createdById])
+}
+
+// STEP 40: Executive Stakeholder Summary Workspace
+model ExecutiveSummaryDocument {
+  id              String   @id @default(cuid())
+  rfpId           String
+  rfp             RFP      @relation(fields: [rfpId], references: [id], onDelete: Cascade)
+  authorId        String
+  author          User     @relation(fields: [authorId], references: [id])
+  
+  // Content fields
+  title           String   @default("Executive Summary")
+  content         String   @db.Text  // Rich text content in HTML or Markdown
+  tone            String   @default("professional")  // professional | persuasive | analytical
+  audience        String   @default("executive")     // executive | technical | procurement
+  
+  // Version tracking
+  version         Int      @default(1)
+  isOfficial      Boolean  @default(false)  // true if marked as "final/official"
+  clonedFromId    String?  // if this is a clone
+  
+  // Auto-generated metadata
+  generatedAt     DateTime?  // when AI-generated (null if manually created)
+  autoSaveAt      DateTime?  // last autosave timestamp
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  @@index([rfpId])
+  @@index([authorId])
+  @@index([isOfficial])
 }

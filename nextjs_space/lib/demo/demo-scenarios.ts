@@ -241,10 +241,66 @@ export const DEMO_SCENARIOS: Record<string, DemoScenarioConfig> = {
         duration: 3000
       },
 
+      // STEP 40: EXECUTIVE SUMMARY WORKSPACE
+      {
+        id: "buyer_navigate_to_executive_summary",
+        timeOffsetMs: 96000,
+        route: "/dashboard/rfps/[id]/executive-summary",
+        action: "navigate",
+        text: "Let's explore the Executive Summary Workspace where you can create stakeholder-specific reports...",
+        role: "buyer",
+        duration: 3000
+      },
+      {
+        id: "buyer_executive_summary_intro",
+        timeOffsetMs: 99000,
+        targetSelector: "[data-demo='executive-summary-workspace']",
+        action: "highlight",
+        text: "The Executive Summary Workspace allows you to create, edit, and manage multiple versions of summaries tailored for different audiences.",
+        role: "buyer",
+        duration: 5000
+      },
+      {
+        id: "buyer_executive_summary_versions",
+        timeOffsetMs: 104000,
+        targetSelector: "[data-demo='version-list']",
+        action: "highlight",
+        text: "Version control tracks all drafts and official summaries, showing who created them and when they were last updated.",
+        role: "buyer",
+        duration: 5000
+      },
+      {
+        id: "buyer_executive_summary_editor",
+        timeOffsetMs: 109000,
+        targetSelector: "[data-demo='editor-container']",
+        action: "highlight",
+        text: "The rich text editor supports formatting, tables, lists, and inline images for professional stakeholder presentations.",
+        role: "buyer",
+        duration: 5000
+      },
+      {
+        id: "buyer_executive_summary_ai_generate",
+        timeOffsetMs: 114000,
+        targetSelector: "[data-demo='ai-generate-button']",
+        action: "highlight",
+        text: "AI-powered generation creates customized summaries based on audience (Executive, Board, Technical, Finance) and tone preferences.",
+        role: "buyer",
+        duration: 5000
+      },
+      {
+        id: "buyer_executive_summary_export",
+        timeOffsetMs: 119000,
+        targetSelector: "[data-demo='export-actions']",
+        action: "highlight",
+        text: "Export options include PDF, Word, and PowerPoint formats for easy sharing with stakeholders and board presentations.",
+        role: "buyer",
+        duration: 5000
+      },
+
       // BUYER PERSPECTIVE - Final Insights
       {
         id: "buyer_final_overview",
-        timeOffsetMs: 96000,
+        timeOffsetMs: 124000,
         text: "FYNDR streamlines the entire RFP lifecycle for both buyers and suppliers with AI-powered insights, automated workflows, and comprehensive tracking.",
         role: "buyer",
         duration: 5000
@@ -253,7 +309,7 @@ export const DEMO_SCENARIOS: Record<string, DemoScenarioConfig> = {
       // DEMO COMPLETE
       {
         id: "demo_complete",
-        timeOffsetMs: 101000,
+        timeOffsetMs: 129000,
         text: "Demo complete! FYNDR manages everything from RFP creation to supplier selection. Thank you for watching!",
         role: "buyer",
         duration: 5000

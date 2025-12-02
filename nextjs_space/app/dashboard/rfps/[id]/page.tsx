@@ -189,6 +189,13 @@ export default async function RFPDetailPage({
             <Activity className="h-5 w-5" />
             Activity
           </Link>
+          <Link
+            href={`/dashboard/rfps/${rfp.id}/executive-summary`}
+            className="inline-flex items-center gap-2 bg-orange-100 hover:bg-orange-200 text-orange-700 px-4 py-2 rounded-lg font-semibold transition-all"
+          >
+            <FileText className="h-5 w-5" />
+            Executive Summary
+          </Link>
           <ExportBundleButton rfpId={rfp.id} />
           <Link
             href={`/dashboard/rfps/${rfp.id}/edit`}

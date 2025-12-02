@@ -795,6 +795,306 @@ export async function createDemoScenarioData(): Promise<DemoScenario> {
     }
   });
 
+  // STEP 40: Create Executive Summary Documents Demo Data
+  const demoExecutiveSummary1 = await prisma.executiveSummaryDocument.create({
+    data: {
+      rfpId: primaryRfp.id,
+      authorId: demoBuyerUser.id,
+      title: "Executive Summary - Unified Communications RFP",
+      content: `
+<h2>Executive Overview</h2>
+<p>CloudStack Networks is evaluating comprehensive unified communications and contact center solutions to support our expanding global operations. This strategic investment will modernize our communication infrastructure and enhance customer engagement capabilities.</p>
+
+<h3>Key Metrics</h3>
+<ul>
+  <li><strong>Budget</strong>: $2,500,000</li>
+  <li><strong>Participating Suppliers</strong>: 4 leading technology vendors</li>
+  <li><strong>Responses Received</strong>: 4 complete submissions</li>
+  <li><strong>Opportunity Score</strong>: 92/100 (High confidence)</li>
+</ul>
+
+<h3>Top Suppliers</h3>
+<ul>
+  <li><strong>Contoso Cloud Communications</strong> - Score: 94/100, Pricing: $2,350,000</li>
+  <li><strong>TeleFlow Systems</strong> - Score: 88/100, Pricing: $2,650,000</li>
+  <li><strong>CommTech Global</strong> - Score: 82/100, Pricing: $2,450,000</li>
+</ul>
+
+<h3>Strategic Recommendation</h3>
+<p>Based on comprehensive evaluation across technical capabilities, pricing, and strategic fit, <strong>Contoso Cloud Communications</strong> emerges as the recommended vendor. Their solution provides:</p>
+<ul>
+  <li>Superior AI-powered routing capabilities</li>
+  <li>Seamless integration with existing infrastructure</li>
+  <li>Competitive pricing within budget constraints</li>
+  <li>Proven track record in enterprise deployments</li>
+</ul>
+
+<h3>Risk Considerations</h3>
+<ul>
+  <li><strong>Low Risk</strong>: All suppliers are financially stable with strong references</li>
+  <li><strong>Medium Risk</strong>: Implementation timeline requires careful management (6-month window)</li>
+  <li><strong>Mitigation</strong>: Dedicated project team with weekly steering committee reviews</li>
+</ul>
+
+<h3>Next Steps</h3>
+<ol>
+  <li>Complete final due diligence on Contoso Cloud Communications (Week 1)</li>
+  <li>Negotiate final terms and contract (Weeks 2-3)</li>
+  <li>Board approval presentation (Week 4)</li>
+  <li>Award notification (Week 5)</li>
+  <li>Kickoff and implementation planning (Week 6)</li>
+</ol>
+
+<h3>Financial Impact</h3>
+<p>The recommended solution delivers a 3-year ROI of 215% through:</p>
+<ul>
+  <li>25% reduction in communication costs</li>
+  <li>40% improvement in customer satisfaction scores</li>
+  <li>$850,000 annual savings from infrastructure consolidation</li>
+</ul>
+
+<p><em>This summary provides strategic guidance for executive decision-making. For detailed technical analysis, please refer to the comprehensive evaluation report.</em></p>
+      `,
+      tone: "professional",
+      audience: "executive",
+      version: 1,
+      isOfficial: true,
+      generatedAt: new Date(now.getTime() - 2 * 24 * 60 * 60 * 1000),
+      autoSaveAt: new Date(now.getTime() - 2 * 24 * 60 * 60 * 1000),
+      createdAt: new Date(now.getTime() - 3 * 24 * 60 * 60 * 1000),
+      updatedAt: new Date(now.getTime() - 2 * 24 * 60 * 60 * 1000)
+    }
+  });
+
+  const demoExecutiveSummary2 = await prisma.executiveSummaryDocument.create({
+    data: {
+      rfpId: primaryRfp.id,
+      authorId: demoBuyerUser.id,
+      title: "Technical Deep Dive - Unified Communications RFP",
+      content: `
+<h2>Technical Analysis Summary</h2>
+<p>This document provides a detailed technical evaluation of all submissions for the Unified Communications & Contact Center RFP.</p>
+
+<h3>Architecture Evaluation</h3>
+<ul>
+  <li><strong>Cloud-Native Design</strong>: All four suppliers offer modern cloud-native architectures with containerized microservices</li>
+  <li><strong>Scalability</strong>: Horizontal scaling capabilities demonstrated by all vendors, with Contoso showing superior auto-scaling efficiency</li>
+  <li><strong>API Integration</strong>: RESTful APIs and webhooks available across all platforms</li>
+</ul>
+
+<h3>Security & Compliance</h3>
+<ul>
+  <li><strong>SOC 2 Type II</strong>: All vendors certified</li>
+  <li><strong>GDPR Compliance</strong>: Full compliance demonstrated</li>
+  <li><strong>Data Encryption</strong>: AES-256 encryption at rest, TLS 1.3 in transit</li>
+  <li><strong>Zero-Trust Architecture</strong>: Contoso and TeleFlow provide comprehensive zero-trust implementations</li>
+</ul>
+
+<h3>AI & Analytics Capabilities</h3>
+<table>
+  <tr>
+    <th>Feature</th>
+    <th>Contoso</th>
+    <th>TeleFlow</th>
+    <th>CommTech</th>
+    <th>Apex</th>
+  </tr>
+  <tr>
+    <td>Sentiment Analysis</td>
+    <td>✓ Advanced</td>
+    <td>✓ Basic</td>
+    <td>✓ Advanced</td>
+    <td>✓ Basic</td>
+  </tr>
+  <tr>
+    <td>Predictive Routing</td>
+    <td>✓ ML-powered</td>
+    <td>✓ Rule-based</td>
+    <td>✓ ML-powered</td>
+    <td>✓ Rule-based</td>
+  </tr>
+  <tr>
+    <td>Real-time Transcription</td>
+    <td>✓ 98% accuracy</td>
+    <td>✓ 95% accuracy</td>
+    <td>✓ 96% accuracy</td>
+    <td>✓ 93% accuracy</td>
+  </tr>
+</table>
+
+<h3>Integration Requirements</h3>
+<ul>
+  <li><strong>Salesforce CRM</strong>: Native integration available from all vendors</li>
+  <li><strong>Microsoft Teams</strong>: Contoso offers deepest integration with Teams ecosystem</li>
+  <li><strong>Legacy PBX</strong>: Migration paths documented; 90-day transition period</li>
+</ul>
+
+<h3>Performance Benchmarks</h3>
+<ul>
+  <li><strong>Call Quality (MOS Score)</strong>: 4.2-4.4 across all vendors (excellent)</li>
+  <li><strong>Latency</strong>: <50ms average (North America), <100ms (EMEA)</li>
+  <li><strong>Uptime SLA</strong>: 99.95% guaranteed by all vendors</li>
+</ul>
+
+<h3>Technical Recommendation</h3>
+<p>From a purely technical standpoint, <strong>Contoso Cloud Communications</strong> demonstrates the most mature platform with superior AI capabilities, seamless Microsoft integration, and proven scalability at enterprise scale.</p>
+
+<p><em>This technical analysis complements the executive summary. For implementation details, refer to the project planning documentation.</em></p>
+      `,
+      tone: "analytical",
+      audience: "technical",
+      version: 2,
+      isOfficial: false,
+      generatedAt: new Date(now.getTime() - 1 * 24 * 60 * 60 * 1000),
+      autoSaveAt: new Date(now.getTime() - 1 * 24 * 60 * 60 * 1000),
+      createdAt: new Date(now.getTime() - 1 * 24 * 60 * 60 * 1000),
+      updatedAt: new Date(now.getTime() - 1 * 24 * 60 * 60 * 1000)
+    }
+  });
+
+  const demoExecutiveSummary3 = await prisma.executiveSummaryDocument.create({
+    data: {
+      rfpId: primaryRfp.id,
+      authorId: demoBuyerUser.id,
+      title: "Board of Directors Summary - Unified Communications RFP",
+      content: `
+<h2>Board of Directors Summary</h2>
+<p>This summary is prepared for the Board of Directors to provide governance oversight and fiduciary approval for the Unified Communications & Contact Center investment decision.</p>
+
+<h3>Investment Overview</h3>
+<ul>
+  <li><strong>Total Investment</strong>: $495,000 (Year 1)</li>
+  <li><strong>Ongoing Annual Cost</strong>: $99,000 (maintenance & support)</li>
+  <li><strong>Project Duration</strong>: 6 months implementation</li>
+  <li><strong>Depreciation Schedule</strong>: 5-year straight-line</li>
+</ul>
+
+<h3>Strategic Rationale</h3>
+<p>This investment aligns with the company's digital transformation strategy and supports three key business objectives:</p>
+<ol>
+  <li><strong>Customer Experience Enhancement</strong>: Modernize customer touchpoints with AI-powered omnichannel support</li>
+  <li><strong>Operational Efficiency</strong>: Consolidate fragmented communication tools into unified platform</li>
+  <li><strong>Competitive Positioning</strong>: Match industry leaders in communication technology capabilities</li>
+</ol>
+
+<h3>Financial Analysis</h3>
+<table>
+  <tr>
+    <th>Metric</th>
+    <th>Year 1</th>
+    <th>Year 2</th>
+    <th>Year 3</th>
+  </tr>
+  <tr>
+    <td>Total Cost</td>
+    <td>$495,000</td>
+    <td>$99,000</td>
+    <td>$99,000</td>
+  </tr>
+  <tr>
+    <td>Cost Savings</td>
+    <td>$212,500</td>
+    <td>$850,000</td>
+    <td>$850,000</td>
+  </tr>
+  <tr>
+    <td>Net Benefit</td>
+    <td>-$282,500</td>
+    <td>$751,000</td>
+    <td>$751,000</td>
+  </tr>
+  <tr>
+    <td>Cumulative Benefit</td>
+    <td>-$282,500</td>
+    <td>$468,500</td>
+    <td>$1,219,500</td>
+  </tr>
+</table>
+
+<p><strong>Payback Period</strong>: 15 months<br/>
+<strong>3-Year ROI</strong>: 215%<br/>
+<strong>NPV (at 8% discount rate)</strong>: $1,045,000</p>
+
+<h3>Risk Assessment</h3>
+<table>
+  <tr>
+    <th>Risk Category</th>
+    <th>Level</th>
+    <th>Mitigation Strategy</th>
+  </tr>
+  <tr>
+    <td>Vendor Financial Stability</td>
+    <td>Low</td>
+    <td>Contoso is publicly traded (NASDAQ:CNTS) with $2B annual revenue</td>
+  </tr>
+  <tr>
+    <td>Implementation Risk</td>
+    <td>Medium</td>
+    <td>Phased rollout with pilot phase; dedicated PMO oversight</td>
+  </tr>
+  <tr>
+    <td>Technology Obsolescence</td>
+    <td>Low</td>
+    <td>Cloud-native architecture with continuous updates included</td>
+  </tr>
+  <tr>
+    <td>Data Security & Privacy</td>
+    <td>Low</td>
+    <td>SOC 2 Type II + ISO 27001 certified; GDPR compliant</td>
+  </tr>
+</table>
+
+<h3>Governance & Compliance</h3>
+<ul>
+  <li><strong>Due Diligence</strong>: Comprehensive vendor evaluation completed by IT, Procurement, and Legal teams</li>
+  <li><strong>Security Review</strong>: CISO approval obtained; penetration test results reviewed</li>
+  <li><strong>Contract Terms</strong>: Standard MSA with favorable exit clauses; no multi-year commitment required</li>
+  <li><strong>Budget Authority</strong>: Within CFO's capital expenditure approval threshold</li>
+</ul>
+
+<h3>Competitive Analysis</h3>
+<p>Market research indicates that 78% of Fortune 500 companies have modernized their contact center technology in the past 24 months. CloudStack Networks is currently lagging industry standards. This investment will:</p>
+<ul>
+  <li>Eliminate competitive disadvantage in customer service capabilities</li>
+  <li>Enable future AI/ML initiatives requiring modern communication infrastructure</li>
+  <li>Position company as technology leader within our industry vertical</li>
+</ul>
+
+<h3>Stakeholder Impact</h3>
+<ul>
+  <li><strong>Customers</strong>: Improved service quality, faster resolution times, 24/7 availability</li>
+  <li><strong>Employees</strong>: Modern tools increase productivity; reduce manual workload by 35%</li>
+  <li><strong>Shareholders</strong>: Strong ROI with manageable risk profile</li>
+  <li><strong>Regulators</strong>: Enhanced compliance with communication recording and data privacy requirements</li>
+</ul>
+
+<h3>Board Action Required</h3>
+<p>Management requests Board approval for:</p>
+<ol>
+  <li>Capital expenditure authorization of $495,000</li>
+  <li>Annual operating budget increase of $99,000 (Years 2+)</li>
+  <li>Vendor selection: Contoso Cloud Communications</li>
+  <li>Project timeline: Implementation Q2-Q3 2025</li>
+</ol>
+
+<h3>Management Recommendation</h3>
+<p><strong>APPROVE</strong> - This investment demonstrates strong financial returns, manageable risks, and strategic alignment with company objectives. The vendor selection process was thorough and competitive, resulting in a best-in-class solution at favorable terms.</p>
+
+<p><em>Prepared by: Diane Chen, VP Procurement<br/>
+Reviewed by: CFO, CIO, General Counsel<br/>
+Date: ${new Date().toLocaleDateString()}</em></p>
+      `,
+      tone: "formal",
+      audience: "board",
+      version: 1,
+      isOfficial: false,
+      generatedAt: new Date(now.getTime() - 6 * 60 * 60 * 1000), // 6 hours ago
+      autoSaveAt: new Date(now.getTime() - 6 * 60 * 60 * 1000),
+      createdAt: new Date(now.getTime() - 8 * 60 * 60 * 1000), // 8 hours ago
+      updatedAt: new Date(now.getTime() - 6 * 60 * 60 * 1000)
+    }
+  });
+
   // 10. Create Activity Log Entries
   const activityEvents = [
     { eventType: "RFP_CREATED", summary: "RFP created and moved to INTAKE stage", role: "BUYER" },
@@ -804,7 +1104,9 @@ export async function createDemoScenarioData(): Promise<DemoScenario> {
     { eventType: "SUPPLIER_QUESTION_ANSWERED", summary: "Buyer answered supplier question", role: "BUYER" },
     { eventType: "SUPPLIER_BROADCAST_CREATED", summary: "Buyer sent broadcast message to all suppliers", role: "BUYER" },
     { eventType: "SUPPLIER_RESPONSE_SUBMITTED", summary: "Supplier submitted response", role: "SUPPLIER" },
-    { eventType: "RFP_STAGE_CHANGED", summary: "RFP moved to PRICING_LEGAL_REVIEW stage", role: "BUYER" }
+    { eventType: "RFP_STAGE_CHANGED", summary: "RFP moved to PRICING_LEGAL_REVIEW stage", role: "BUYER" },
+    { eventType: "EXECUTIVE_SUMMARY_GENERATED", summary: "Generated executive summary for stakeholder review", role: "BUYER" },
+    { eventType: "EXECUTIVE_SUMMARY_FINALIZED", summary: "Marked executive summary as official version", role: "BUYER" }
   ];
 
   for (let i = 0; i < activityEvents.length; i++) {

@@ -51,6 +51,14 @@ export type ActivityEventType =
   | "DECISION_BRIEF_AI_GENERATED"
   | "DECISION_BRIEF_PDF_EXPORTED"
   
+  // STEP 40: Executive Summary Events
+  | "EXECUTIVE_SUMMARY_GENERATED"
+  | "EXECUTIVE_SUMMARY_EDITED"
+  | "EXECUTIVE_SUMMARY_FINALIZED"
+  | "EXECUTIVE_SUMMARY_CLONED"
+  | "EXECUTIVE_SUMMARY_DELETED"
+  | "EXECUTIVE_SUMMARY_EXPORTED"
+  
   // Supplier Q&A Events
   | "SUPPLIER_QUESTION_CREATED"
   | "SUPPLIER_QUESTION_ANSWERED"
@@ -98,6 +106,14 @@ export const EVENT_TYPES = {
   DECISION_BRIEF_AI_GENERATED: "DECISION_BRIEF_AI_GENERATED" as ActivityEventType,
   DECISION_BRIEF_PDF_EXPORTED: "DECISION_BRIEF_PDF_EXPORTED" as ActivityEventType,
   
+  // STEP 40: Executive Summary Events
+  EXECUTIVE_SUMMARY_GENERATED: "EXECUTIVE_SUMMARY_GENERATED" as ActivityEventType,
+  EXECUTIVE_SUMMARY_EDITED: "EXECUTIVE_SUMMARY_EDITED" as ActivityEventType,
+  EXECUTIVE_SUMMARY_FINALIZED: "EXECUTIVE_SUMMARY_FINALIZED" as ActivityEventType,
+  EXECUTIVE_SUMMARY_CLONED: "EXECUTIVE_SUMMARY_CLONED" as ActivityEventType,
+  EXECUTIVE_SUMMARY_DELETED: "EXECUTIVE_SUMMARY_DELETED" as ActivityEventType,
+  EXECUTIVE_SUMMARY_EXPORTED: "EXECUTIVE_SUMMARY_EXPORTED" as ActivityEventType,
+  
   // Supplier Q&A Events
   SUPPLIER_QUESTION_CREATED: "SUPPLIER_QUESTION_CREATED" as ActivityEventType,
   SUPPLIER_QUESTION_ANSWERED: "SUPPLIER_QUESTION_ANSWERED" as ActivityEventType,
@@ -119,6 +135,7 @@ export const EVENT_CATEGORIES = {
   QA_SYSTEM: "QA_SYSTEM",
   NOTIFICATIONS: "NOTIFICATIONS",
   EXPORT: "EXPORT",
+  EXECUTIVE_SUMMARY: "EXECUTIVE_SUMMARY",
 };
 
 // Map event types to categories
@@ -130,8 +147,11 @@ export function getEventCategory(eventType: ActivityEventType): string {
   if (eventType.startsWith("SUPPLIER_RESPONSE_") || eventType.startsWith("SUPPLIER_ATTACHMENT_")) {
     return EVENT_CATEGORIES.SUPPLIER_RESPONSE;
   }
-  if (eventType.startsWith("AI_") || eventType.startsWith("COMPARISON_") || eventType.startsWith("READINESS_")) {
+  if (eventType.startsWith("AI_") || eventType.startsWith("COMPARISON_") || eventType.startsWith("READINESS_") || eventType.startsWith("DECISION_BRIEF_")) {
     return EVENT_CATEGORIES.AI_PROCESSING;
+  }
+  if (eventType.startsWith("EXECUTIVE_SUMMARY_")) {
+    return EVENT_CATEGORIES.EXECUTIVE_SUMMARY;
   }
   if (eventType.startsWith("SUPPLIER_QUESTION_") || eventType.startsWith("SUPPLIER_BROADCAST_")) {
     return EVENT_CATEGORIES.QA_SYSTEM;
@@ -153,6 +173,8 @@ export function getEventTypeColor(eventType: ActivityEventType): { bg: string; t
       return { bg: "bg-green-100", text: "text-green-700" };
     case EVENT_CATEGORIES.AI_PROCESSING:
       return { bg: "bg-purple-100", text: "text-purple-700" };
+    case EVENT_CATEGORIES.EXECUTIVE_SUMMARY:
+      return { bg: "bg-orange-100", text: "text-orange-700" };
     case EVENT_CATEGORIES.QA_SYSTEM:
       return { bg: "bg-amber-100", text: "text-amber-700" };
     case EVENT_CATEGORIES.NOTIFICATIONS:
@@ -198,6 +220,14 @@ export const EVENT_TYPE_LABELS: Record<ActivityEventType, string> = {
   // Decision Brief Events (STEP 34)
   DECISION_BRIEF_AI_GENERATED: "Decision Brief AI Generated",
   DECISION_BRIEF_PDF_EXPORTED: "Decision Brief PDF Exported",
+  
+  // STEP 40: Executive Summary Events
+  EXECUTIVE_SUMMARY_GENERATED: "Executive Summary Generated",
+  EXECUTIVE_SUMMARY_EDITED: "Executive Summary Edited",
+  EXECUTIVE_SUMMARY_FINALIZED: "Executive Summary Finalized",
+  EXECUTIVE_SUMMARY_CLONED: "Executive Summary Cloned",
+  EXECUTIVE_SUMMARY_DELETED: "Executive Summary Deleted",
+  EXECUTIVE_SUMMARY_EXPORTED: "Executive Summary Exported",
   
   // Supplier Q&A Events
   SUPPLIER_QUESTION_CREATED: "Question Asked",
