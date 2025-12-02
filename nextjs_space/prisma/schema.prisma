@@ -22,6 +22,10 @@ model User {
   notificationPreference NotificationPreference?
   activityLogs           ActivityLog[]
   timelineEventsCreated  RfpTimelineEvent[]
+  
+  // STEP 38B: Template editing relations
+  templatesEdited       RfpTemplate[]           @relation("TemplateEditor")
+  clauseLinksCreated    RfpTemplateClauseLink[]
 }
 
 model Company {
@@ -124,6 +128,9 @@ model RFP {
   templateId              String?      // Reference to applied template
   template                RfpTemplate? @relation(fields: [templateId], references: [id])
   appliedTemplateSnapshot Json?        // Snapshot of template structure when applied
+  
+  // STEP 38B: Applied Clauses
+  appliedClausesSnapshot Json?  // Clauses injected into RFP at template application time
 
   user                      User                       @relation(fields: [userId], references: [id])
   userId                    String
@@ -519,8 +526,68 @@ model RfpTemplate {
   createdAt     DateTime              @default(now())
   updatedAt     DateTime              @updatedAt
   
-  rfps          RFP[]                 // RFPs that used this template
+  // STEP 38B: Template Editor & Versioning
+  isEditable      Boolean               @default(true)
+  lastEditedById  String?
+  lastEditedBy    User?                 @relation("TemplateEditor", fields: [lastEditedById], references: [id])
+  sectionsJson    Json?                 // Editable template structure
+  clausesJson     Json?                 // Injected clauses cached for performance
+  
+  rfps            RFP[]                 // RFPs that used this template
+  clauseLinks     RfpTemplateClauseLink[]
   
   @@index([categoryId])
   @@index([isActive])
+  @@index([lastEditedById])
+}
+
+// STEP 38B: Clause Library System
+model ClauseCategory {
+  id          String          @id @default(cuid())
+  name        String
+  description String?
+  order       Int             @default(0)
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  
+  clauses     ClauseLibrary[]
+  
+  @@index([order])
+}
+
+model ClauseLibrary {
+  id          String                    @id @default(cuid())
+  categoryId  String
+  category    ClauseCategory            @relation(fields: [categoryId], references: [id])
+  title       String
+  description String
+  body        String                    @db.Text  // Clause text (can be long)
+  isRequired  Boolean                   @default(false)
+  clauseType  String                    // "legal" | "commercial" | "security" | "sow" | "other"
+  order       Int                       @default(0)
+  createdAt   DateTime                  @default(now())
+  updatedAt   DateTime                  @updatedAt
+  
+  templateClauseLinks RfpTemplateClauseLink[]
+  
+  @@index([categoryId])
+  @@index([clauseType])
+  @@index([order])
+}
+
+model RfpTemplateClauseLink {
+  id          String        @id @default(cuid())
+  templateId  String
+  template    RfpTemplate   @relation(fields: [templateId], references: [id], onDelete: Cascade)
+  clauseId    String
+  clause      ClauseLibrary @relation(fields: [clauseId], references: [id], onDelete: Cascade)
+  required    Boolean       @default(false)  // Allow template override
+  insertedAt  DateTime      @default(now())
+  createdById String?
+  createdBy   User?         @relation(fields: [createdById], references: [id])
+  
+  @@unique([templateId, clauseId])
+  @@index([templateId])
+  @@index([clauseId])
+  @@index([createdById])
 }

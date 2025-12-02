@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
 import { seedDemoTemplates } from "./template-seeder";
+import { seedClauses } from "./clause-seeder";
 
 export interface DemoScenario {
   demoBuyerUser: any;
@@ -17,6 +18,9 @@ export interface DemoScenario {
 export async function createDemoScenarioData(): Promise<DemoScenario> {
   // 0. Seed demo RFP templates (STEP 38A)
   await seedDemoTemplates();
+
+  // 0.1 Seed clause library (STEP 38B)
+  await seedClauses();
 
   // 1. Create Demo Buyer Organization
   const demoBuyerOrg = await prisma.company.create({
