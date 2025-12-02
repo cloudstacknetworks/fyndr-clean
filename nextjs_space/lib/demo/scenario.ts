@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
+import { seedDemoTemplates } from "./template-seeder";
 
 export interface DemoScenario {
   demoBuyerUser: any;
@@ -14,6 +15,9 @@ export interface DemoScenario {
 }
 
 export async function createDemoScenarioData(): Promise<DemoScenario> {
+  // 0. Seed demo RFP templates (STEP 38A)
+  await seedDemoTemplates();
+
   // 1. Create Demo Buyer Organization
   const demoBuyerOrg = await prisma.company.create({
     data: {
@@ -824,6 +828,10 @@ export async function resetDemoScenario(): Promise<DemoScenario> {
   await prisma.user.deleteMany({ where: { isDemo: true, role: "supplier" } });
   await prisma.user.deleteMany({ where: { isDemo: true, role: "buyer" } });
   await prisma.company.deleteMany({ where: { isDemo: true } });
+  
+  // Delete templates and categories (STEP 38A)
+  await prisma.rfpTemplate.deleteMany({});
+  await prisma.rfpTemplateCategory.deleteMany({});
 
   // Create fresh demo data
   return await createDemoScenarioData();

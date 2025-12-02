@@ -120,6 +120,11 @@ model RFP {
   timelineConfig        Json?  // Buyer-defined timeline + automation rules
   timelineStateSnapshot Json?  // Cached current state + next events
 
+  // STEP 38A: Core Template System
+  templateId              String?      // Reference to applied template
+  template                RfpTemplate? @relation(fields: [templateId], references: [id])
+  appliedTemplateSnapshot Json?        // Snapshot of template structure when applied
+
   user                      User                       @relation(fields: [userId], references: [id])
   userId                    String
   company                   Company                    @relation(fields: [companyId], references: [id])
@@ -488,4 +493,34 @@ model ActivityLog {
   @@index([eventType])
   @@index([actorRole])
   @@index([createdAt])
+}
+
+
+// STEP 38A: RFP Template System
+model RfpTemplateCategory {
+  id          String        @id @default(cuid())
+  name        String
+  description String?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  
+  templates   RfpTemplate[]
+}
+
+model RfpTemplate {
+  id            String                @id @default(cuid())
+  categoryId    String
+  category      RfpTemplateCategory   @relation(fields: [categoryId], references: [id])
+  title         String
+  description   String?
+  structureJson Json                  // Full RFP template structure with sections, subsections, questions
+  version       Int                   @default(1)
+  isActive      Boolean               @default(true)
+  createdAt     DateTime              @default(now())
+  updatedAt     DateTime              @updatedAt
+  
+  rfps          RFP[]                 // RFPs that used this template
+  
+  @@index([categoryId])
+  @@index([isActive])
 }
