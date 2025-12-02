@@ -105,6 +105,69 @@ export async function createDemoScenarioData(): Promise<DemoScenario> {
       opportunityScore: 85,
       isDemo: true,
       timelineConfig: timelineConfig as any,
+      // STEP 41: Award fields for demo mode
+      awardStatus: "awarded",
+      awardedSupplierId: "demo-supplier-contoso", // Will be updated after supplier creation
+      awardDecidedAt: new Date("2024-11-18T15:00:00Z"),
+      awardDecidedByUserId: demoBuyerUser.id,
+      awardNotes: "CloudTalk Solutions selected based on superior technical fit (95% must-have compliance), competitive pricing ($2.4M TCO within budget), proven enterprise implementation track record, and strong security posture. Primary risks include 6-month implementation timeline and CRM integration complexity, both with documented mitigation plans.",
+      awardSnapshot: {
+        rfpId: "primary-rfp-id-placeholder", // Will be updated after RFP creation
+        decidedAt: "2024-11-18T15:00:00Z",
+        decidedByUserId: demoBuyerUser.id,
+        status: "awarded",
+        recommendedSupplierId: "demo-supplier-contoso",
+        recommendedSupplierName: "Contoso Cloud Communications",
+        decisionBriefSummary: {
+          keyDrivers: [
+            "Superior technical fit with 95% must-have compliance",
+            "Competitive total cost of ownership at $2.4M over 3 years",
+            "Proven enterprise implementation track record",
+            "Strong security and compliance posture (SOC 2 Type II, GDPR)"
+          ],
+          risks: [
+            "6-month implementation timeline with Q2 go-live dependency",
+            "Integration complexity with existing Salesforce CRM",
+            "Change management for 500+ users"
+          ]
+        },
+        scoringMatrixSummary: {
+          topSuppliers: [
+            {
+              id: "demo-supplier-contoso",
+              name: "Contoso Cloud Communications",
+              overallScore: 87,
+              weightedScore: 87,
+              mustHaveCompliance: 95
+            },
+            {
+              id: "demo-supplier-acme",
+              name: "Acme Connect Solutions",
+              overallScore: 81,
+              weightedScore: 81,
+              mustHaveCompliance: 100
+            },
+            {
+              id: "demo-supplier-northwind",
+              name: "Northwind Voice Systems",
+              overallScore: 72,
+              weightedScore: 72,
+              mustHaveCompliance: 80
+            }
+          ]
+        },
+        timelineSummary: {
+          createdAt: "2024-10-01T09:00:00Z",
+          targetAwardDate: "2024-11-20T00:00:00Z",
+          actualAwardDate: "2024-11-18T15:00:00Z",
+          elapsedDays: 48
+        },
+        portfolioSummary: {
+          totalRfps: 12,
+          totalBudget: 15000000
+        },
+        buyerNotes: "Contoso Cloud Communications selected based on superior technical fit (95% must-have compliance), competitive pricing ($2.4M TCO within budget), proven enterprise implementation track record, and strong security posture. Primary risks include 6-month implementation timeline and CRM integration complexity, both with documented mitigation plans."
+      } as any,
     }
   });
 
@@ -227,6 +290,20 @@ export async function createDemoScenarioData(): Promise<DemoScenario> {
 
     suppliers.push(supplier);
   }
+
+  // STEP 41: Update primaryRfp with actual Contoso supplier ID
+  const awardSnapshotData = primaryRfp.awardSnapshot as any;
+  await prisma.rFP.update({
+    where: { id: primaryRfp.id },
+    data: {
+      awardedSupplierId: suppliers[2].id, // Contoso Cloud Communications
+      awardSnapshot: {
+        ...awardSnapshotData,
+        rfpId: primaryRfp.id,
+        recommendedSupplierId: suppliers[2].id,
+      } as any,
+    }
+  });
 
   // 7. Create Supplier Responses for Primary RFP
   const responseData = [

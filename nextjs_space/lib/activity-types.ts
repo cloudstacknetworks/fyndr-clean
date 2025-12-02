@@ -59,6 +59,12 @@ export type ActivityEventType =
   | "EXECUTIVE_SUMMARY_DELETED"
   | "EXECUTIVE_SUMMARY_EXPORTED"
   
+  // STEP 41: Award Events
+  | "award_previewed"
+  | "award_committed"
+  | "award_pdf_exported"
+  | "award_status_changed"
+  
   // Supplier Q&A Events
   | "SUPPLIER_QUESTION_CREATED"
   | "SUPPLIER_QUESTION_ANSWERED"
@@ -114,6 +120,12 @@ export const EVENT_TYPES = {
   EXECUTIVE_SUMMARY_DELETED: "EXECUTIVE_SUMMARY_DELETED" as ActivityEventType,
   EXECUTIVE_SUMMARY_EXPORTED: "EXECUTIVE_SUMMARY_EXPORTED" as ActivityEventType,
   
+  // STEP 41: Award Events
+  AWARD_PREVIEWED: "award_previewed" as ActivityEventType,
+  AWARD_COMMITTED: "award_committed" as ActivityEventType,
+  AWARD_PDF_EXPORTED: "award_pdf_exported" as ActivityEventType,
+  AWARD_STATUS_CHANGED: "award_status_changed" as ActivityEventType,
+  
   // Supplier Q&A Events
   SUPPLIER_QUESTION_CREATED: "SUPPLIER_QUESTION_CREATED" as ActivityEventType,
   SUPPLIER_QUESTION_ANSWERED: "SUPPLIER_QUESTION_ANSWERED" as ActivityEventType,
@@ -136,6 +148,7 @@ export const EVENT_CATEGORIES = {
   NOTIFICATIONS: "NOTIFICATIONS",
   EXPORT: "EXPORT",
   EXECUTIVE_SUMMARY: "EXECUTIVE_SUMMARY",
+  AWARD: "AWARD",
 };
 
 // Map event types to categories
@@ -152,6 +165,9 @@ export function getEventCategory(eventType: ActivityEventType): string {
   }
   if (eventType.startsWith("EXECUTIVE_SUMMARY_")) {
     return EVENT_CATEGORIES.EXECUTIVE_SUMMARY;
+  }
+  if (eventType.startsWith("award_")) {
+    return EVENT_CATEGORIES.AWARD;
   }
   if (eventType.startsWith("SUPPLIER_QUESTION_") || eventType.startsWith("SUPPLIER_BROADCAST_")) {
     return EVENT_CATEGORIES.QA_SYSTEM;
@@ -175,6 +191,8 @@ export function getEventTypeColor(eventType: ActivityEventType): { bg: string; t
       return { bg: "bg-purple-100", text: "text-purple-700" };
     case EVENT_CATEGORIES.EXECUTIVE_SUMMARY:
       return { bg: "bg-orange-100", text: "text-orange-700" };
+    case EVENT_CATEGORIES.AWARD:
+      return { bg: "bg-emerald-100", text: "text-emerald-700" };
     case EVENT_CATEGORIES.QA_SYSTEM:
       return { bg: "bg-amber-100", text: "text-amber-700" };
     case EVENT_CATEGORIES.NOTIFICATIONS:
@@ -228,6 +246,12 @@ export const EVENT_TYPE_LABELS: Record<ActivityEventType, string> = {
   EXECUTIVE_SUMMARY_CLONED: "Executive Summary Cloned",
   EXECUTIVE_SUMMARY_DELETED: "Executive Summary Deleted",
   EXECUTIVE_SUMMARY_EXPORTED: "Executive Summary Exported",
+  
+  // STEP 41: Award Events
+  award_previewed: "Award Decision Previewed",
+  award_committed: "Award Decision Committed",
+  award_pdf_exported: "Award Decision PDF Exported",
+  award_status_changed: "Award Status Changed",
   
   // Supplier Q&A Events
   SUPPLIER_QUESTION_CREATED: "Question Asked",

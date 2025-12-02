@@ -297,10 +297,57 @@ export const DEMO_SCENARIOS: Record<string, DemoScenarioConfig> = {
         duration: 5000
       },
 
+      // STEP 41: AWARD FINALIZATION
+      {
+        id: "buyer_award_finalization",
+        timeOffsetMs: 124000,
+        route: "/dashboard/rfps/[primaryRfpId]/award",
+        action: "navigate",
+        text: "Now we finalize the Award Recommendation. FYNDR records who won, why, and key risks—without performing any post-award procurement tasks.",
+        role: "buyer",
+        duration: 5000
+      },
+      {
+        id: "buyer_award_header",
+        timeOffsetMs: 129000,
+        targetSelector: "[data-demo='award-header']",
+        action: "highlight",
+        text: "The Award page shows the recommended supplier, decision rationale, scoring summary, and risk assessment in one comprehensive view.",
+        role: "buyer",
+        duration: 5000
+      },
+      {
+        id: "buyer_award_decision_brief",
+        timeOffsetMs: 134000,
+        targetSelector: "[data-demo='award-decision-brief']",
+        action: "scrollIntoView",
+        text: "The Decision Brief summarizes key drivers for the award decision and identifies primary risks with mitigation strategies.",
+        role: "buyer",
+        duration: 5000
+      },
+      {
+        id: "buyer_award_scoring_summary",
+        timeOffsetMs: 139000,
+        targetSelector: "[data-demo='award-scoring-summary']",
+        action: "scrollIntoView",
+        text: "Scoring Matrix Summary ranks all suppliers by overall score, weighted score, and must-have compliance percentage.",
+        role: "buyer",
+        duration: 5000
+      },
+      {
+        id: "buyer_award_timeline",
+        timeOffsetMs: 144000,
+        targetSelector: "[data-demo='award-timeline']",
+        action: "scrollIntoView",
+        text: "Timeline Summary tracks the RFP from creation to award decision, showing target vs. actual award dates and elapsed days.",
+        role: "buyer",
+        duration: 5000
+      },
+
       // BUYER PERSPECTIVE - Final Insights
       {
         id: "buyer_final_overview",
-        timeOffsetMs: 124000,
+        timeOffsetMs: 149000,
         text: "FYNDR streamlines the entire RFP lifecycle for both buyers and suppliers with AI-powered insights, automated workflows, and comprehensive tracking.",
         role: "buyer",
         duration: 5000
@@ -309,7 +356,7 @@ export const DEMO_SCENARIOS: Record<string, DemoScenarioConfig> = {
       // DEMO COMPLETE
       {
         id: "demo_complete",
-        timeOffsetMs: 129000,
+        timeOffsetMs: 154000,
         text: "Demo complete! FYNDR manages everything from RFP creation to supplier selection. Thank you for watching!",
         role: "buyer",
         duration: 5000

@@ -45,6 +45,7 @@ interface RFP {
   company: { name: string };
   supplier: { name: string };
   supplierResponses: { id: string }[];
+  awardStatus: string | null; // STEP 41: Award status integration
 }
 
 interface LifecycleBoardProps {
@@ -66,16 +67,22 @@ export default function LifecycleBoard({ initialRfps }: LifecycleBoardProps) {
       // Extract phase from timelineStateSnapshot
       let phase = "PLANNING"; // default
       
-      if (rfp.timelineStateSnapshot && typeof rfp.timelineStateSnapshot === "object") {
+      // STEP 41: Check if RFP has been awarded or cancelled - override phase to AWARD
+      if (rfp.awardStatus && rfp.awardStatus !== "not_awarded") {
+        phase = "AWARD";
+      } else if (rfp.timelineStateSnapshot && typeof rfp.timelineStateSnapshot === "object") {
         const snapshot = rfp.timelineStateSnapshot as any;
         if (snapshot.currentPhase && snapshot.currentPhase.phaseId) {
           phase = snapshot.currentPhase.phaseId;
         }
       }
 
+      // Convert phase to uppercase for matching
+      const phaseUpper = phase.toUpperCase();
+
       // Ensure phase exists in grouped object
-      if (grouped[phase]) {
-        grouped[phase].push(rfp);
+      if (grouped[phaseUpper]) {
+        grouped[phaseUpper].push(rfp);
       } else {
         // If phase not recognized, default to PLANNING
         grouped["PLANNING"].push(rfp);
@@ -277,6 +284,27 @@ function RfpCard({ rfp, phaseId }: { rfp: RFP; phaseId: string }) {
             </div>
           )}
         </div>
+
+        {/* Award Status Badge - STEP 41 */}
+        {rfp.awardStatus && rfp.awardStatus !== "not_awarded" && (
+          <div className="mb-2">
+            <span
+              className={`inline-block px-2 py-0.5 rounded-full text-xs font-semibold ${
+                rfp.awardStatus === "awarded"
+                  ? "bg-green-100 text-green-800"
+                  : rfp.awardStatus === "recommended"
+                  ? "bg-blue-100 text-blue-800"
+                  : rfp.awardStatus === "cancelled"
+                  ? "bg-red-100 text-red-800"
+                  : "bg-gray-100 text-gray-800"
+              }`}
+            >
+              {rfp.awardStatus === "awarded" && "🏆 Awarded"}
+              {rfp.awardStatus === "recommended" && "⭐ Recommended"}
+              {rfp.awardStatus === "cancelled" && "❌ Cancelled"}
+            </span>
+          </div>
+        )}
 
         {/* Budget */}
         {rfp.budget && (

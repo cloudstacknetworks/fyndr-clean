@@ -32,6 +32,7 @@ export default async function LifecyclePage() {
       timelineStateSnapshot: true,
       decisionBriefSnapshot: true,
       opportunityScore: true,
+      awardStatus: true,
       company: {
         select: {
           name: true,

@@ -218,7 +218,18 @@ export async function composePortfolioSnapshotForCompany(
     // Step 3: Compute KPIs
     const totalRfps = rfps.length;
     const activeRfps = rfps.filter(r => r.stage !== RFPStage.DEBRIEF && r.stage !== RFPStage.ARCHIVED).length;
-    const awardedRfps = rfps.filter(r => r.stage === RFPStage.DEBRIEF).length;
+    
+    // STEP 41: Count awarded RFPs using both stage and awardStatus
+    const awardedRfps = rfps.filter(r => {
+      // Check stage-based awards
+      if (r.stage === RFPStage.DEBRIEF) return true;
+      // Check STEP 41 award status
+      const rfpWithAward = r as any;
+      if (rfpWithAward.awardStatus === "awarded" || rfpWithAward.awardStatus === "recommended") {
+        return true;
+      }
+      return false;
+    }).length;
 
     // Average readiness across all supplier responses
     const allResponses = rfps.flatMap(r =>
