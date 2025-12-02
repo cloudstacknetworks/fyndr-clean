@@ -587,6 +587,214 @@ export async function createDemoScenarioData(): Promise<DemoScenario> {
     }
   });
 
+  // STEP 39: Create Scoring Matrix Snapshot Demo Data
+  const demoScoringMatrixSnapshot = {
+    rfpId: primaryRfp.id,
+    generatedAt: new Date(now.getTime() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+    generatedByUserId: demoBuyerUser.id,
+    requirements: [
+      {
+        requirementId: "REQ-FUNC-001",
+        sourceType: "template_question",
+        referenceKey: "FUNC:CORE:Q1",
+        shortLabel: "Multi-channel Support",
+        longDescription: "Must support voice, email, chat, SMS, and social media channels",
+        category: "functional",
+        importance: "must_have",
+        defaultWeight: 1.0
+      },
+      {
+        requirementId: "REQ-FUNC-002",
+        sourceType: "template_question",
+        referenceKey: "FUNC:CORE:Q2",
+        shortLabel: "AI-Powered Routing",
+        longDescription: "Intelligent routing based on customer sentiment and agent skills",
+        category: "functional",
+        importance: "must_have",
+        defaultWeight: 1.0
+      },
+      {
+        requirementId: "REQ-FUNC-003",
+        sourceType: "template_question",
+        referenceKey: "FUNC:ANALYTICS:Q1",
+        shortLabel: "Real-time Analytics Dashboard",
+        longDescription: "Real-time monitoring and reporting of contact center metrics",
+        category: "functional",
+        importance: "should_have",
+        defaultWeight: 0.8
+      },
+      {
+        requirementId: "REQ-COMM-001",
+        sourceType: "template_question",
+        referenceKey: "COMM:PRICING:Q1",
+        shortLabel: "Transparent Pricing Model",
+        longDescription: "Clear per-user/per-month pricing with no hidden fees",
+        category: "commercial",
+        importance: "must_have",
+        defaultWeight: 0.9
+      },
+      {
+        requirementId: "REQ-SEC-001",
+        sourceType: "clause",
+        referenceKey: "SEC:COMPLIANCE:001",
+        shortLabel: "SOC 2 Type II Compliance",
+        longDescription: "Must maintain SOC 2 Type II compliance certification",
+        category: "security",
+        importance: "must_have",
+        defaultWeight: 1.0
+      },
+      {
+        requirementId: "REQ-SEC-002",
+        sourceType: "clause",
+        referenceKey: "SEC:ENCRYPTION:001",
+        shortLabel: "End-to-End Encryption",
+        longDescription: "All communications must be encrypted in transit and at rest",
+        category: "security",
+        importance: "must_have",
+        defaultWeight: 1.0
+      },
+      {
+        requirementId: "REQ-OPER-001",
+        sourceType: "template_question",
+        referenceKey: "OPER:SLA:Q1",
+        shortLabel: "99.99% Uptime SLA",
+        longDescription: "Service Level Agreement guaranteeing 99.99% uptime",
+        category: "operational",
+        importance: "must_have",
+        defaultWeight: 1.0
+      },
+      {
+        requirementId: "REQ-OPER-002",
+        sourceType: "template_question",
+        referenceKey: "OPER:SUPPORT:Q1",
+        shortLabel: "24/7 Technical Support",
+        longDescription: "Round-the-clock technical support with 1-hour response time",
+        category: "operational",
+        importance: "should_have",
+        defaultWeight: 0.8
+      },
+    ],
+    cells: [
+      // Acme Connect Solutions
+      { requirementId: "REQ-FUNC-001", supplierId: suppliers[0].id, scoreLevel: "pass", numericScore: 1.0, justification: "Supports all required channels including WhatsApp" },
+      { requirementId: "REQ-FUNC-002", supplierId: suppliers[0].id, scoreLevel: "pass", numericScore: 1.0, justification: "AI routing with sentiment analysis and ML-based skill matching" },
+      { requirementId: "REQ-FUNC-003", supplierId: suppliers[0].id, scoreLevel: "pass", numericScore: 1.0, justification: "Real-time dashboard with customizable widgets" },
+      { requirementId: "REQ-COMM-001", supplierId: suppliers[0].id, scoreLevel: "pass", numericScore: 1.0, justification: "$85/user/month, all-inclusive" },
+      { requirementId: "REQ-SEC-001", supplierId: suppliers[0].id, scoreLevel: "pass", numericScore: 1.0, justification: "SOC 2 Type II certified since 2020" },
+      { requirementId: "REQ-SEC-002", supplierId: suppliers[0].id, scoreLevel: "pass", numericScore: 1.0, justification: "AES-256 encryption for all data" },
+      { requirementId: "REQ-OPER-001", supplierId: suppliers[0].id, scoreLevel: "pass", numericScore: 1.0, justification: "99.99% uptime SLA with financial penalties" },
+      { requirementId: "REQ-OPER-002", supplierId: suppliers[0].id, scoreLevel: "pass", numericScore: 1.0, justification: "24/7 support with 30-minute response time" },
+
+      // Northwind Voice Systems
+      { requirementId: "REQ-FUNC-001", supplierId: suppliers[1].id, scoreLevel: "partial", numericScore: 0.5, justification: "Supports voice, email, chat; social media in beta" },
+      { requirementId: "REQ-FUNC-002", supplierId: suppliers[1].id, scoreLevel: "partial", numericScore: 0.5, justification: "Basic routing rules; AI features in roadmap" },
+      { requirementId: "REQ-FUNC-003", supplierId: suppliers[1].id, scoreLevel: "pass", numericScore: 1.0, justification: "Real-time dashboard available" },
+      { requirementId: "REQ-COMM-001", supplierId: suppliers[1].id, scoreLevel: "pass", numericScore: 1.0, justification: "$76/user/month, transparent pricing" },
+      { requirementId: "REQ-SEC-001", supplierId: suppliers[1].id, scoreLevel: "pass", numericScore: 1.0, justification: "SOC 2 Type II certified" },
+      { requirementId: "REQ-SEC-002", supplierId: suppliers[1].id, scoreLevel: "pass", numericScore: 1.0, justification: "AES-256 encryption" },
+      { requirementId: "REQ-OPER-001", supplierId: suppliers[1].id, scoreLevel: "partial", numericScore: 0.5, justification: "99.9% uptime SLA (not 99.99%)" },
+      { requirementId: "REQ-OPER-002", supplierId: suppliers[1].id, scoreLevel: "pass", numericScore: 1.0, justification: "24/7 support with 1-hour response time" },
+
+      // Contoso Cloud Communications
+      { requirementId: "REQ-FUNC-001", supplierId: suppliers[2].id, scoreLevel: "pass", numericScore: 1.0, justification: "All channels plus video and screen sharing" },
+      { requirementId: "REQ-FUNC-002", supplierId: suppliers[2].id, scoreLevel: "pass", numericScore: 1.0, justification: "Advanced AI with predictive routing and NLP" },
+      { requirementId: "REQ-FUNC-003", supplierId: suppliers[2].id, scoreLevel: "pass", numericScore: 1.0, justification: "Real-time analytics with AI insights" },
+      { requirementId: "REQ-COMM-001", supplierId: suppliers[2].id, scoreLevel: "pass", numericScore: 1.0, justification: "$99/user/month, all-inclusive premium" },
+      { requirementId: "REQ-SEC-001", supplierId: suppliers[2].id, scoreLevel: "pass", numericScore: 1.0, justification: "SOC 2 Type II + ISO 27001 certified" },
+      { requirementId: "REQ-SEC-002", supplierId: suppliers[2].id, scoreLevel: "pass", numericScore: 1.0, justification: "AES-256 encryption with key rotation" },
+      { requirementId: "REQ-OPER-001", supplierId: suppliers[2].id, scoreLevel: "pass", numericScore: 1.0, justification: "99.99% uptime SLA with 200% credit guarantee" },
+      { requirementId: "REQ-OPER-002", supplierId: suppliers[2].id, scoreLevel: "pass", numericScore: 1.0, justification: "24/7/365 support with 15-minute response time" },
+
+      // Fabrikam Unified Solutions
+      { requirementId: "REQ-FUNC-001", supplierId: suppliers[3].id, scoreLevel: "partial", numericScore: 0.5, justification: "Voice, email, chat only; no social media" },
+      { requirementId: "REQ-FUNC-002", supplierId: suppliers[3].id, scoreLevel: "fail", numericScore: 0.0, justification: "No AI routing capabilities" },
+      { requirementId: "REQ-FUNC-003", supplierId: suppliers[3].id, scoreLevel: "partial", numericScore: 0.5, justification: "Basic reporting; real-time with add-on cost" },
+      { requirementId: "REQ-COMM-001", supplierId: suppliers[3].id, scoreLevel: "pass", numericScore: 1.0, justification: "$70/user/month, clear pricing" },
+      { requirementId: "REQ-SEC-001", supplierId: suppliers[3].id, scoreLevel: "pass", numericScore: 1.0, justification: "SOC 2 Type II certified" },
+      { requirementId: "REQ-SEC-002", supplierId: suppliers[3].id, scoreLevel: "pass", numericScore: 1.0, justification: "AES-256 encryption" },
+      { requirementId: "REQ-OPER-001", supplierId: suppliers[3].id, scoreLevel: "fail", numericScore: 0.0, justification: "99.5% uptime SLA (below requirement)" },
+      { requirementId: "REQ-OPER-002", supplierId: suppliers[3].id, scoreLevel: "partial", numericScore: 0.5, justification: "24/7 support but 4-hour response time" },
+    ],
+    supplierSummaries: [
+      {
+        supplierId: suppliers[0].id,
+        supplierName: "Acme Connect Solutions",
+        overallScore: 100.0,
+        weightedScore: 100.0,
+        categoryScores: [
+          { category: "functional", score: 100.0, weightedScore: 100.0 },
+          { category: "commercial", score: 100.0, weightedScore: 90.0 },
+          { category: "security", score: 100.0, weightedScore: 100.0 },
+          { category: "operational", score: 100.0, weightedScore: 80.0 },
+        ],
+        mustHaveCompliance: { total: 6, passed: 6, failed: 0 }
+      },
+      {
+        supplierId: suppliers[1].id,
+        supplierName: "Northwind Voice Systems",
+        overallScore: 75.0,
+        weightedScore: 76.3,
+        categoryScores: [
+          { category: "functional", score: 66.7, weightedScore: 66.7 },
+          { category: "commercial", score: 100.0, weightedScore: 90.0 },
+          { category: "security", score: 100.0, weightedScore: 100.0 },
+          { category: "operational", score: 75.0, weightedScore: 60.0 },
+        ],
+        mustHaveCompliance: { total: 6, passed: 4, failed: 2 }
+      },
+      {
+        supplierId: suppliers[2].id,
+        supplierName: "Contoso Cloud Communications",
+        overallScore: 100.0,
+        weightedScore: 100.0,
+        categoryScores: [
+          { category: "functional", score: 100.0, weightedScore: 100.0 },
+          { category: "commercial", score: 100.0, weightedScore: 90.0 },
+          { category: "security", score: 100.0, weightedScore: 100.0 },
+          { category: "operational", score: 100.0, weightedScore: 80.0 },
+        ],
+        mustHaveCompliance: { total: 6, passed: 6, failed: 0 }
+      },
+      {
+        supplierId: suppliers[3].id,
+        supplierName: "Fabrikam Unified Solutions",
+        overallScore: 50.0,
+        weightedScore: 51.1,
+        categoryScores: [
+          { category: "functional", score: 33.3, weightedScore: 33.3 },
+          { category: "commercial", score: 100.0, weightedScore: 90.0 },
+          { category: "security", score: 100.0, weightedScore: 100.0 },
+          { category: "operational", score: 25.0, weightedScore: 20.0 },
+        ],
+        mustHaveCompliance: { total: 6, passed: 3, failed: 3 }
+      },
+    ],
+    scoringConfig: {
+      defaultWeights: {
+        functional: 1.0,
+        commercial: 0.9,
+        legal: 0.95,
+        security: 1.0,
+        operational: 0.8,
+        other: 0.6
+      },
+      mustHavePenalty: 10,
+      partialFactor: 0.5
+    },
+    meta: {
+      totalRequirements: 8,
+      totalSuppliers: 4,
+      version: 1
+    }
+  };
+
+  await prisma.rFP.update({
+    where: { id: primaryRfp.id },
+    data: {
+      scoringMatrixSnapshot: demoScoringMatrixSnapshot as any
+    }
+  });
+
   // 10. Create Activity Log Entries
   const activityEvents = [
     { eventType: "RFP_CREATED", summary: "RFP created and moved to INTAKE stage", role: "BUYER" },

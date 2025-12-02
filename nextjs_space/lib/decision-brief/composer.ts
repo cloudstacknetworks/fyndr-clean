@@ -61,6 +61,21 @@ export interface DecisionBriefNarrative {
   financeNotes: string;
 }
 
+// STEP 39: Scoring Matrix Summary
+export interface DecisionBriefMatrixSummary {
+  hasMatrix: boolean;
+  totalRequirements: number;
+  totalSuppliers: number;
+  mustHaveComplianceBySupplier: Array<{
+    supplierId: string;
+    supplierName: string;
+    passedCount: number;
+    totalCount: number;
+    compliancePercentage: number;
+  }>;
+  topDifferentiatorRequirements: string[];
+}
+
 export interface DecisionBriefSnapshot {
   rfpId: string;
   rfpTitle: string;
@@ -72,6 +87,7 @@ export interface DecisionBriefSnapshot {
   supplierSummaries: DecisionBriefSupplierSummary[];
   riskSummary: DecisionBriefRiskSummary;
   timelineSummary: DecisionBriefTimelineSummary;
+  matrixSummary: DecisionBriefMatrixSummary | null; // STEP 39: Scoring Matrix Summary
   narrative: DecisionBriefNarrative;
   generatedAt: string;
   generatedByUserId: string | null;
@@ -200,6 +216,9 @@ export async function composeDecisionBriefForRfp(
     // Step 7: Build timeline summary
     const timelineSummary = buildTimelineSummary(rfp);
 
+    // Step 7.5: STEP 39 - Build scoring matrix summary
+    const matrixSummary = await buildMatrixSummary(rfpId);
+
     // Step 8: Create placeholder narrative (AI will overwrite)
     const narrative: DecisionBriefNarrative = {
       executiveSummary: "AI-generated executive summary will appear here after generation.",
@@ -220,6 +239,7 @@ export async function composeDecisionBriefForRfp(
       supplierSummaries,
       riskSummary,
       timelineSummary,
+      matrixSummary,
       narrative,
       generatedAt: new Date().toISOString(),
       generatedByUserId: rfp.userId,
@@ -453,6 +473,61 @@ function generateNextSteps(stage: string, milestones: any[]): string[] {
   return steps.slice(0, 3);
 }
 
+/**
+ * STEP 39: Builds a summary of the scoring matrix for the decision brief
+ */
+async function buildMatrixSummary(rfpId: string): Promise<DecisionBriefMatrixSummary | null> {
+  try {
+    // Import the scoring matrix function
+    const { getScoringMatrix } = await import('@/lib/comparison/scoring-matrix');
+    
+    // Try to get the scoring matrix
+    const matrix = await getScoringMatrix(rfpId, true);
+    
+    if (!matrix) {
+      return null;
+    }
+
+    // Build must-have compliance summary
+    const mustHaveComplianceBySupplier = matrix.supplierSummaries.map(summary => ({
+      supplierId: summary.supplierId,
+      supplierName: summary.supplierName,
+      passedCount: summary.mustHaveCompliance.passed,
+      totalCount: summary.mustHaveCompliance.total,
+      compliancePercentage: summary.mustHaveCompliance.total > 0
+        ? Math.round((summary.mustHaveCompliance.passed / summary.mustHaveCompliance.total) * 100)
+        : 0,
+    }));
+
+    // Find top differentiator requirements (where suppliers differ most)
+    const requirementDifferentiationScores = matrix.requirements.map(req => {
+      const reqCells = matrix.cells.filter(c => c.requirementId === req.requirementId);
+      const uniqueScores = new Set(reqCells.map(c => c.scoreLevel));
+      return {
+        requirement: req.shortLabel,
+        differentiationScore: uniqueScores.size,
+      };
+    });
+
+    const topDifferentiators = requirementDifferentiationScores
+      .filter(r => r.differentiationScore > 1)
+      .sort((a, b) => b.differentiationScore - a.differentiationScore)
+      .slice(0, 5)
+      .map(r => r.requirement);
+
+    return {
+      hasMatrix: true,
+      totalRequirements: matrix.meta.totalRequirements,
+      totalSuppliers: matrix.meta.totalSuppliers,
+      mustHaveComplianceBySupplier,
+      topDifferentiatorRequirements: topDifferentiators,
+    };
+  } catch (error) {
+    console.error('Error building matrix summary for decision brief:', error);
+    return null;
+  }
+}
+
 function createFallbackSnapshot(rfpId: string): DecisionBriefSnapshot {
   return {
     rfpId,
@@ -479,6 +554,7 @@ function createFallbackSnapshot(rfpId: string): DecisionBriefSnapshot {
       upcomingMilestones: [],
       suggestedNextSteps: ["Verify RFP data and retry brief generation."],
     },
+    matrixSummary: null,
     narrative: {
       executiveSummary: "Unable to generate executive summary.",
       procurementNotes: "Unable to generate procurement notes.",

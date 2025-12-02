@@ -43,6 +43,10 @@ export type ActivityEventType =
   | "COMPARISON_REPORT_GENERATED"
   | "READINESS_RECALCULATED"
   
+  // STEP 39: Scoring Matrix Events
+  | "comparison_matrix_recomputed"
+  | "comparison_matrix_exported"
+  
   // Decision Brief Events (STEP 34)
   | "DECISION_BRIEF_AI_GENERATED"
   | "DECISION_BRIEF_PDF_EXPORTED"
@@ -85,6 +89,10 @@ export const EVENT_TYPES = {
   COMPARISON_NARRATIVE_GENERATED: "COMPARISON_NARRATIVE_GENERATED" as ActivityEventType,
   COMPARISON_REPORT_GENERATED: "COMPARISON_REPORT_GENERATED" as ActivityEventType,
   READINESS_RECALCULATED: "READINESS_RECALCULATED" as ActivityEventType,
+  
+  // STEP 39: Scoring Matrix Events
+  COMPARISON_MATRIX_RECOMPUTED: "comparison_matrix_recomputed" as ActivityEventType,
+  COMPARISON_MATRIX_EXPORTED: "comparison_matrix_exported" as ActivityEventType,
   
   // Decision Brief Events (STEP 34)
   DECISION_BRIEF_AI_GENERATED: "DECISION_BRIEF_AI_GENERATED" as ActivityEventType,
@@ -184,6 +192,8 @@ export const EVENT_TYPE_LABELS: Record<ActivityEventType, string> = {
   COMPARISON_NARRATIVE_GENERATED: "Narrative Generated",
   COMPARISON_REPORT_GENERATED: "Report Generated",
   READINESS_RECALCULATED: "Readiness Recalculated",
+  comparison_matrix_recomputed: "Comparison Matrix Recomputed",
+  comparison_matrix_exported: "Comparison Matrix Exported",
   
   // Decision Brief Events (STEP 34)
   DECISION_BRIEF_AI_GENERATED: "Decision Brief AI Generated",
