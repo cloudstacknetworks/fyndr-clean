@@ -344,10 +344,22 @@ export const DEMO_SCENARIOS: Record<string, DemoScenarioConfig> = {
         duration: 5000
       },
 
+      // STEP 43: SUPPLIER OUTCOMES DASHBOARD
+      {
+        id: "supplier_outcomes_overview",
+        timeOffsetMs: 149000,
+        route: "/dashboard/rfps/[primaryRfpId]/supplier-outcomes",
+        action: "navigate",
+        targetSelector: "[data-demo='supplier-outcomes-header']",
+        text: "This dashboard shows how each supplier performed based on the scoring matrix and award decision.",
+        role: "buyer",
+        duration: 5000
+      },
+
       // BUYER PERSPECTIVE - Final Insights
       {
         id: "buyer_final_overview",
-        timeOffsetMs: 149000,
+        timeOffsetMs: 154000,
         text: "FYNDR streamlines the entire RFP lifecycle for both buyers and suppliers with AI-powered insights, automated workflows, and comprehensive tracking.",
         role: "buyer",
         duration: 5000
@@ -356,7 +368,7 @@ export const DEMO_SCENARIOS: Record<string, DemoScenarioConfig> = {
       // DEMO COMPLETE
       {
         id: "demo_complete",
-        timeOffsetMs: 154000,
+        timeOffsetMs: 159000,
         text: "Demo complete! FYNDR manages everything from RFP creation to supplier selection. Thank you for watching!",
         role: "buyer",
         duration: 5000

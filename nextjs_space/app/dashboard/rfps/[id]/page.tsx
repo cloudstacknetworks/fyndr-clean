@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { PrismaClient } from "@prisma/client";
-import { ArrowLeft, Calendar, User, Building2, Users, DollarSign, Flag, FileText, Edit, Share2, Mail, Zap, Activity } from "lucide-react";
+import { ArrowLeft, Calendar, User, Building2, Users, DollarSign, Flag, FileText, Edit, Share2, Mail, Zap, Activity, Target } from "lucide-react";
 import { notFound } from "next/navigation";
 import AISummary from "./ai-summary";
 import StageTasks from "./stage-tasks";
@@ -188,6 +188,13 @@ export default async function RFPDetailPage({
           >
             <Activity className="h-5 w-5" />
             Activity
+          </Link>
+          <Link
+            href={`/dashboard/rfps/${rfp.id}/supplier-outcomes`}
+            className="inline-flex items-center gap-2 bg-purple-100 hover:bg-purple-200 text-purple-700 px-4 py-2 rounded-lg font-semibold transition-all"
+          >
+            <Target className="h-5 w-5" />
+            Supplier Outcomes
           </Link>
           <Link
             href={`/dashboard/rfps/${rfp.id}/executive-summary`}

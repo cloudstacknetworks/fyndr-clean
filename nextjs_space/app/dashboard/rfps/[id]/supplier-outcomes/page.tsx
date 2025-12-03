@@ -136,7 +136,7 @@ export default function SupplierOutcomeDashboardPage() {
   // Download individual debrief handler
   const handleDownloadDebrief = async (supplierId: string, supplierName: string) => {
     try {
-      const res = await fetch(`/api/dashboard/rfps/${rfpId}/debrief/${supplierId}/pdf`);
+      const res = await fetch(`/api/dashboard/rfps/${rfpId}/supplier-debrief/${supplierId}/pdf`);
 
       if (!res.ok) {
         throw new Error("Failed to download debrief");
