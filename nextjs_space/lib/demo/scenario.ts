@@ -202,6 +202,116 @@ export async function createDemoScenarioData(): Promise<DemoScenario> {
         dueDate: new Date(now.getTime() + 60 * 24 * 60 * 60 * 1000),
         isDemo: true
       }
+    }),
+    // STEP 47: Archived RFP Demo
+    prisma.rFP.create({
+      data: {
+        title: "Legacy System Modernization Initiative (Completed & Archived)",
+        description: "Successfully completed project to modernize legacy on-premise systems to cloud-native architecture. Project completed Q4 2024.",
+        status: "COMPLETED",
+        priority: "HIGH",
+        stage: "ARCHIVED",
+        companyId: demoBuyerOrg.id,
+        userId: demoBuyerUser.id,
+        supplierId: dummySupplier.id,
+        budget: 750000,
+        dueDate: new Date(now.getTime() - 90 * 24 * 60 * 60 * 1000), // 90 days ago
+        submittedAt: new Date(now.getTime() - 120 * 24 * 60 * 60 * 1000), // 120 days ago
+        askQuestionsStart: new Date(now.getTime() - 150 * 24 * 60 * 60 * 1000),
+        askQuestionsEnd: new Date(now.getTime() - 140 * 24 * 60 * 60 * 1000),
+        submissionStart: new Date(now.getTime() - 140 * 24 * 60 * 60 * 1000),
+        submissionEnd: new Date(now.getTime() - 120 * 24 * 60 * 60 * 1000),
+        awardDate: new Date(now.getTime() - 100 * 24 * 60 * 60 * 1000),
+        // STEP 47: Archive fields
+        isArchived: true,
+        archivedAt: new Date(now.getTime() - 95 * 24 * 60 * 60 * 1000), // Archived 95 days ago
+        archivedByUserId: demoBuyerUser.id,
+        compliancePackSnapshot: {
+          rfpId: "placeholder", // Will be updated after creation
+          rfpTitle: "Legacy System Modernization Initiative (Completed & Archived)",
+          rfpDescription: "Successfully completed project to modernize legacy on-premise systems to cloud-native architecture. Project completed Q4 2024.",
+          company: {
+            id: demoBuyerOrg.id,
+            name: "CloudStack Networks (Demo)",
+          },
+          supplier: {
+            id: dummySupplier.id,
+            name: "Multiple Suppliers",
+          },
+          timeline: {
+            createdAt: new Date(now.getTime() - 160 * 24 * 60 * 60 * 1000).toISOString(),
+            askQuestionsStart: new Date(now.getTime() - 150 * 24 * 60 * 60 * 1000).toISOString(),
+            askQuestionsEnd: new Date(now.getTime() - 140 * 24 * 60 * 60 * 1000).toISOString(),
+            submissionStart: new Date(now.getTime() - 140 * 24 * 60 * 60 * 1000).toISOString(),
+            submissionEnd: new Date(now.getTime() - 120 * 24 * 60 * 60 * 1000).toISOString(),
+            demoWindowStart: null,
+            demoWindowEnd: null,
+            awardDate: new Date(now.getTime() - 100 * 24 * 60 * 60 * 1000).toISOString(),
+            archivedAt: new Date(now.getTime() - 95 * 24 * 60 * 60 * 1000).toISOString(),
+          },
+          decisionBrief: {
+            available: false,
+            recommendation: null,
+            supplierSummaries: null,
+            riskSummary: null,
+          },
+          scoring: {
+            opportunityScore: 87,
+            opportunityBreakdown: {
+              winProbability: 0.85,
+              strategicFit: 0.90,
+              competitivePosition: 0.88,
+            },
+            scoringMatrix: null,
+            comparisonNarrative: null,
+          },
+          executiveSummary: {
+            latest: null,
+            versions: 0,
+          },
+          award: {
+            awardStatus: "awarded",
+            awardedSupplierId: null,
+            awardDecidedAt: new Date(now.getTime() - 100 * 24 * 60 * 60 * 1000).toISOString(),
+            awardDecidedBy: {
+              id: demoBuyerUser.id,
+              name: "Diane Chen (Demo)",
+              email: "diane.demo@cloudstack.com",
+            },
+            awardSnapshot: null,
+            awardNotes: "Project successfully completed. Vendor delivered on time and within budget.",
+          },
+          supplierOutcomes: [],
+          timelineSummary: {
+            totalQuestions: 12,
+            answeredQuestions: 12,
+            totalBroadcasts: 3,
+            totalResponses: 4,
+            submittedResponses: 4,
+          },
+          portfolioContext: {
+            companyId: demoBuyerOrg.id,
+            companyName: "CloudStack Networks (Demo)",
+            totalActiveRFPs: 2,
+            totalArchivedRFPs: 1,
+          },
+          metadata: {
+            generatedAt: new Date(now.getTime() - 95 * 24 * 60 * 60 * 1000).toISOString(),
+            generatedBy: {
+              id: demoBuyerUser.id,
+              name: "Diane Chen (Demo)",
+              email: "diane.demo@cloudstack.com",
+            },
+            version: "1.0",
+          },
+        } as any,
+        awardStatus: "awarded",
+        awardDecidedAt: new Date(now.getTime() - 100 * 24 * 60 * 60 * 1000),
+        awardDecidedByUserId: demoBuyerUser.id,
+        awardNotes: "Project successfully completed. Vendor delivered on time and within budget.",
+        opportunityScore: 87,
+        isDemo: true,
+      }
     })
   ]);
 

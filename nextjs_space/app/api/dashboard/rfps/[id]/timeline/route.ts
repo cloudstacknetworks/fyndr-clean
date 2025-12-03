@@ -15,6 +15,7 @@ import {
   RfpTimelineConfig,
   RfpTimelineStateSnapshot,
 } from "@/lib/timeline/timeline-engine";
+import { guardAgainstArchivedRfp } from "@/lib/archive/archive-guards"; // STEP 47
 
 /**
  * GET /api/dashboard/rfps/[id]/timeline
@@ -140,6 +141,13 @@ export async function PUT(
 
     if (rfp.userId !== session.user.id) {
       return NextResponse.json({ error: "Forbidden: Not your RFP" }, { status: 403 });
+    }
+
+    // STEP 47: Prevent mutations on archived RFPs
+    try {
+      await guardAgainstArchivedRfp(rfpId);
+    } catch (error: any) {
+      return NextResponse.json({ error: error.message }, { status: 403 });
     }
 
     // Merge body into existing config (increment version)

@@ -435,10 +435,36 @@ export const DEMO_SCENARIOS: Record<string, DemoScenarioConfig> = {
         duration: 5000
       },
 
+      // STEP 47: RFP ARCHIVE AND COMPLIANCE PACK
+      {
+        id: "archive_navigate",
+        timeOffsetMs: 164000,
+        route: "/dashboard/rfps/[primaryRfpId]/archive",
+        action: "navigate",
+        text: "After the award decision, you can archive the RFP to create a read-only compliance audit trail.",
+        role: "buyer",
+        duration: 5000
+      },
+      {
+        id: "archive_overview",
+        timeOffsetMs: 169000,
+        targetSelector: "[data-demo='archive-header']",
+        text: "The Archive page generates a comprehensive compliance pack with all pre-award artifacts, timeline data, and supplier outcomes.",
+        role: "buyer",
+        duration: 5000
+      },
+      {
+        id: "archive_export",
+        timeOffsetMs: 174000,
+        text: "Export the compliance pack as PDF or Word for permanent record-keeping and audit purposes.",
+        role: "buyer",
+        duration: 5000
+      },
+
       // BUYER PERSPECTIVE - Final Insights
       {
         id: "buyer_final_overview",
-        timeOffsetMs: 164000,
+        timeOffsetMs: 179000,
         text: "FYNDR streamlines the entire RFP lifecycle for both buyers and suppliers with AI-powered insights, automated workflows, and comprehensive tracking.",
         role: "buyer",
         duration: 5000
@@ -447,7 +473,7 @@ export const DEMO_SCENARIOS: Record<string, DemoScenarioConfig> = {
       // DEMO COMPLETE
       {
         id: "demo_complete",
-        timeOffsetMs: 169000,
+        timeOffsetMs: 184000,
         text: "Demo complete! FYNDR manages everything from RFP creation to supplier selection. Thank you for watching!",
         role: "buyer",
         duration: 5000

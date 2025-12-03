@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { PrismaClient } from "@prisma/client";
-import { ArrowLeft, Calendar, User, Building2, Users, DollarSign, Flag, FileText, Edit, Share2, Mail, Zap, Activity, Target } from "lucide-react";
+import { ArrowLeft, Calendar, User, Building2, Users, DollarSign, Flag, FileText, Edit, Share2, Mail, Zap, Activity, Target, Archive } from "lucide-react";
 import { notFound } from "next/navigation";
 import AISummary from "./ai-summary";
 import StageTasks from "./stage-tasks";
@@ -173,6 +173,21 @@ export default async function RFPDetailPage({
 
   return (
     <div className="max-w-4xl mx-auto">
+      {/* STEP 47: Archived RFP Banner */}
+      {rfp.isArchived && (
+        <div className="mb-6 bg-slate-100 border-2 border-slate-300 rounded-lg p-4">
+          <div className="flex items-center gap-3">
+            <Archive className="h-5 w-5 text-slate-600" />
+            <div>
+              <p className="font-semibold text-slate-900">This RFP is Archived</p>
+              <p className="text-sm text-slate-700">
+                Archived on {rfp.archivedAt ? formatDate(rfp.archivedAt) : 'Unknown Date'}. This RFP is now read-only.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+      
       <div className="mb-6 flex items-center justify-between">
         <Link
           href="/dashboard/rfps"
@@ -203,14 +218,24 @@ export default async function RFPDetailPage({
             <FileText className="h-5 w-5" />
             Executive Summary
           </Link>
-          <ExportBundleButton rfpId={rfp.id} />
           <Link
-            href={`/dashboard/rfps/${rfp.id}/edit`}
-            className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-4 py-2 rounded-lg font-semibold transition-all shadow-md hover:shadow-lg"
+            href={`/dashboard/rfps/${rfp.id}/archive`}
+            className="inline-flex items-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-lg font-semibold transition-all"
           >
-            <Edit className="h-5 w-5" />
-            Edit RFP
+            <Archive className="h-5 w-5" />
+            Archive
           </Link>
+          <ExportBundleButton rfpId={rfp.id} />
+          {/* STEP 47: Hide Edit button for archived RFPs */}
+          {!rfp.isArchived && (
+            <Link
+              href={`/dashboard/rfps/${rfp.id}/edit`}
+              className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-4 py-2 rounded-lg font-semibold transition-all shadow-md hover:shadow-lg"
+            >
+              <Edit className="h-5 w-5" />
+              Edit RFP
+            </Link>
+          )}
         </div>
       </div>
 
@@ -219,6 +244,13 @@ export default async function RFPDetailPage({
           <div className="flex items-start justify-between mb-4">
             <h1 className="text-3xl font-bold text-gray-900">{rfp.title}</h1>
             <div className="flex gap-2 flex-wrap">
+              {/* STEP 47: Show ARCHIVED badge if archived */}
+              {rfp.isArchived && (
+                <span className="inline-flex items-center gap-1 px-4 py-2 rounded-full text-sm font-semibold bg-slate-100 text-slate-700 border-2 border-slate-300">
+                  <Archive className="h-4 w-4" />
+                  ARCHIVED
+                </span>
+              )}
               <span
                 className={`inline-block px-4 py-2 rounded-full text-sm font-semibold ${getStatusColor(
                   rfp.status

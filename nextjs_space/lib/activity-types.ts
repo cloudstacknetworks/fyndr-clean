@@ -81,6 +81,12 @@ export type ActivityEventType =
   | "PORTFOLIO_INSIGHTS_VIEWED"
   | "PORTFOLIO_INSIGHTS_EXPORTED"
   
+  // STEP 47: RFP Archive and Compliance Pack Events
+  | "RFP_ARCHIVE_PREVIEWED"
+  | "RFP_ARCHIVED"
+  | "COMPLIANCE_PACK_EXPORTED_PDF"
+  | "COMPLIANCE_PACK_EXPORTED_DOCX"
+  
   // Supplier Q&A Events
   | "SUPPLIER_QUESTION_CREATED"
   | "SUPPLIER_QUESTION_ANSWERED"
@@ -158,6 +164,12 @@ export const EVENT_TYPES = {
   PORTFOLIO_INSIGHTS_VIEWED: "PORTFOLIO_INSIGHTS_VIEWED" as ActivityEventType,
   PORTFOLIO_INSIGHTS_EXPORTED: "PORTFOLIO_INSIGHTS_EXPORTED" as ActivityEventType,
   
+  // STEP 47: RFP Archive and Compliance Pack Events
+  RFP_ARCHIVE_PREVIEWED: "RFP_ARCHIVE_PREVIEWED" as ActivityEventType,
+  RFP_ARCHIVED: "RFP_ARCHIVED" as ActivityEventType,
+  COMPLIANCE_PACK_EXPORTED_PDF: "COMPLIANCE_PACK_EXPORTED_PDF" as ActivityEventType,
+  COMPLIANCE_PACK_EXPORTED_DOCX: "COMPLIANCE_PACK_EXPORTED_DOCX" as ActivityEventType,
+  
   // Supplier Q&A Events
   SUPPLIER_QUESTION_CREATED: "SUPPLIER_QUESTION_CREATED" as ActivityEventType,
   SUPPLIER_QUESTION_ANSWERED: "SUPPLIER_QUESTION_ANSWERED" as ActivityEventType,
@@ -181,10 +193,15 @@ export const EVENT_CATEGORIES = {
   EXPORT: "EXPORT",
   EXECUTIVE_SUMMARY: "EXECUTIVE_SUMMARY",
   AWARD: "AWARD",
+  ARCHIVE: "ARCHIVE",
 };
 
 // Map event types to categories
 export function getEventCategory(eventType: ActivityEventType): string {
+  // Check archive events first (more specific)
+  if (eventType.startsWith("RFP_ARCHIVE") || eventType.startsWith("COMPLIANCE_PACK_")) {
+    return EVENT_CATEGORIES.ARCHIVE;
+  }
   if (eventType.startsWith("RFP_")) return EVENT_CATEGORIES.RFP;
   if (eventType.startsWith("SUPPLIER_CONTACT_") || eventType.startsWith("SUPPLIER_INVITATION_") || eventType.startsWith("SUPPLIER_PORTAL_")) {
     return EVENT_CATEGORIES.SUPPLIER_PORTAL;
@@ -225,6 +242,8 @@ export function getEventTypeColor(eventType: ActivityEventType): { bg: string; t
       return { bg: "bg-orange-100", text: "text-orange-700" };
     case EVENT_CATEGORIES.AWARD:
       return { bg: "bg-emerald-100", text: "text-emerald-700" };
+    case EVENT_CATEGORIES.ARCHIVE:
+      return { bg: "bg-slate-100", text: "text-slate-700" };
     case EVENT_CATEGORIES.QA_SYSTEM:
       return { bg: "bg-amber-100", text: "text-amber-700" };
     case EVENT_CATEGORIES.NOTIFICATIONS:
@@ -300,6 +319,12 @@ export const EVENT_TYPE_LABELS: Record<ActivityEventType, string> = {
   // STEP 44: Portfolio Insights Dashboard Events
   PORTFOLIO_INSIGHTS_VIEWED: "Portfolio Insights Viewed",
   PORTFOLIO_INSIGHTS_EXPORTED: "Portfolio Insights PDF Exported",
+  
+  // STEP 47: RFP Archive and Compliance Pack Events
+  RFP_ARCHIVE_PREVIEWED: "RFP Archive Previewed",
+  RFP_ARCHIVED: "RFP Archived",
+  COMPLIANCE_PACK_EXPORTED_PDF: "Compliance Pack Exported (PDF)",
+  COMPLIANCE_PACK_EXPORTED_DOCX: "Compliance Pack Exported (Word)",
   
   // Supplier Q&A Events
   SUPPLIER_QUESTION_CREATED: "Question Asked",
