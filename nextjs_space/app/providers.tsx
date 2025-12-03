@@ -1,7 +1,7 @@
 'use client';
 
 import { SessionProvider } from 'next-auth/react';
-import { ReactNode, useEffect, useState, Suspense } from 'react';
+import { ReactNode, Suspense } from 'react';
 import { DemoProvider } from './components/demo/demo-context';
 import { DemoPlayer } from './components/demo/demo-player';
 import { DemoOverlay } from './components/demo/demo-overlay';
@@ -12,16 +12,6 @@ interface ProvidersProps {
 }
 
 export function Providers({ children }: ProvidersProps) {
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted) {
-    return <>{children}</>;
-  }
-
   return (
     <SessionProvider>
       <DemoProvider>

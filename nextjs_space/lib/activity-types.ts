@@ -68,6 +68,10 @@ export type ActivityEventType =
   // STEP 42: Supplier Debrief Events
   | "SUPPLIER_DEBRIEF_EXPORTED"
   
+  // STEP 43: Supplier Outcome Dashboard Events
+  | "SUPPLIER_OUTCOMES_VIEWED"
+  | "SUPPLIER_OUTCOMES_EXPORTED"
+  
   // Supplier Q&A Events
   | "SUPPLIER_QUESTION_CREATED"
   | "SUPPLIER_QUESTION_ANSWERED"
@@ -131,6 +135,10 @@ export const EVENT_TYPES = {
   
   // STEP 42: Supplier Debrief Events
   SUPPLIER_DEBRIEF_EXPORTED: "SUPPLIER_DEBRIEF_EXPORTED" as ActivityEventType,
+  
+  // STEP 43: Supplier Outcome Dashboard Events
+  SUPPLIER_OUTCOMES_VIEWED: "SUPPLIER_OUTCOMES_VIEWED" as ActivityEventType,
+  SUPPLIER_OUTCOMES_EXPORTED: "SUPPLIER_OUTCOMES_EXPORTED" as ActivityEventType,
   
   // Supplier Q&A Events
   SUPPLIER_QUESTION_CREATED: "SUPPLIER_QUESTION_CREATED" as ActivityEventType,
@@ -261,6 +269,10 @@ export const EVENT_TYPE_LABELS: Record<ActivityEventType, string> = {
   
   // STEP 42: Supplier Debrief Events
   SUPPLIER_DEBRIEF_EXPORTED: "Supplier Debrief Pack Exported",
+  
+  // STEP 43: Supplier Outcome Dashboard Events
+  SUPPLIER_OUTCOMES_VIEWED: "Supplier Outcomes Viewed",
+  SUPPLIER_OUTCOMES_EXPORTED: "Supplier Outcomes PDF Exported",
   
   // Supplier Q&A Events
   SUPPLIER_QUESTION_CREATED: "Question Asked",

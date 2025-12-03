@@ -292,6 +292,7 @@ export async function createDemoScenarioData(): Promise<DemoScenario> {
   }
 
   // STEP 41: Update primaryRfp with actual Contoso supplier ID
+  // STEP 43: Add supplierOutcomes to awardSnapshot for Supplier Outcome Dashboard
   const awardSnapshotData = primaryRfp.awardSnapshot as any;
   await prisma.rFP.update({
     where: { id: primaryRfp.id },
@@ -301,6 +302,25 @@ export async function createDemoScenarioData(): Promise<DemoScenario> {
         ...awardSnapshotData,
         rfpId: primaryRfp.id,
         recommendedSupplierId: suppliers[2].id,
+        // STEP 43: Add supplierOutcomes array
+        supplierOutcomes: [
+          {
+            supplierContactId: suppliers[0].id, // Acme Connect Solutions
+            outcome: "shortlisted"
+          },
+          {
+            supplierContactId: suppliers[1].id, // Northwind Voice Systems
+            outcome: "not_selected"
+          },
+          {
+            supplierContactId: suppliers[2].id, // Contoso Cloud Communications
+            outcome: "awarded"
+          },
+          {
+            supplierContactId: suppliers[3].id, // Fabrikam Unified Solutions
+            outcome: "declined"
+          }
+        ]
       } as any,
     }
   });
