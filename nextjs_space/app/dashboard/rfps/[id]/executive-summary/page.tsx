@@ -216,7 +216,22 @@ export default function ExecutiveSummaryWorkspace() {
         `/api/dashboard/rfps/${rfpId}/executive-summaries/${selectedSummary.id}/pdf`,
         '_blank'
       );
-      toast.success('Exporting summary...');
+      toast.success('Exporting summary as PDF...');
+    } catch (error) {
+      console.error('Error exporting summary:', error);
+      toast.error('Failed to export summary');
+    }
+  };
+
+  const handleExportDocx = async () => {
+    if (!selectedSummary) return;
+
+    try {
+      window.open(
+        `/api/dashboard/rfps/${rfpId}/executive-summaries/${selectedSummary.id}/docx`,
+        '_blank'
+      );
+      toast.success('Exporting summary as Word document...');
     } catch (error) {
       console.error('Error exporting summary:', error);
       toast.error('Failed to export summary');
@@ -410,13 +425,24 @@ export default function ExecutiveSummaryWorkspace() {
                         Clone
                       </button>
                       
+                      {/* Export Buttons */}
                       <button
                         onClick={handleExportPDF}
                         className="inline-flex items-center px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700"
                         data-demo="export-actions"
+                        title="Export as PDF"
                       >
                         <DocumentArrowDownIcon className="h-5 w-5 mr-2" />
-                        Export
+                        Export PDF
+                      </button>
+                      
+                      <button
+                        onClick={handleExportDocx}
+                        className="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
+                        title="Export as Word"
+                      >
+                        <DocumentArrowDownIcon className="h-5 w-5 mr-2" />
+                        Export Word
                       </button>
                       
                       <button

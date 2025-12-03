@@ -58,15 +58,18 @@ export type ActivityEventType =
   | "EXECUTIVE_SUMMARY_CLONED"
   | "EXECUTIVE_SUMMARY_DELETED"
   | "EXECUTIVE_SUMMARY_EXPORTED"
+  | "EXEC_SUMMARY_EXPORTED_DOCX"
   
   // STEP 41: Award Events
   | "award_previewed"
   | "award_committed"
   | "award_pdf_exported"
   | "award_status_changed"
+  | "AWARD_EXPORTED_DOCX"
   
   // STEP 42: Supplier Debrief Events
   | "SUPPLIER_DEBRIEF_EXPORTED"
+  | "SUPPLIER_DEBRIEF_EXPORTED_DOCX"
   
   // STEP 43: Supplier Outcome Dashboard Events
   | "SUPPLIER_OUTCOMES_VIEWED"
@@ -130,15 +133,18 @@ export const EVENT_TYPES = {
   EXECUTIVE_SUMMARY_CLONED: "EXECUTIVE_SUMMARY_CLONED" as ActivityEventType,
   EXECUTIVE_SUMMARY_DELETED: "EXECUTIVE_SUMMARY_DELETED" as ActivityEventType,
   EXECUTIVE_SUMMARY_EXPORTED: "EXECUTIVE_SUMMARY_EXPORTED" as ActivityEventType,
+  EXEC_SUMMARY_EXPORTED_DOCX: "EXEC_SUMMARY_EXPORTED_DOCX" as ActivityEventType,
   
   // STEP 41: Award Events
   AWARD_PREVIEWED: "award_previewed" as ActivityEventType,
   AWARD_COMMITTED: "award_committed" as ActivityEventType,
   AWARD_PDF_EXPORTED: "award_pdf_exported" as ActivityEventType,
   AWARD_STATUS_CHANGED: "award_status_changed" as ActivityEventType,
+  AWARD_EXPORTED_DOCX: "AWARD_EXPORTED_DOCX" as ActivityEventType,
   
   // STEP 42: Supplier Debrief Events
   SUPPLIER_DEBRIEF_EXPORTED: "SUPPLIER_DEBRIEF_EXPORTED" as ActivityEventType,
+  SUPPLIER_DEBRIEF_EXPORTED_DOCX: "SUPPLIER_DEBRIEF_EXPORTED_DOCX" as ActivityEventType,
   
   // STEP 43: Supplier Outcome Dashboard Events
   SUPPLIER_OUTCOMES_VIEWED: "SUPPLIER_OUTCOMES_VIEWED" as ActivityEventType,
@@ -268,15 +274,18 @@ export const EVENT_TYPE_LABELS: Record<ActivityEventType, string> = {
   EXECUTIVE_SUMMARY_CLONED: "Executive Summary Cloned",
   EXECUTIVE_SUMMARY_DELETED: "Executive Summary Deleted",
   EXECUTIVE_SUMMARY_EXPORTED: "Executive Summary Exported",
+  EXEC_SUMMARY_EXPORTED_DOCX: "Executive Summary Exported (Word)",
   
   // STEP 41: Award Events
   award_previewed: "Award Decision Previewed",
   award_committed: "Award Decision Committed",
   award_pdf_exported: "Award Decision PDF Exported",
   award_status_changed: "Award Status Changed",
+  AWARD_EXPORTED_DOCX: "Award Decision Exported (Word)",
   
   // STEP 42: Supplier Debrief Events
   SUPPLIER_DEBRIEF_EXPORTED: "Supplier Debrief Pack Exported",
+  SUPPLIER_DEBRIEF_EXPORTED_DOCX: "Supplier Debrief Pack Exported (Word)",
   
   // STEP 43: Supplier Outcome Dashboard Events
   SUPPLIER_OUTCOMES_VIEWED: "Supplier Outcomes Viewed",

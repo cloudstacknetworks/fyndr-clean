@@ -133,7 +133,7 @@ export default function SupplierOutcomeDashboardPage() {
     }
   };
 
-  // Download individual debrief handler
+  // Download individual debrief handler (PDF)
   const handleDownloadDebrief = async (supplierId: string, supplierName: string) => {
     try {
       const res = await fetch(`/api/dashboard/rfps/${rfpId}/supplier-debrief/${supplierId}/pdf`);
@@ -152,7 +152,33 @@ export default function SupplierOutcomeDashboardPage() {
       document.body.removeChild(a);
       window.URL.revokeObjectURL(url);
 
-      toast.success(`Debrief for ${supplierName} downloaded`);
+      toast.success(`Debrief PDF for ${supplierName} downloaded`);
+    } catch (error) {
+      console.error("Error downloading debrief:", error);
+      toast.error("Failed to download debrief");
+    }
+  };
+
+  // Download individual debrief handler (DOCX)
+  const handleDownloadDebriefDocx = async (supplierId: string, supplierName: string) => {
+    try {
+      const res = await fetch(`/api/dashboard/rfps/${rfpId}/supplier-debrief/${supplierId}/docx`);
+
+      if (!res.ok) {
+        throw new Error("Failed to download debrief");
+      }
+
+      const blob = await res.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `Debrief_${supplierName}.docx`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+
+      toast.success(`Debrief Word document for ${supplierName} downloaded`);
     } catch (error) {
       console.error("Error downloading debrief:", error);
       toast.error("Failed to download debrief");
@@ -304,6 +330,7 @@ export default function SupplierOutcomeDashboardPage() {
                 supplier={supplier}
                 rfpId={rfpId}
                 onDownloadDebrief={handleDownloadDebrief}
+                onDownloadDebriefDocx={handleDownloadDebriefDocx}
               />
             ))}
           </div>
@@ -403,10 +430,12 @@ function SupplierCard({
   supplier,
   rfpId,
   onDownloadDebrief,
+  onDownloadDebriefDocx,
 }: {
   supplier: SupplierOutcomeDetail;
   rfpId: string;
   onDownloadDebrief: (supplierId: string, supplierName: string) => void;
+  onDownloadDebriefDocx: (supplierId: string, supplierName: string) => void;
 }) {
   return (
     <div className="p-6 bg-white rounded-lg border border-gray-200 hover:shadow-lg transition-shadow" data-demo="supplier-card">
@@ -482,15 +511,26 @@ function SupplierCard({
         </div>
       )}
 
-      {/* Download Debrief Button */}
-      <button
-        onClick={() => onDownloadDebrief(supplier.supplierId, supplier.supplierName)}
-        className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
-        data-demo="download-debrief-button"
-      >
-        <DocumentArrowDownIcon className="h-4 w-4" />
-        Download Debrief
-      </button>
+      {/* Download Debrief Buttons */}
+      <div className="grid grid-cols-2 gap-2">
+        <button
+          onClick={() => onDownloadDebrief(supplier.supplierId, supplier.supplierName)}
+          className="flex items-center justify-center gap-2 px-4 py-2 bg-purple-100 text-purple-700 rounded-lg hover:bg-purple-200 transition-colors"
+          data-demo="download-debrief-button"
+          title="Download as PDF"
+        >
+          <DocumentArrowDownIcon className="h-4 w-4" />
+          PDF
+        </button>
+        <button
+          onClick={() => onDownloadDebriefDocx(supplier.supplierId, supplier.supplierName)}
+          className="flex items-center justify-center gap-2 px-4 py-2 bg-indigo-100 text-indigo-700 rounded-lg hover:bg-indigo-200 transition-colors"
+          title="Download as Word"
+        >
+          <DocumentArrowDownIcon className="h-4 w-4" />
+          Word
+        </button>
+      </div>
     </div>
   );
 }

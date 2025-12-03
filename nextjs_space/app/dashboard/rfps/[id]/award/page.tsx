@@ -267,6 +267,36 @@ export default function AwardFinalizationPage() {
     }
   };
 
+  const handleExportDocx = async () => {
+    try {
+      setExporting(true);
+      setError(null);
+
+      const res = await fetch(`/api/dashboard/rfps/${rfpId}/award/docx`);
+      
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.error || "Failed to export Word document");
+      }
+
+      // Download the DOCX
+      const blob = await res.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `award-decision-${rfpId}.docx`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+    } catch (err: any) {
+      console.error("Error exporting Word document:", err);
+      setError(err.message);
+    } finally {
+      setExporting(false);
+    }
+  };
+
   const handleDownloadDebrief = async (supplierId: string, supplierName: string) => {
     try {
       setDownloadingDebrief(supplierId);
@@ -397,6 +427,14 @@ export default function AwardFinalizationPage() {
                 data-demo="award-export-pdf"
               >
                 {exporting ? "Exporting..." : "Export Award PDF"}
+              </button>
+              <button
+                onClick={handleExportDocx}
+                disabled={exporting || !rfpData.awardSnapshot}
+                className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed font-medium"
+                data-demo="award-export-docx"
+              >
+                {exporting ? "Exporting..." : "Download Word (.docx)"}
               </button>
             </div>
           </div>
