@@ -59,6 +59,8 @@ export type ActivityEventType =
   | "EXECUTIVE_SUMMARY_DELETED"
   | "EXECUTIVE_SUMMARY_EXPORTED"
   | "EXEC_SUMMARY_EXPORTED_DOCX"
+  | "EXEC_SUMMARY_COMPARED"
+  | "EXEC_SUMMARY_COMPARED_EXPORTED"
   
   // STEP 41: Award Events
   | "award_previewed"
@@ -134,6 +136,8 @@ export const EVENT_TYPES = {
   EXECUTIVE_SUMMARY_DELETED: "EXECUTIVE_SUMMARY_DELETED" as ActivityEventType,
   EXECUTIVE_SUMMARY_EXPORTED: "EXECUTIVE_SUMMARY_EXPORTED" as ActivityEventType,
   EXEC_SUMMARY_EXPORTED_DOCX: "EXEC_SUMMARY_EXPORTED_DOCX" as ActivityEventType,
+  EXEC_SUMMARY_COMPARED: "EXEC_SUMMARY_COMPARED" as ActivityEventType,
+  EXEC_SUMMARY_COMPARED_EXPORTED: "EXEC_SUMMARY_COMPARED_EXPORTED" as ActivityEventType,
   
   // STEP 41: Award Events
   AWARD_PREVIEWED: "award_previewed" as ActivityEventType,
@@ -275,6 +279,8 @@ export const EVENT_TYPE_LABELS: Record<ActivityEventType, string> = {
   EXECUTIVE_SUMMARY_DELETED: "Executive Summary Deleted",
   EXECUTIVE_SUMMARY_EXPORTED: "Executive Summary Exported",
   EXEC_SUMMARY_EXPORTED_DOCX: "Executive Summary Exported (Word)",
+  EXEC_SUMMARY_COMPARED: "Executive Summary Versions Compared",
+  EXEC_SUMMARY_COMPARED_EXPORTED: "Executive Summary Comparison Exported",
   
   // STEP 41: Award Events
   award_previewed: "Award Decision Previewed",

@@ -357,11 +357,29 @@ export const DEMO_SCENARIOS: Record<string, DemoScenarioConfig> = {
         role: "buyer",
         duration: 5000
       },
+      {
+        id: "buyer_executive_summary_compare_panel",
+        timeOffsetMs: 124000,
+        targetSelector: "[data-demo='compare-versions-panel']",
+        action: "highlight",
+        text: "Compare Versions allows you to select any two summary versions and generate an AI-powered semantic diff showing what changed and why it matters.",
+        role: "buyer",
+        duration: 5000
+      },
+      {
+        id: "buyer_executive_summary_compare_button",
+        timeOffsetMs: 129000,
+        targetSelector: "[data-demo='compare-button']",
+        action: "highlight",
+        text: "The comparison engine uses AI to detect strengthened/weakened arguments, risk shifts, and strategic changes—going beyond simple text diffs.",
+        role: "buyer",
+        duration: 5000
+      },
 
       // STEP 41: AWARD FINALIZATION
       {
         id: "buyer_award_finalization",
-        timeOffsetMs: 124000,
+        timeOffsetMs: 134000,
         route: "/dashboard/rfps/[primaryRfpId]/award",
         action: "navigate",
         text: "Now we finalize the Award Recommendation. FYNDR records who won, why, and key risks—without performing any post-award procurement tasks.",
@@ -370,7 +388,7 @@ export const DEMO_SCENARIOS: Record<string, DemoScenarioConfig> = {
       },
       {
         id: "buyer_award_header",
-        timeOffsetMs: 129000,
+        timeOffsetMs: 139000,
         targetSelector: "[data-demo='award-header']",
         action: "highlight",
         text: "The Award page shows the recommended supplier, decision rationale, scoring summary, and risk assessment in one comprehensive view.",
@@ -379,7 +397,7 @@ export const DEMO_SCENARIOS: Record<string, DemoScenarioConfig> = {
       },
       {
         id: "buyer_award_decision_brief",
-        timeOffsetMs: 134000,
+        timeOffsetMs: 144000,
         targetSelector: "[data-demo='award-decision-brief']",
         action: "scrollIntoView",
         text: "The Decision Brief summarizes key drivers for the award decision and identifies primary risks with mitigation strategies.",
@@ -388,7 +406,7 @@ export const DEMO_SCENARIOS: Record<string, DemoScenarioConfig> = {
       },
       {
         id: "buyer_award_scoring_summary",
-        timeOffsetMs: 139000,
+        timeOffsetMs: 149000,
         targetSelector: "[data-demo='award-scoring-summary']",
         action: "scrollIntoView",
         text: "Scoring Matrix Summary ranks all suppliers by overall score, weighted score, and must-have compliance percentage.",
@@ -397,7 +415,7 @@ export const DEMO_SCENARIOS: Record<string, DemoScenarioConfig> = {
       },
       {
         id: "buyer_award_timeline",
-        timeOffsetMs: 144000,
+        timeOffsetMs: 154000,
         targetSelector: "[data-demo='award-timeline']",
         action: "scrollIntoView",
         text: "Timeline Summary tracks the RFP from creation to award decision, showing target vs. actual award dates and elapsed days.",
@@ -408,7 +426,7 @@ export const DEMO_SCENARIOS: Record<string, DemoScenarioConfig> = {
       // STEP 43: SUPPLIER OUTCOMES DASHBOARD
       {
         id: "supplier_outcomes_overview",
-        timeOffsetMs: 149000,
+        timeOffsetMs: 159000,
         route: "/dashboard/rfps/[primaryRfpId]/supplier-outcomes",
         action: "navigate",
         targetSelector: "[data-demo='supplier-outcomes-header']",
@@ -420,7 +438,7 @@ export const DEMO_SCENARIOS: Record<string, DemoScenarioConfig> = {
       // BUYER PERSPECTIVE - Final Insights
       {
         id: "buyer_final_overview",
-        timeOffsetMs: 154000,
+        timeOffsetMs: 164000,
         text: "FYNDR streamlines the entire RFP lifecycle for both buyers and suppliers with AI-powered insights, automated workflows, and comprehensive tracking.",
         role: "buyer",
         duration: 5000
@@ -429,7 +447,7 @@ export const DEMO_SCENARIOS: Record<string, DemoScenarioConfig> = {
       // DEMO COMPLETE
       {
         id: "demo_complete",
-        timeOffsetMs: 159000,
+        timeOffsetMs: 169000,
         text: "Demo complete! FYNDR manages everything from RFP creation to supplier selection. Thank you for watching!",
         role: "buyer",
         duration: 5000

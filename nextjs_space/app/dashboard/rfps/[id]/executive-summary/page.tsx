@@ -19,8 +19,10 @@ import {
   ClockIcon,
   TrashIcon,
   ArrowLeftIcon,
+  ArrowsRightLeftIcon,
 } from '@heroicons/react/24/outline';
 import { Option3Indicator } from '@/app/components/option3/option3-indicator';
+import { ComparisonModal } from '@/app/components/executive-summary/comparison-modal';
 
 // Dynamically import React Quill to avoid SSR issues
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
@@ -60,6 +62,11 @@ export default function ExecutiveSummaryWorkspace() {
   const [generating, setGenerating] = useState(false);
   const [autoSaving, setAutoSaving] = useState(false);
   const [lastSaved, setLastSaved] = useState<Date | null>(null);
+  
+  // Comparison state
+  const [comparisonVersionA, setComparisonVersionA] = useState<string | null>(null);
+  const [comparisonVersionB, setComparisonVersionB] = useState<string | null>(null);
+  const [showComparisonModal, setShowComparisonModal] = useState(false);
 
   // Fetch summaries on mount
   useEffect(() => {
@@ -281,6 +288,20 @@ export default function ExecutiveSummaryWorkspace() {
     setAudience(summary.audience as any);
   };
 
+  const handleCompare = () => {
+    if (!comparisonVersionA || !comparisonVersionB) {
+      toast.error('Please select two versions to compare');
+      return;
+    }
+    
+    if (comparisonVersionA === comparisonVersionB) {
+      toast.error('Please select two different versions');
+      return;
+    }
+    
+    setShowComparisonModal(true);
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -357,6 +378,64 @@ export default function ExecutiveSummaryWorkspace() {
                 </div>
               )}
             </div>
+
+            {/* Compare Versions Panel */}
+            {summaries.length >= 2 && (
+              <div className="bg-white rounded-lg shadow p-4 mt-4" data-demo="compare-versions-panel">
+                <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                  <ArrowsRightLeftIcon className="h-5 w-5 mr-2 text-purple-600" />
+                  Compare Versions
+                </h2>
+                
+                <div className="space-y-3">
+                  <div>
+                    <label className="block text-xs font-medium text-gray-700 mb-1">
+                      Version A (Baseline)
+                    </label>
+                    <select
+                      value={comparisonVersionA || ''}
+                      onChange={(e) => setComparisonVersionA(e.target.value)}
+                      className="w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 text-sm"
+                    >
+                      <option value="">Select version</option>
+                      {summaries.map((summary) => (
+                        <option key={summary.id} value={summary.id}>
+                          v{summary.version} - {new Date(summary.createdAt).toLocaleDateString()}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  
+                  <div>
+                    <label className="block text-xs font-medium text-gray-700 mb-1">
+                      Version B (Comparison)
+                    </label>
+                    <select
+                      value={comparisonVersionB || ''}
+                      onChange={(e) => setComparisonVersionB(e.target.value)}
+                      className="w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 text-sm"
+                    >
+                      <option value="">Select version</option>
+                      {summaries.map((summary) => (
+                        <option key={summary.id} value={summary.id}>
+                          v{summary.version} - {new Date(summary.createdAt).toLocaleDateString()}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  
+                  <button
+                    onClick={handleCompare}
+                    disabled={!comparisonVersionA || !comparisonVersionB}
+                    className="w-full inline-flex items-center justify-center px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                    data-demo="compare-button"
+                  >
+                    <ArrowsRightLeftIcon className="h-5 w-5 mr-2" />
+                    Compare
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Main Editor */}
@@ -510,6 +589,19 @@ export default function ExecutiveSummaryWorkspace() {
           </div>
         </div>
       </div>
+
+      {/* Comparison Modal */}
+      {showComparisonModal && comparisonVersionA && comparisonVersionB && (
+        <ComparisonModal
+          isOpen={showComparisonModal}
+          onClose={() => setShowComparisonModal(false)}
+          rfpId={rfpId}
+          summaryAId={comparisonVersionA}
+          summaryBId={comparisonVersionB}
+          versionA={summaries.find(s => s.id === comparisonVersionA)?.version || 0}
+          versionB={summaries.find(s => s.id === comparisonVersionB)?.version || 0}
+        />
+      )}
     </div>
   );
 }
