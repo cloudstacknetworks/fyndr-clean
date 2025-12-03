@@ -165,10 +165,71 @@ export const DEMO_SCENARIOS: Record<string, DemoScenarioConfig> = {
         duration: 5000
       },
 
+      // STEP 44: PORTFOLIO INSIGHTS DASHBOARD
+      {
+        id: "buyer_navigate_portfolio_insights",
+        timeOffsetMs: 63000,
+        targetSelector: "a[href='/dashboard/portfolio/insights']",
+        action: "click",
+        text: "Now let's explore the Portfolio Insights Dashboard for comprehensive analytics...",
+        role: "buyer",
+        duration: 3000
+      },
+      {
+        id: "buyer_portfolio_insights_intro",
+        timeOffsetMs: 66000,
+        route: "/dashboard/portfolio/insights",
+        action: "scrollIntoView",
+        text: "Portfolio Insights Dashboard provides deep analytics across all RFPs: budget metrics, cycle times, scoring distribution, and supplier participation.",
+        role: "buyer",
+        duration: 5000
+      },
+      {
+        id: "buyer_portfolio_insights_budget",
+        timeOffsetMs: 71000,
+        action: "scrollIntoView",
+        text: "Budget Metrics show total portfolio value, average and median budgets, and identify highest/lowest budget RFPs for strategic planning.",
+        role: "buyer",
+        duration: 5000
+      },
+      {
+        id: "buyer_portfolio_insights_cycle_time",
+        timeOffsetMs: 76000,
+        action: "scrollIntoView",
+        text: "Cycle Time Analysis reveals average, median, shortest, and longest RFP durations to optimize future procurement timelines.",
+        role: "buyer",
+        duration: 5000
+      },
+      {
+        id: "buyer_portfolio_insights_scoring",
+        timeOffsetMs: 81000,
+        action: "scrollIntoView",
+        text: "Score Distribution breaks down supplier performance across ranges (90-100, 80-89, etc.) with average scores and must-have compliance rates.",
+        role: "buyer",
+        duration: 5000
+      },
+      {
+        id: "buyer_portfolio_insights_suppliers",
+        timeOffsetMs: 86000,
+        action: "scrollIntoView",
+        text: "Supplier Participation table ranks vendors by total RFPs, shortlisted count, awards, and declines—helping identify reliable partners.",
+        role: "buyer",
+        duration: 5000
+      },
+      {
+        id: "buyer_portfolio_insights_export",
+        timeOffsetMs: 91000,
+        targetSelector: "button:has-text('Export PDF')",
+        action: "highlight",
+        text: "Export PDF generates a branded, comprehensive report—perfect for executive presentations and strategic reviews.",
+        role: "buyer",
+        duration: 5000
+      },
+
       // TRANSITION TO SUPPLIER PERSPECTIVE
       {
         id: "transition_to_supplier",
-        timeOffsetMs: 63000,
+        timeOffsetMs: 96000,
         route: "/supplier",
         action: "navigate",
         text: "Now let's switch to the Supplier Portal to see how vendors experience FYNDR...",
@@ -179,14 +240,14 @@ export const DEMO_SCENARIOS: Record<string, DemoScenarioConfig> = {
       // SUPPLIER PERSPECTIVE - Dashboard
       {
         id: "supplier_dashboard_intro",
-        timeOffsetMs: 66000,
+        timeOffsetMs: 99000,
         text: "Welcome to the Supplier Portal! Suppliers see a clean, action-oriented dashboard with priority RFPs and deadlines.",
         role: "supplier",
         duration: 5000
       },
       {
         id: "supplier_dashboard_actions",
-        timeOffsetMs: 71000,
+        timeOffsetMs: 104000,
         targetSelector: "h2:has-text('Priority Actions')",
         action: "highlight",
         text: "Priority Actions highlight RFPs that need immediate attention, with clear 'Start Response' or 'Continue Response' buttons.",
@@ -195,7 +256,7 @@ export const DEMO_SCENARIOS: Record<string, DemoScenarioConfig> = {
       },
       {
         id: "supplier_navigate_rfp",
-        timeOffsetMs: 76000,
+        timeOffsetMs: 109000,
         targetSelector: "a[href*='/supplier/rfps/']",
         action: "click",
         text: "Let's view an RFP details...",
@@ -206,14 +267,14 @@ export const DEMO_SCENARIOS: Record<string, DemoScenarioConfig> = {
       // SUPPLIER PERSPECTIVE - RFP Overview
       {
         id: "supplier_rfp_timeline",
-        timeOffsetMs: 78000,
+        timeOffsetMs: 111000,
         text: "Suppliers see a simplified timeline showing invite date, Q&A window, submission deadline, demo window, and award date.",
         role: "supplier",
         duration: 5000
       },
       {
         id: "supplier_rfp_progress",
-        timeOffsetMs: 83000,
+        timeOffsetMs: 116000,
         targetSelector: "h3:has-text('Submission Progress')",
         action: "highlight",
         text: "The Submission Progress Tracker shows a checklist of required sections: Executive Summary, Requirements, Pricing, Attachments, etc.",

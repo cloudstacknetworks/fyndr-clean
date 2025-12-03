@@ -72,6 +72,10 @@ export type ActivityEventType =
   | "SUPPLIER_OUTCOMES_VIEWED"
   | "SUPPLIER_OUTCOMES_EXPORTED"
   
+  // STEP 44: Portfolio Insights Dashboard Events
+  | "PORTFOLIO_INSIGHTS_VIEWED"
+  | "PORTFOLIO_INSIGHTS_EXPORTED"
+  
   // Supplier Q&A Events
   | "SUPPLIER_QUESTION_CREATED"
   | "SUPPLIER_QUESTION_ANSWERED"
@@ -139,6 +143,10 @@ export const EVENT_TYPES = {
   // STEP 43: Supplier Outcome Dashboard Events
   SUPPLIER_OUTCOMES_VIEWED: "SUPPLIER_OUTCOMES_VIEWED" as ActivityEventType,
   SUPPLIER_OUTCOMES_EXPORTED: "SUPPLIER_OUTCOMES_EXPORTED" as ActivityEventType,
+  
+  // STEP 44: Portfolio Insights Dashboard Events
+  PORTFOLIO_INSIGHTS_VIEWED: "PORTFOLIO_INSIGHTS_VIEWED" as ActivityEventType,
+  PORTFOLIO_INSIGHTS_EXPORTED: "PORTFOLIO_INSIGHTS_EXPORTED" as ActivityEventType,
   
   // Supplier Q&A Events
   SUPPLIER_QUESTION_CREATED: "SUPPLIER_QUESTION_CREATED" as ActivityEventType,
@@ -273,6 +281,10 @@ export const EVENT_TYPE_LABELS: Record<ActivityEventType, string> = {
   // STEP 43: Supplier Outcome Dashboard Events
   SUPPLIER_OUTCOMES_VIEWED: "Supplier Outcomes Viewed",
   SUPPLIER_OUTCOMES_EXPORTED: "Supplier Outcomes PDF Exported",
+  
+  // STEP 44: Portfolio Insights Dashboard Events
+  PORTFOLIO_INSIGHTS_VIEWED: "Portfolio Insights Viewed",
+  PORTFOLIO_INSIGHTS_EXPORTED: "Portfolio Insights PDF Exported",
   
   // Supplier Q&A Events
   SUPPLIER_QUESTION_CREATED: "Question Asked",

@@ -127,6 +127,13 @@ export default function PortfolioPage() {
           <div className="text-sm text-gray-500">
             Last updated: {new Date(meta?.lastGeneratedAt).toLocaleString()}
           </div>
+          <Link
+            href="/dashboard/portfolio/insights"
+            className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+          >
+            <TrendingUp className="w-4 h-4" />
+            Portfolio Insights
+          </Link>
           <button
             onClick={handleRefresh}
             disabled={refreshing}
