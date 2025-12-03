@@ -1,0 +1,661 @@
+
+> fyndr@0.1.0 build
+> next build
+
+  ▲ Next.js 14.2.28
+  - Environments: .env
+  - Experiments (use with caution):
+    · outputFileTracingRoot
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully
+   Skipping linting
+   Checking validity of types ...
+   Collecting page data ...
+   Generating static pages (0/74) ...
+[GET /api/dashboard/portfolio/risks] Error: n [Error]: Dynamic server usage: Route /api/dashboard/portfolio/risks couldn't be rendered statically because it used `headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error
+    at l (/home/ubuntu/fyndr/nextjs_space/.build/server/chunks/9276.js:1:37220)
+    at d (/home/ubuntu/fyndr/nextjs_space/.build/server/chunks/9637.js:25:27870)
+    at s (/home/ubuntu/fyndr/nextjs_space/.build/server/chunks/9637.js:25:20859)
+    at c (/home/ubuntu/fyndr/nextjs_space/.build/server/app/api/dashboard/portfolio/risks/route.js:1:1315)
+    at /home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:6:38417
+    at /home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/server/lib/trace/tracer.js:140:36
+    at NoopContextManager.with (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:7062)
+    at ContextAPI.with (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:518)
+    at NoopTracer.startActiveSpan (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:18093)
+    at ProxyTracer.startActiveSpan (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:18854) {
+  description: "Route /api/dashboard/portfolio/risks couldn't be rendered statically because it used `headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error",
+  digest: 'DYNAMIC_SERVER_USAGE'
+}
+Error fetching global activity logs: n [Error]: Dynamic server usage: Route /api/dashboard/activity couldn't be rendered statically because it used `headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error
+    at l (/home/ubuntu/fyndr/nextjs_space/.build/server/chunks/9276.js:1:37220)
+    at d (/home/ubuntu/fyndr/nextjs_space/.build/server/chunks/9637.js:25:27870)
+    at s (/home/ubuntu/fyndr/nextjs_space/.build/server/chunks/9637.js:25:20859)
+    at u (/home/ubuntu/fyndr/nextjs_space/.build/server/app/api/dashboard/activity/route.js:1:1328)
+    at /home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:6:38417
+    at /home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/server/lib/trace/tracer.js:140:36
+    at NoopContextManager.with (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:7062)
+    at ContextAPI.with (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:518)
+    at NoopTracer.startActiveSpan (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:18093)
+    at ProxyTracer.startActiveSpan (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:18854)
+    at /home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/server/lib/trace/tracer.js:122:103
+    at NoopContextManager.with (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:7062)
+    at ContextAPI.with (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:518)
+    at NextTracerImpl.trace (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/server/lib/trace/tracer.js:122:28)
+    at /home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:6:29925
+    at AsyncLocalStorage.run (node:internal/async_local_storage/async_hooks:91:14) {
+  description: "Route /api/dashboard/activity couldn't be rendered statically because it used `headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error",
+  digest: 'DYNAMIC_SERVER_USAGE'
+}
+[GET /api/dashboard/portfolio/suppliers] Error: n [Error]: Dynamic server usage: Route /api/dashboard/portfolio/suppliers couldn't be rendered statically because it used `headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error
+    at l (/home/ubuntu/fyndr/nextjs_space/.build/server/chunks/9276.js:1:37220)
+    at d (/home/ubuntu/fyndr/nextjs_space/.build/server/chunks/9637.js:25:27870)
+    at s (/home/ubuntu/fyndr/nextjs_space/.build/server/chunks/9637.js:25:20859)
+    at c (/home/ubuntu/fyndr/nextjs_space/.build/server/app/api/dashboard/portfolio/suppliers/route.js:1:1317)
+    at /home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:6:38417
+    at /home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/server/lib/trace/tracer.js:140:36
+    at NoopContextManager.with (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:7062)
+    at ContextAPI.with (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:518)
+    at NoopTracer.startActiveSpan (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:18093)
+    at ProxyTracer.startActiveSpan (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:18854)
+    at /home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/server/lib/trace/tracer.js:122:103
+    at NoopContextManager.with (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:7062)
+    at ContextAPI.with (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:518)
+    at NextTracerImpl.trace (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/server/lib/trace/tracer.js:122:28)
+    at /home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:6:29925
+    at AsyncLocalStorage.run (node:internal/async_local_storage/async_hooks:91:14) {
+  description: "Route /api/dashboard/portfolio/suppliers couldn't be rendered statically because it used `headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error",
+  digest: 'DYNAMIC_SERVER_USAGE'
+}
+Error fetching portfolio insights: n [Error]: Dynamic server usage: Route /api/dashboard/portfolio/insights couldn't be rendered statically because it used `headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error
+    at l (/home/ubuntu/fyndr/nextjs_space/.build/server/chunks/9276.js:1:37220)
+    at d (/home/ubuntu/fyndr/nextjs_space/.build/server/chunks/9637.js:25:27870)
+    at s (/home/ubuntu/fyndr/nextjs_space/.build/server/chunks/9637.js:25:20859)
+    at x (/home/ubuntu/fyndr/nextjs_space/.build/server/app/api/dashboard/portfolio/insights/route.js:1:1328)
+    at /home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:6:38417
+    at /home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/server/lib/trace/tracer.js:140:36
+    at NoopContextManager.with (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:7062)
+    at ContextAPI.with (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:518)
+    at NoopTracer.startActiveSpan (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:18093)
+    at ProxyTracer.startActiveSpan (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:18854)
+    at /home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/server/lib/trace/tracer.js:122:103
+    at NoopContextManager.with (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:7062)
+    at ContextAPI.with (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:518)
+    at NextTracerImpl.trace (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/server/lib/trace/tracer.js:122:28)
+    at /home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:6:29925
+    at AsyncLocalStorage.run (node:internal/async_local_storage/async_hooks:91:14) {
+  description: "Route /api/dashboard/portfolio/insights couldn't be rendered statically because it used `headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error",
+  digest: 'DYNAMIC_SERVER_USAGE'
+}
+Comparison widget error: n [Error]: Dynamic server usage: Route /api/dashboard/widgets/comparison couldn't be rendered statically because it used `headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error
+    at l (/home/ubuntu/fyndr/nextjs_space/.build/server/chunks/9276.js:1:37220)
+    at d (/home/ubuntu/fyndr/nextjs_space/.build/server/chunks/9637.js:25:27870)
+    at s (/home/ubuntu/fyndr/nextjs_space/.build/server/chunks/9637.js:25:20859)
+    at d (/home/ubuntu/fyndr/nextjs_space/.build/server/app/api/dashboard/widgets/comparison/route.js:1:1306)
+    at /home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:6:38417
+    at /home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/server/lib/trace/tracer.js:140:36
+    at NoopContextManager.with (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:7062)
+    at ContextAPI.with (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:518)
+    at NoopTracer.startActiveSpan (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:18093)
+    at ProxyTracer.startActiveSpan (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:18854)
+    at /home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/server/lib/trace/tracer.js:122:103
+    at NoopContextManager.with (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:7062)
+    at ContextAPI.with (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:518)
+    at NextTracerImpl.trace (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/server/lib/trace/tracer.js:122:28)
+    at /home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:6:29925
+    at AsyncLocalStorage.run (node:internal/async_local_storage/async_hooks:91:14) {
+  description: "Route /api/dashboard/widgets/comparison couldn't be rendered statically because it used `headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error",
+  digest: 'DYNAMIC_SERVER_USAGE'
+}
+Activity widget error: n [Error]: Dynamic server usage: Route /api/dashboard/widgets/activity couldn't be rendered statically because it used `headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error
+    at l (/home/ubuntu/fyndr/nextjs_space/.build/server/chunks/9276.js:1:37220)
+    at d (/home/ubuntu/fyndr/nextjs_space/.build/server/chunks/9637.js:25:27870)
+    at s (/home/ubuntu/fyndr/nextjs_space/.build/server/chunks/9637.js:25:20859)
+    at l (/home/ubuntu/fyndr/nextjs_space/.build/server/app/api/dashboard/widgets/activity/route.js:1:1303)
+    at /home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:6:38417
+    at /home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/server/lib/trace/tracer.js:140:36
+    at NoopContextManager.with (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:7062)
+    at ContextAPI.with (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:518)
+    at NoopTracer.startActiveSpan (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:18093)
+    at ProxyTracer.startActiveSpan (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:18854)
+    at /home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/server/lib/trace/tracer.js:122:103
+    at NoopContextManager.with (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:7062)
+    at ContextAPI.with (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:518)
+    at NextTracerImpl.trace (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/server/lib/trace/tracer.js:122:28)
+    at /home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:6:29925
+    at AsyncLocalStorage.run (node:internal/async_local_storage/async_hooks:91:14) {
+  description: "Route /api/dashboard/widgets/activity couldn't be rendered statically because it used `headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error",
+  digest: 'DYNAMIC_SERVER_USAGE'
+}
+[GET /api/dashboard/portfolio/overview] Error: n [Error]: Dynamic server usage: Route /api/dashboard/portfolio/overview couldn't be rendered statically because it used `headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error
+    at l (/home/ubuntu/fyndr/nextjs_space/.build/server/chunks/9276.js:1:37220)
+    at d (/home/ubuntu/fyndr/nextjs_space/.build/server/chunks/9637.js:25:27870)
+    at s (/home/ubuntu/fyndr/nextjs_space/.build/server/chunks/9637.js:25:20859)
+    at g (/home/ubuntu/fyndr/nextjs_space/.build/server/app/api/dashboard/portfolio/overview/route.js:1:1317)
+    at /home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:6:38417
+    at /home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/server/lib/trace/tracer.js:140:36
+    at NoopContextManager.with (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:7062)
+    at ContextAPI.with (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:518)
+    at NoopTracer.startActiveSpan (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:18093)
+    at ProxyTracer.startActiveSpan (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:18854) {
+  description: "Route /api/dashboard/portfolio/overview couldn't be rendered statically because it used `headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error",
+  digest: 'DYNAMIC_SERVER_USAGE'
+}
+RFP list error: n [Error]: Dynamic server usage: Route /api/dashboard/rfps couldn't be rendered statically because it used `headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error
+    at l (/home/ubuntu/fyndr/nextjs_space/.build/server/chunks/9276.js:1:37220)
+    at d (/home/ubuntu/fyndr/nextjs_space/.build/server/chunks/9637.js:25:27870)
+    at s (/home/ubuntu/fyndr/nextjs_space/.build/server/chunks/9637.js:25:20859)
+    at d (/home/ubuntu/fyndr/nextjs_space/.build/server/app/api/dashboard/rfps/route.js:1:1306)
+    at /home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:6:38417
+    at /home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/server/lib/trace/tracer.js:140:36
+    at NoopContextManager.with (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:7062)
+    at ContextAPI.with (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:518)
+    at NoopTracer.startActiveSpan (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:18093)
+    at ProxyTracer.startActiveSpan (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:18854) {
+  description: "Route /api/dashboard/rfps couldn't be rendered statically because it used `headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error",
+  digest: 'DYNAMIC_SERVER_USAGE'
+}
+Error exporting RFPs: n [Error]: Dynamic server usage: Route /api/dashboard/rfps/export couldn't be rendered statically because it used `headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error
+    at l (/home/ubuntu/fyndr/nextjs_space/.build/server/chunks/9276.js:1:37220)
+    at d (/home/ubuntu/fyndr/nextjs_space/.build/server/chunks/9637.js:25:27870)
+    at s (/home/ubuntu/fyndr/nextjs_space/.build/server/chunks/9637.js:25:20859)
+    at c (/home/ubuntu/fyndr/nextjs_space/.build/server/app/api/dashboard/rfps/export/route.js:1:2081)
+    at /home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:6:38417
+    at /home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/server/lib/trace/tracer.js:140:36
+    at NoopContextManager.with (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:7062)
+    at ContextAPI.with (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:518)
+    at NoopTracer.startActiveSpan (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:18093)
+    at ProxyTracer.startActiveSpan (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:18854) {
+  description: "Route /api/dashboard/rfps/export couldn't be rendered statically because it used `headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error",
+  digest: 'DYNAMIC_SERVER_USAGE'
+}
+Coverage widget error: n [Error]: Dynamic server usage: Route /api/dashboard/widgets/coverage couldn't be rendered statically because it used `headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error
+    at l (/home/ubuntu/fyndr/nextjs_space/.build/server/chunks/9276.js:1:37220)
+    at d (/home/ubuntu/fyndr/nextjs_space/.build/server/chunks/9637.js:25:27870)
+    at s (/home/ubuntu/fyndr/nextjs_space/.build/server/chunks/9637.js:25:20859)
+    at d (/home/ubuntu/fyndr/nextjs_space/.build/server/app/api/dashboard/widgets/coverage/route.js:1:1306)
+    at /home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:6:38417
+    at /home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/server/lib/trace/tracer.js:140:36
+    at NoopContextManager.with (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:7062)
+    at ContextAPI.with (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:518)
+    at NoopTracer.startActiveSpan (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:18093)
+    at ProxyTracer.startActiveSpan (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:18854)
+    at /home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/server/lib/trace/tracer.js:122:103
+    at NoopContextManager.with (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:7062)
+    at ContextAPI.with (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:518)
+    at NextTracerImpl.trace (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/server/lib/trace/tracer.js:122:28)
+    at /home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:6:29925
+    at AsyncLocalStorage.run (node:internal/async_local_storage/async_hooks:91:14) {
+  description: "Route /api/dashboard/widgets/coverage couldn't be rendered statically because it used `headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error",
+  digest: 'DYNAMIC_SERVER_USAGE'
+}
+Error generating portfolio insights PDF: n [Error]: Dynamic server usage: Route /api/dashboard/portfolio/insights/pdf couldn't be rendered statically because it used `headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error
+    at l (/home/ubuntu/fyndr/nextjs_space/.build/server/chunks/9276.js:1:37220)
+    at d (/home/ubuntu/fyndr/nextjs_space/.build/server/chunks/9637.js:25:27870)
+    at s (/home/ubuntu/fyndr/nextjs_space/.build/server/chunks/9637.js:25:20859)
+    at v (/home/ubuntu/fyndr/nextjs_space/.build/server/app/api/dashboard/portfolio/insights/pdf/route.js:1:2091)
+    at /home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:6:38417
+    at /home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/server/lib/trace/tracer.js:140:36
+    at NoopContextManager.with (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:7062)
+    at ContextAPI.with (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:518)
+    at NoopTracer.startActiveSpan (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:18093)
+    at ProxyTracer.startActiveSpan (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:18854)
+    at /home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/server/lib/trace/tracer.js:122:103
+    at NoopContextManager.with (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:7062)
+    at ContextAPI.with (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:518)
+    at NextTracerImpl.trace (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/server/lib/trace/tracer.js:122:28)
+    at /home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:6:29925
+    at AsyncLocalStorage.run (node:internal/async_local_storage/async_hooks:91:14) {
+  description: "Route /api/dashboard/portfolio/insights/pdf couldn't be rendered statically because it used `headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error",
+  digest: 'DYNAMIC_SERVER_USAGE'
+}
+Exports widget error: n [Error]: Dynamic server usage: Route /api/dashboard/widgets/exports couldn't be rendered statically because it used `headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error
+    at l (/home/ubuntu/fyndr/nextjs_space/.build/server/chunks/9276.js:1:37220)
+    at d (/home/ubuntu/fyndr/nextjs_space/.build/server/chunks/9637.js:25:27870)
+    at s (/home/ubuntu/fyndr/nextjs_space/.build/server/chunks/9637.js:25:20859)
+    at u (/home/ubuntu/fyndr/nextjs_space/.build/server/app/api/dashboard/widgets/exports/route.js:1:1293)
+    at /home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:6:38417
+    at /home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/server/lib/trace/tracer.js:140:36
+    at NoopContextManager.with (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:7062)
+    at ContextAPI.with (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:518)
+    at NoopTracer.startActiveSpan (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:18093)
+    at ProxyTracer.startActiveSpan (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:18854)
+    at /home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/server/lib/trace/tracer.js:122:103
+    at NoopContextManager.with (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:7062)
+    at ContextAPI.with (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:518)
+    at NextTracerImpl.trace (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/server/lib/trace/tracer.js:122:28)
+    at /home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:6:29925
+    at AsyncLocalStorage.run (node:internal/async_local_storage/async_hooks:91:14) {
+  description: "Route /api/dashboard/widgets/exports couldn't be rendered statically because it used `headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error",
+  digest: 'DYNAMIC_SERVER_USAGE'
+}
+Readiness widget error: n [Error]: Dynamic server usage: Route /api/dashboard/widgets/readiness couldn't be rendered statically because it used `headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error
+    at l (/home/ubuntu/fyndr/nextjs_space/.build/server/chunks/9276.js:1:37220)
+    at d (/home/ubuntu/fyndr/nextjs_space/.build/server/chunks/9637.js:25:27870)
+    at s (/home/ubuntu/fyndr/nextjs_space/.build/server/chunks/9637.js:25:20859)
+    at l (/home/ubuntu/fyndr/nextjs_space/.build/server/app/api/dashboard/widgets/readiness/route.js:1:1306)
+    at /home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:6:38417
+    at /home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/server/lib/trace/tracer.js:140:36
+    at NoopContextManager.with (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:7062)
+    at ContextAPI.with (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:518)
+    at NoopTracer.startActiveSpan (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:18093)
+    at ProxyTracer.startActiveSpan (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:18854) {
+  description: "Route /api/dashboard/widgets/readiness couldn't be rendered statically because it used `headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error",
+  digest: 'DYNAMIC_SERVER_USAGE'
+}
+Pricing widget error: n [Error]: Dynamic server usage: Route /api/dashboard/widgets/pricing couldn't be rendered statically because it used `headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error
+    at l (/home/ubuntu/fyndr/nextjs_space/.build/server/chunks/9276.js:1:37220)
+    at d (/home/ubuntu/fyndr/nextjs_space/.build/server/chunks/9637.js:25:27870)
+    at s (/home/ubuntu/fyndr/nextjs_space/.build/server/chunks/9637.js:25:20859)
+    at d (/home/ubuntu/fyndr/nextjs_space/.build/server/app/api/dashboard/widgets/pricing/route.js:1:1306)
+    at /home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:6:38417
+    at /home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/server/lib/trace/tracer.js:140:36
+    at NoopContextManager.with (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:7062)
+    at ContextAPI.with (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:518)
+    at NoopTracer.startActiveSpan (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:18093)
+    at ProxyTracer.startActiveSpan (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:18854) {
+  description: "Route /api/dashboard/widgets/pricing couldn't be rendered statically because it used `headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error",
+  digest: 'DYNAMIC_SERVER_USAGE'
+}
+Search widget error: n [Error]: Dynamic server usage: Route /api/dashboard/widgets/search couldn't be rendered statically because it used `headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error
+    at l (/home/ubuntu/fyndr/nextjs_space/.build/server/chunks/9276.js:1:37220)
+    at d (/home/ubuntu/fyndr/nextjs_space/.build/server/chunks/9637.js:25:27870)
+    at s (/home/ubuntu/fyndr/nextjs_space/.build/server/chunks/9637.js:25:20859)
+    at l (/home/ubuntu/fyndr/nextjs_space/.build/server/app/api/dashboard/widgets/search/route.js:1:1306)
+    at /home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:6:38417
+    at /home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/server/lib/trace/tracer.js:140:36
+    at NoopContextManager.with (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:7062)
+    at ContextAPI.with (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:518)
+    at NoopTracer.startActiveSpan (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:18093)
+    at ProxyTracer.startActiveSpan (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:18854)
+    at /home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/server/lib/trace/tracer.js:122:103
+    at NoopContextManager.with (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:7062)
+    at ContextAPI.with (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:518)
+    at NextTracerImpl.trace (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/server/lib/trace/tracer.js:122:28)
+    at /home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:6:29925
+    at AsyncLocalStorage.run (node:internal/async_local_storage/async_hooks:91:14) {
+  description: "Route /api/dashboard/widgets/search couldn't be rendered statically because it used `headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error",
+  digest: 'DYNAMIC_SERVER_USAGE'
+}
+   Generating static pages (18/74) 
+Timeline widget error: n [Error]: Dynamic server usage: Route /api/dashboard/widgets/timeline couldn't be rendered statically because it used `headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error
+    at l (/home/ubuntu/fyndr/nextjs_space/.build/server/chunks/9276.js:1:37220)
+    at d (/home/ubuntu/fyndr/nextjs_space/.build/server/chunks/9637.js:25:27870)
+    at s (/home/ubuntu/fyndr/nextjs_space/.build/server/chunks/9637.js:25:20859)
+    at p (/home/ubuntu/fyndr/nextjs_space/.build/server/app/api/dashboard/widgets/timeline/route.js:1:1304)
+    at /home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:6:38417
+    at /home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/server/lib/trace/tracer.js:140:36
+    at NoopContextManager.with (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:7062)
+    at ContextAPI.with (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:518)
+    at NoopTracer.startActiveSpan (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:18093)
+    at ProxyTracer.startActiveSpan (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:18854)
+    at /home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/server/lib/trace/tracer.js:122:103
+    at NoopContextManager.with (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:7062)
+    at ContextAPI.with (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:518)
+    at NextTracerImpl.trace (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/server/lib/trace/tracer.js:122:28)
+    at /home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:6:29925
+    at AsyncLocalStorage.run (node:internal/async_local_storage/async_hooks:91:14) {
+  description: "Route /api/dashboard/widgets/timeline couldn't be rendered statically because it used `headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error",
+  digest: 'DYNAMIC_SERVER_USAGE'
+}
+Pipeline widget error: n [Error]: Dynamic server usage: Route /api/dashboard/widgets/pipeline couldn't be rendered statically because it used `headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error
+    at l (/home/ubuntu/fyndr/nextjs_space/.build/server/chunks/9276.js:1:37220)
+    at d (/home/ubuntu/fyndr/nextjs_space/.build/server/chunks/9637.js:25:27870)
+    at s (/home/ubuntu/fyndr/nextjs_space/.build/server/chunks/9637.js:25:20859)
+    at d (/home/ubuntu/fyndr/nextjs_space/.build/server/app/api/dashboard/widgets/pipeline/route.js:1:1304)
+    at /home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:6:38417
+    at /home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/server/lib/trace/tracer.js:140:36
+    at NoopContextManager.with (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:7062)
+    at ContextAPI.with (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:518)
+    at NoopTracer.startActiveSpan (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:18093)
+    at ProxyTracer.startActiveSpan (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:18854)
+    at /home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/server/lib/trace/tracer.js:122:103
+    at NoopContextManager.with (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:7062)
+    at ContextAPI.with (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:518)
+    at NextTracerImpl.trace (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/server/lib/trace/tracer.js:122:28)
+    at /home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:6:29925
+    at AsyncLocalStorage.run (node:internal/async_local_storage/async_hooks:91:14) {
+  description: "Route /api/dashboard/widgets/pipeline couldn't be rendered statically because it used `headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error",
+  digest: 'DYNAMIC_SERVER_USAGE'
+}
+Submissions widget error: n [Error]: Dynamic server usage: Route /api/dashboard/widgets/submissions couldn't be rendered statically because it used `headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error
+    at l (/home/ubuntu/fyndr/nextjs_space/.build/server/chunks/9276.js:1:37220)
+    at d (/home/ubuntu/fyndr/nextjs_space/.build/server/chunks/9637.js:25:27870)
+    at s (/home/ubuntu/fyndr/nextjs_space/.build/server/chunks/9637.js:25:20859)
+    at p (/home/ubuntu/fyndr/nextjs_space/.build/server/app/api/dashboard/widgets/submissions/route.js:1:1305)
+    at /home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:6:38417
+    at /home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/server/lib/trace/tracer.js:140:36
+    at NoopContextManager.with (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:7062)
+    at ContextAPI.with (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:518)
+    at NoopTracer.startActiveSpan (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:18093)
+    at ProxyTracer.startActiveSpan (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:18854) {
+  description: "Route /api/dashboard/widgets/submissions couldn't be rendered statically because it used `headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error",
+  digest: 'DYNAMIC_SERVER_USAGE'
+}
+SLA widget error: n [Error]: Dynamic server usage: Route /api/dashboard/widgets/sla couldn't be rendered statically because it used `headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error
+    at l (/home/ubuntu/fyndr/nextjs_space/.build/server/chunks/9276.js:1:37220)
+    at d (/home/ubuntu/fyndr/nextjs_space/.build/server/chunks/9637.js:25:27870)
+    at s (/home/ubuntu/fyndr/nextjs_space/.build/server/chunks/9637.js:25:20859)
+    at c (/home/ubuntu/fyndr/nextjs_space/.build/server/app/api/dashboard/widgets/sla/route.js:1:1317)
+    at /home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:6:38417
+    at /home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/server/lib/trace/tracer.js:140:36
+    at NoopContextManager.with (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:7062)
+    at ContextAPI.with (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:518)
+    at NoopTracer.startActiveSpan (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:18093)
+    at ProxyTracer.startActiveSpan (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:18854)
+    at /home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/server/lib/trace/tracer.js:122:103
+    at NoopContextManager.with (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:7062)
+    at ContextAPI.with (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:518)
+    at NextTracerImpl.trace (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/server/lib/trace/tracer.js:122:28)
+    at /home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:6:29925
+    at AsyncLocalStorage.run (node:internal/async_local_storage/async_hooks:91:14) {
+  description: "Route /api/dashboard/widgets/sla couldn't be rendered statically because it used `headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error",
+  digest: 'DYNAMIC_SERVER_USAGE'
+}
+AI Summary widget error: n [Error]: Dynamic server usage: Route /api/dashboard/widgets/ai-summary couldn't be rendered statically because it used `headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error
+    at l (/home/ubuntu/fyndr/nextjs_space/.build/server/chunks/9276.js:1:37220)
+    at d (/home/ubuntu/fyndr/nextjs_space/.build/server/chunks/9637.js:25:27870)
+    at s (/home/ubuntu/fyndr/nextjs_space/.build/server/chunks/9637.js:25:20859)
+    at c (/home/ubuntu/fyndr/nextjs_space/.build/server/app/api/dashboard/widgets/ai-summary/route.js:1:1317)
+    at /home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:6:38417
+    at /home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/server/lib/trace/tracer.js:140:36
+    at NoopContextManager.with (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:7062)
+    at ContextAPI.with (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:518)
+    at NoopTracer.startActiveSpan (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:18093)
+    at ProxyTracer.startActiveSpan (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:18854) {
+  description: "Route /api/dashboard/widgets/ai-summary couldn't be rendered statically because it used `headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error",
+  digest: 'DYNAMIC_SERVER_USAGE'
+}
+Questions widget error: n [Error]: Dynamic server usage: Route /api/dashboard/widgets/questions couldn't be rendered statically because it used `headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error
+    at l (/home/ubuntu/fyndr/nextjs_space/.build/server/chunks/9276.js:1:37220)
+    at d (/home/ubuntu/fyndr/nextjs_space/.build/server/chunks/9637.js:25:27870)
+    at s (/home/ubuntu/fyndr/nextjs_space/.build/server/chunks/9637.js:25:20859)
+    at d (/home/ubuntu/fyndr/nextjs_space/.build/server/app/api/dashboard/widgets/questions/route.js:1:1304)
+    at /home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:6:38417
+    at /home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/server/lib/trace/tracer.js:140:36
+    at NoopContextManager.with (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:7062)
+    at ContextAPI.with (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:518)
+    at NoopTracer.startActiveSpan (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:18093)
+    at ProxyTracer.startActiveSpan (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:18854) {
+  description: "Route /api/dashboard/widgets/questions couldn't be rendered statically because it used `headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error",
+  digest: 'DYNAMIC_SERVER_USAGE'
+}
+Velocity widget error: n [Error]: Dynamic server usage: Route /api/dashboard/widgets/velocity couldn't be rendered statically because it used `headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error
+    at l (/home/ubuntu/fyndr/nextjs_space/.build/server/chunks/9276.js:1:37220)
+    at d (/home/ubuntu/fyndr/nextjs_space/.build/server/chunks/9637.js:25:27870)
+    at s (/home/ubuntu/fyndr/nextjs_space/.build/server/chunks/9637.js:25:20859)
+    at d (/home/ubuntu/fyndr/nextjs_space/.build/server/app/api/dashboard/widgets/velocity/route.js:1:1304)
+    at /home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:6:38417
+    at /home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/server/lib/trace/tracer.js:140:36
+    at NoopContextManager.with (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:7062)
+    at ContextAPI.with (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:518)
+    at NoopTracer.startActiveSpan (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:18093)
+    at ProxyTracer.startActiveSpan (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:18854)
+    at /home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/server/lib/trace/tracer.js:122:103
+    at NoopContextManager.with (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:7062)
+    at ContextAPI.with (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:518)
+    at NextTracerImpl.trace (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/server/lib/trace/tracer.js:122:28)
+    at /home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:6:29925
+    at AsyncLocalStorage.run (node:internal/async_local_storage/async_hooks:91:14) {
+  description: "Route /api/dashboard/widgets/velocity couldn't be rendered statically because it used `headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error",
+  digest: 'DYNAMIC_SERVER_USAGE'
+}
+Error fetching unread count: n [Error]: Dynamic server usage: Route /api/notifications/unread-count couldn't be rendered statically because it used `headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error
+    at l (/home/ubuntu/fyndr/nextjs_space/.build/server/chunks/9276.js:1:37220)
+    at d (/home/ubuntu/fyndr/nextjs_space/.build/server/chunks/9637.js:25:27870)
+    at s (/home/ubuntu/fyndr/nextjs_space/.build/server/chunks/9637.js:25:20859)
+    at c (/home/ubuntu/fyndr/nextjs_space/.build/server/app/api/notifications/unread-count/route.js:1:1328)
+    at /home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:6:38417
+    at /home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/server/lib/trace/tracer.js:140:36
+    at NoopContextManager.with (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:7062)
+    at ContextAPI.with (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:518)
+    at NoopTracer.startActiveSpan (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:18093)
+    at ProxyTracer.startActiveSpan (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:18854) {
+  description: "Route /api/notifications/unread-count couldn't be rendered statically because it used `headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error",
+  digest: 'DYNAMIC_SERVER_USAGE'
+}
+Search error: n [Error]: Dynamic server usage: Route /api/search couldn't be rendered statically because it used `headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error
+    at l (/home/ubuntu/fyndr/nextjs_space/.build/server/chunks/9276.js:1:37220)
+    at d (/home/ubuntu/fyndr/nextjs_space/.build/server/chunks/9637.js:25:27870)
+    at s (/home/ubuntu/fyndr/nextjs_space/.build/server/chunks/9637.js:25:20859)
+    at u (/home/ubuntu/fyndr/nextjs_space/.build/server/app/api/search/route.js:1:1304)
+    at /home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:6:38417
+    at /home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/server/lib/trace/tracer.js:140:36
+    at NoopContextManager.with (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:7062)
+    at ContextAPI.with (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:518)
+    at NoopTracer.startActiveSpan (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:18093)
+    at ProxyTracer.startActiveSpan (/home/ubuntu/fyndr/nextjs_space/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:18854) {
+  description: "Route /api/search couldn't be rendered statically because it used `headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error",
+  digest: 'DYNAMIC_SERVER_USAGE'
+}
+   Generating static pages (36/74) 
+   Generating static pages (55/74) 
+ ✓ Generating static pages (74/74)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                                                               Size     First Load JS
+┌ ƒ /                                                                     198 B          96.5 kB
+├ ○ /_not-found                                                           880 B          88.4 kB
+├ ƒ /api/attachments/[attachmentId]/download                              0 B                0 B
+├ ƒ /api/attachments/[attachmentId]/meta                                  0 B                0 B
+├ ƒ /api/attachments/[attachmentId]/text                                  0 B                0 B
+├ ƒ /api/auth/[...nextauth]                                               0 B                0 B
+├ ƒ /api/companies                                                        0 B                0 B
+├ ƒ /api/companies/[id]                                                   0 B                0 B
+├ ƒ /api/contacts                                                         0 B                0 B
+├ ƒ /api/contacts/[id]                                                    0 B                0 B
+├ ƒ /api/dashboard/activity                                               0 B                0 B
+├ ƒ /api/dashboard/clauses                                                0 B                0 B
+├ ƒ /api/dashboard/clauses/[id]                                           0 B                0 B
+├ ƒ /api/dashboard/portfolio/insights                                     0 B                0 B
+├ ƒ /api/dashboard/portfolio/insights/pdf                                 0 B                0 B
+├ ƒ /api/dashboard/portfolio/overview                                     0 B                0 B
+├ ƒ /api/dashboard/portfolio/risks                                        0 B                0 B
+├ ƒ /api/dashboard/portfolio/suppliers                                    0 B                0 B
+├ ƒ /api/dashboard/rfp-templates                                          0 B                0 B
+├ ƒ /api/dashboard/rfp-templates/[id]                                     0 B                0 B
+├ ƒ /api/dashboard/rfp-templates/[id]/clauses                             0 B                0 B
+├ ƒ /api/dashboard/rfp-templates/[id]/structure                           0 B                0 B
+├ ƒ /api/dashboard/rfp-templates/apply                                    0 B                0 B
+├ ƒ /api/dashboard/rfps                                                   0 B                0 B
+├ ƒ /api/dashboard/rfps/[id]/activity                                     0 B                0 B
+├ ƒ /api/dashboard/rfps/[id]/activity/export                              0 B                0 B
+├ ƒ /api/dashboard/rfps/[id]/archive                                      0 B                0 B
+├ ƒ /api/dashboard/rfps/[id]/archive/commit                               0 B                0 B
+├ ƒ /api/dashboard/rfps/[id]/archive/compliance-pack.docx                 0 B                0 B
+├ ƒ /api/dashboard/rfps/[id]/archive/compliance-pack.pdf                  0 B                0 B
+├ ƒ /api/dashboard/rfps/[id]/archive/preview                              0 B                0 B
+├ ƒ /api/dashboard/rfps/[id]/award                                        0 B                0 B
+├ ƒ /api/dashboard/rfps/[id]/award/commit                                 0 B                0 B
+├ ƒ /api/dashboard/rfps/[id]/award/docx                                   0 B                0 B
+├ ƒ /api/dashboard/rfps/[id]/award/pdf                                    0 B                0 B
+├ ƒ /api/dashboard/rfps/[id]/award/preview                                0 B                0 B
+├ ƒ /api/dashboard/rfps/[id]/broadcasts                                   0 B                0 B
+├ ƒ /api/dashboard/rfps/[id]/bundle/export                                0 B                0 B
+├ ƒ /api/dashboard/rfps/[id]/comparison/ai-summary                        0 B                0 B
+├ ƒ /api/dashboard/rfps/[id]/comparison/export                            0 B                0 B
+├ ƒ /api/dashboard/rfps/[id]/comparison/matrix                            0 B                0 B
+├ ƒ /api/dashboard/rfps/[id]/comparison/matrix/export                     0 B                0 B
+├ ƒ /api/dashboard/rfps/[id]/comparison/matrix/recompute                  0 B                0 B
+├ ƒ /api/dashboard/rfps/[id]/comparison/readiness                         0 B                0 B
+├ ƒ /api/dashboard/rfps/[id]/comparison/run                               0 B                0 B
+├ ƒ /api/dashboard/rfps/[id]/decision-brief                               0 B                0 B
+├ ƒ /api/dashboard/rfps/[id]/decision-brief/ai                            0 B                0 B
+├ ƒ /api/dashboard/rfps/[id]/decision-brief/pdf                           0 B                0 B
+├ ƒ /api/dashboard/rfps/[id]/executive-summaries                          0 B                0 B
+├ ƒ /api/dashboard/rfps/[id]/executive-summaries/[summaryId]              0 B                0 B
+├ ƒ /api/dashboard/rfps/[id]/executive-summaries/[summaryId]/autosave     0 B                0 B
+├ ƒ /api/dashboard/rfps/[id]/executive-summaries/[summaryId]/clone        0 B                0 B
+├ ƒ /api/dashboard/rfps/[id]/executive-summaries/[summaryId]/docx         0 B                0 B
+├ ƒ /api/dashboard/rfps/[id]/executive-summaries/[summaryId]/pdf          0 B                0 B
+├ ƒ /api/dashboard/rfps/[id]/executive-summaries/[summaryId]/restore      0 B                0 B
+├ ƒ /api/dashboard/rfps/[id]/executive-summaries/[summaryId]/save-final   0 B                0 B
+├ ƒ /api/dashboard/rfps/[id]/executive-summaries/compare                  0 B                0 B
+├ ƒ /api/dashboard/rfps/[id]/executive-summaries/compare/docx             0 B                0 B
+├ ƒ /api/dashboard/rfps/[id]/executive-summaries/compare/pdf              0 B                0 B
+├ ƒ /api/dashboard/rfps/[id]/executive-summaries/generate                 0 B                0 B
+├ ƒ /api/dashboard/rfps/[id]/matrix                                       0 B                0 B
+├ ƒ /api/dashboard/rfps/[id]/qa/export                                    0 B                0 B
+├ ƒ /api/dashboard/rfps/[id]/questions                                    0 B                0 B
+├ ƒ /api/dashboard/rfps/[id]/responses                                    0 B                0 B
+├ ƒ /api/dashboard/rfps/[id]/responses/[supplierContactId]/export         0 B                0 B
+├ ƒ /api/dashboard/rfps/[id]/responses/[supplierContactId]/readiness      0 B                0 B
+├ ƒ /api/dashboard/rfps/[id]/responses/[supplierContactId]/readiness/ai   0 B                0 B
+├ ƒ /api/dashboard/rfps/[id]/responses/[supplierContactId]/readiness/run  0 B                0 B
+├ ƒ /api/dashboard/rfps/[id]/responses/search                             0 B                0 B
+├ ƒ /api/dashboard/rfps/[id]/supplier-debrief/[supplierId]                0 B                0 B
+├ ƒ /api/dashboard/rfps/[id]/supplier-debrief/[supplierId]/docx           0 B                0 B
+├ ƒ /api/dashboard/rfps/[id]/supplier-debrief/[supplierId]/pdf            0 B                0 B
+├ ƒ /api/dashboard/rfps/[id]/supplier-outcomes                            0 B                0 B
+├ ƒ /api/dashboard/rfps/[id]/supplier-outcomes/pdf                        0 B                0 B
+├ ƒ /api/dashboard/rfps/[id]/suppliers/export                             0 B                0 B
+├ ƒ /api/dashboard/rfps/[id]/tasks/export                                 0 B                0 B
+├ ƒ /api/dashboard/rfps/[id]/timeline                                     0 B                0 B
+├ ƒ /api/dashboard/rfps/[id]/timeline/export                              0 B                0 B
+├ ƒ /api/dashboard/rfps/[id]/timeline/run                                 0 B                0 B
+├ ƒ /api/dashboard/rfps/export                                            0 B                0 B
+├ ƒ /api/dashboard/search                                                 0 B                0 B
+├ ƒ /api/dashboard/suppliers/[id]/scorecard                               0 B                0 B
+├ ƒ /api/dashboard/suppliers/[id]/scorecard/ai-summary                    0 B                0 B
+├ ƒ /api/dashboard/suppliers/[id]/scorecard/benchmarks                    0 B                0 B
+├ ƒ /api/dashboard/suppliers/[id]/scorecard/export                        0 B                0 B
+├ ƒ /api/dashboard/suppliers/[id]/scorecard/trends                        0 B                0 B
+├ ƒ /api/dashboard/widgets/activity                                       0 B                0 B
+├ ƒ /api/dashboard/widgets/ai-summary                                     0 B                0 B
+├ ƒ /api/dashboard/widgets/comparison                                     0 B                0 B
+├ ƒ /api/dashboard/widgets/coverage                                       0 B                0 B
+├ ƒ /api/dashboard/widgets/exports                                        0 B                0 B
+├ ƒ /api/dashboard/widgets/pipeline                                       0 B                0 B
+├ ƒ /api/dashboard/widgets/pricing                                        0 B                0 B
+├ ƒ /api/dashboard/widgets/questions                                      0 B                0 B
+├ ƒ /api/dashboard/widgets/readiness                                      0 B                0 B
+├ ƒ /api/dashboard/widgets/search                                         0 B                0 B
+├ ƒ /api/dashboard/widgets/sla                                            0 B                0 B
+├ ƒ /api/dashboard/widgets/submissions                                    0 B                0 B
+├ ƒ /api/dashboard/widgets/timeline                                       0 B                0 B
+├ ƒ /api/dashboard/widgets/velocity                                       0 B                0 B
+├ ƒ /api/demo/seed                                                        0 B                0 B
+├ ƒ /api/demo/status                                                      0 B                0 B
+├ ƒ /api/notifications/[id]/read                                          0 B                0 B
+├ ƒ /api/notifications/run                                                0 B                0 B
+├ ƒ /api/notifications/unread-count                                       0 B                0 B
+├ ƒ /api/rfps                                                             0 B                0 B
+├ ƒ /api/rfps/[id]                                                        0 B                0 B
+├ ƒ /api/rfps/[id]/actions/run                                            0 B                0 B
+├ ƒ /api/rfps/[id]/compare/narrative                                      0 B                0 B
+├ ƒ /api/rfps/[id]/compare/report                                         0 B                0 B
+├ ƒ /api/rfps/[id]/score                                                  0 B                0 B
+├ ƒ /api/rfps/[id]/share                                                  0 B                0 B
+├ ƒ /api/rfps/[id]/summary                                                0 B                0 B
+├ ƒ /api/rfps/[id]/suppliers                                              0 B                0 B
+├ ƒ /api/rfps/[id]/suppliers/[supplierId]                                 0 B                0 B
+├ ƒ /api/rfps/[id]/suppliers/[supplierId]/resend                          0 B                0 B
+├ ƒ /api/rfps/[id]/tasks/generate                                         0 B                0 B
+├ ƒ /api/rfps/[id]/validate-transition                                    0 B                0 B
+├ ƒ /api/search                                                           0 B                0 B
+├ ƒ /api/settings/notifications                                           0 B                0 B
+├ ƒ /api/signup                                                           0 B                0 B
+├ ƒ /api/supplier/responses/[responseId]/attachments/[attachmentId]       0 B                0 B
+├ ƒ /api/supplier/responses/[responseId]/extract/all                      0 B                0 B
+├ ƒ /api/supplier/responses/[responseId]/extract/compliance               0 B                0 B
+├ ƒ /api/supplier/responses/[responseId]/extract/demo                     0 B                0 B
+├ ƒ /api/supplier/responses/[responseId]/extract/diversity                0 B                0 B
+├ ƒ /api/supplier/responses/[responseId]/extract/documents                0 B                0 B
+├ ƒ /api/supplier/responses/[responseId]/extract/mandatories              0 B                0 B
+├ ƒ /api/supplier/responses/[responseId]/extract/pricing                  0 B                0 B
+├ ƒ /api/supplier/responses/[responseId]/extract/requirements             0 B                0 B
+├ ƒ /api/supplier/responses/[responseId]/extract/risk-flags               0 B                0 B
+├ ƒ /api/supplier/rfps/[id]/activity                                      0 B                0 B
+├ ƒ /api/supplier/rfps/[id]/broadcasts                                    0 B                0 B
+├ ƒ /api/supplier/rfps/[id]/questions                                     0 B                0 B
+├ ƒ /api/supplier/rfps/[id]/readiness                                     0 B                0 B
+├ ƒ /api/supplier/rfps/[id]/response                                      0 B                0 B
+├ ƒ /api/supplier/rfps/[id]/response/attachments                          0 B                0 B
+├ ƒ /api/supplier/rfps/[id]/response/export                               0 B                0 B
+├ ƒ /api/supplier/rfps/[id]/response/submit                               0 B                0 B
+├ ƒ /api/supplier/rfps/[id]/timeline                                      0 B                0 B
+├ ƒ /api/supplier/validate-token                                          0 B                0 B
+├ ƒ /api/suppliers                                                        0 B                0 B
+├ ƒ /api/suppliers/[id]                                                   0 B                0 B
+├ ƒ /api/tasks/[id]                                                       0 B                0 B
+├ ƒ /api/user/password                                                    0 B                0 B
+├ ƒ /api/user/profile                                                     0 B                0 B
+├ ○ /companies                                                            181 B          87.7 kB
+├ ƒ /companies/[id]                                                       181 B          87.7 kB
+├ ƒ /companies/[id]/edit                                                  181 B          87.7 kB
+├ ○ /companies/create                                                     181 B          87.7 kB
+├ ƒ /dashboard                                                            198 B          96.5 kB
+├ ƒ /dashboard/activity                                                   4.68 kB         101 kB
+├ ƒ /dashboard/companies                                                  198 B          96.5 kB
+├ ƒ /dashboard/companies/[id]                                             2.09 kB        98.4 kB
+├ ƒ /dashboard/companies/[id]/edit                                        2.17 kB        98.5 kB
+├ ƒ /dashboard/companies/new                                              2.15 kB        98.4 kB
+├ ƒ /dashboard/notifications                                              2.68 kB          99 kB
+├ ƒ /dashboard/portfolio                                                  5.24 kB         103 kB
+├ ƒ /dashboard/portfolio/insights                                         4.74 kB         104 kB
+├ ƒ /dashboard/rfp-templates                                              3.85 kB         100 kB
+├ ƒ /dashboard/rfp-templates/[id]/edit                                    4.8 kB         92.4 kB
+├ ƒ /dashboard/rfp-templates/clauses                                      5.18 kB        92.7 kB
+├ ƒ /dashboard/rfps                                                       1.96 kB        98.3 kB
+├ ƒ /dashboard/rfps/[id]                                                  19.3 kB         116 kB
+├ ƒ /dashboard/rfps/[id]/activity                                         4.69 kB         101 kB
+├ ƒ /dashboard/rfps/[id]/archive                                          5.35 kB         102 kB
+├ ƒ /dashboard/rfps/[id]/award                                            4.54 kB         102 kB
+├ ƒ /dashboard/rfps/[id]/compare                                          7.09 kB         103 kB
+├ ƒ /dashboard/rfps/[id]/decision-brief                                   5.71 kB         104 kB
+├ ƒ /dashboard/rfps/[id]/edit                                             5.91 kB         102 kB
+├ ƒ /dashboard/rfps/[id]/executive-summary                                25.6 kB         119 kB
+├ ƒ /dashboard/rfps/[id]/matrix                                           21.9 kB         118 kB
+├ ƒ /dashboard/rfps/[id]/responses/[supplierContactId]                    175 kB          272 kB
+├ ƒ /dashboard/rfps/[id]/responses/[supplierContactId]/readiness          3.98 kB         100 kB
+├ ƒ /dashboard/rfps/[id]/scoring-matrix                                   5.83 kB         102 kB
+├ ƒ /dashboard/rfps/[id]/supplier-outcomes                                3.92 kB         105 kB
+├ ƒ /dashboard/rfps/[id]/timeline                                         4.46 kB         101 kB
+├ ƒ /dashboard/rfps/board                                                 34.7 kB         131 kB
+├ ƒ /dashboard/rfps/lifecycle                                             3.99 kB         102 kB
+├ ƒ /dashboard/rfps/lifecycle/[phaseId]                                   198 B          96.5 kB
+├ ƒ /dashboard/rfps/new                                                   2.79 kB        99.1 kB
+├ ƒ /dashboard/search                                                     3.52 kB        99.8 kB
+├ ƒ /dashboard/settings                                                   2.58 kB        90.1 kB
+├ ƒ /dashboard/settings/contacts                                          986 B          97.3 kB
+├ ƒ /dashboard/settings/contacts/[id]                                     986 B          97.3 kB
+├ ƒ /dashboard/settings/contacts/[id]/edit                                2.25 kB        98.5 kB
+├ ƒ /dashboard/settings/contacts/new                                      2.21 kB        89.8 kB
+├ ƒ /dashboard/settings/notifications                                     3.19 kB        90.8 kB
+├ ƒ /dashboard/suppliers                                                  198 B          96.5 kB
+├ ƒ /dashboard/suppliers/[id]                                             2.21 kB        98.5 kB
+├ ƒ /dashboard/suppliers/[id]/edit                                        2.22 kB        98.5 kB
+├ ƒ /dashboard/suppliers/[id]/scorecard                                   198 B          96.5 kB
+├ ƒ /dashboard/suppliers/new                                              2.19 kB        98.5 kB
+├ ƒ /login                                                                1.03 kB        98.3 kB
+├ ○ /rfps                                                                 181 B          87.7 kB
+├ ƒ /rfps/[id]                                                            181 B          87.7 kB
+├ ƒ /rfps/[id]/edit                                                       181 B          87.7 kB
+├ ○ /rfps/create                                                          181 B          87.7 kB
+├ ○ /settings                                                             181 B          87.7 kB
+├ ƒ /signup                                                               1.27 kB        98.5 kB
+├ ƒ /supplier                                                             198 B          96.5 kB
+├ ƒ /supplier/access                                                      2.19 kB        99.4 kB
+├ ƒ /supplier/notifications                                               2.68 kB          99 kB
+├ ƒ /supplier/rfps/[id]                                                   2.77 kB        99.1 kB
+├ ƒ /supplier/rfps/[id]/activity                                          3.56 kB        99.8 kB
+├ ƒ /supplier/rfps/[id]/questions                                         4.01 kB         100 kB
+├ ƒ /supplier/rfps/[id]/readiness                                         3.24 kB        99.5 kB
+├ ƒ /supplier/rfps/[id]/timeline                                          3.27 kB        99.6 kB
+├ ƒ /supplier/settings/notifications                                      3.12 kB        90.7 kB
+├ ○ /suppliers                                                            181 B          87.7 kB
+├ ƒ /suppliers/[id]                                                       181 B          87.7 kB
+├ ƒ /suppliers/[id]/edit                                                  181 B          87.7 kB
+└ ○ /suppliers/create                                                     181 B          87.7 kB
++ First Load JS shared by all                                             87.6 kB
+  ├ chunks/2117-629458b13ce93796.js                                       31.8 kB
+  ├ chunks/fd9d1056-77e58895bd90606b.js                                   53.6 kB
+  └ other shared chunks (total)                                           2.12 kB
+
+
+ƒ Middleware                                                              49.5 kB
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+

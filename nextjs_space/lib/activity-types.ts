@@ -87,6 +87,10 @@ export type ActivityEventType =
   | "COMPLIANCE_PACK_EXPORTED_PDF"
   | "COMPLIANCE_PACK_EXPORTED_DOCX"
   
+  // STEP 48: Global Search Events
+  | "GLOBAL_SEARCH_PERFORMED"
+  | "GLOBAL_SEARCH_VIEWED_RESULTS"
+  
   // Supplier Q&A Events
   | "SUPPLIER_QUESTION_CREATED"
   | "SUPPLIER_QUESTION_ANSWERED"
@@ -170,6 +174,10 @@ export const EVENT_TYPES = {
   COMPLIANCE_PACK_EXPORTED_PDF: "COMPLIANCE_PACK_EXPORTED_PDF" as ActivityEventType,
   COMPLIANCE_PACK_EXPORTED_DOCX: "COMPLIANCE_PACK_EXPORTED_DOCX" as ActivityEventType,
   
+  // STEP 48: Global Search Events
+  GLOBAL_SEARCH_PERFORMED: "GLOBAL_SEARCH_PERFORMED" as ActivityEventType,
+  GLOBAL_SEARCH_VIEWED_RESULTS: "GLOBAL_SEARCH_VIEWED_RESULTS" as ActivityEventType,
+  
   // Supplier Q&A Events
   SUPPLIER_QUESTION_CREATED: "SUPPLIER_QUESTION_CREATED" as ActivityEventType,
   SUPPLIER_QUESTION_ANSWERED: "SUPPLIER_QUESTION_ANSWERED" as ActivityEventType,
@@ -194,6 +202,7 @@ export const EVENT_CATEGORIES = {
   EXECUTIVE_SUMMARY: "EXECUTIVE_SUMMARY",
   AWARD: "AWARD",
   ARCHIVE: "ARCHIVE",
+  SEARCH: "SEARCH",
 };
 
 // Map event types to categories
@@ -201,6 +210,9 @@ export function getEventCategory(eventType: ActivityEventType): string {
   // Check archive events first (more specific)
   if (eventType.startsWith("RFP_ARCHIVE") || eventType.startsWith("COMPLIANCE_PACK_")) {
     return EVENT_CATEGORIES.ARCHIVE;
+  }
+  if (eventType.startsWith("GLOBAL_SEARCH_")) {
+    return EVENT_CATEGORIES.SEARCH;
   }
   if (eventType.startsWith("RFP_")) return EVENT_CATEGORIES.RFP;
   if (eventType.startsWith("SUPPLIER_CONTACT_") || eventType.startsWith("SUPPLIER_INVITATION_") || eventType.startsWith("SUPPLIER_PORTAL_")) {
@@ -244,6 +256,8 @@ export function getEventTypeColor(eventType: ActivityEventType): { bg: string; t
       return { bg: "bg-emerald-100", text: "text-emerald-700" };
     case EVENT_CATEGORIES.ARCHIVE:
       return { bg: "bg-slate-100", text: "text-slate-700" };
+    case EVENT_CATEGORIES.SEARCH:
+      return { bg: "bg-cyan-100", text: "text-cyan-700" };
     case EVENT_CATEGORIES.QA_SYSTEM:
       return { bg: "bg-amber-100", text: "text-amber-700" };
     case EVENT_CATEGORIES.NOTIFICATIONS:
@@ -325,6 +339,10 @@ export const EVENT_TYPE_LABELS: Record<ActivityEventType, string> = {
   RFP_ARCHIVED: "RFP Archived",
   COMPLIANCE_PACK_EXPORTED_PDF: "Compliance Pack Exported (PDF)",
   COMPLIANCE_PACK_EXPORTED_DOCX: "Compliance Pack Exported (Word)",
+  
+  // STEP 48: Global Search Events
+  GLOBAL_SEARCH_PERFORMED: "Global Search Performed",
+  GLOBAL_SEARCH_VIEWED_RESULTS: "Search Results Viewed",
   
   // Supplier Q&A Events
   SUPPLIER_QUESTION_CREATED: "Question Asked",

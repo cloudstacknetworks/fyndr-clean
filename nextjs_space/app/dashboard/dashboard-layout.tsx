@@ -9,6 +9,7 @@ import GlobalSearch from './global-search';
 import CommandPalette from './command-palette';
 import BellIcon from './bell-icon';
 import { SearchBar } from '../components/search-bar';
+import GlobalSearchBar from '../components/global-search-bar';
 import { DemoButton } from '../components/demo/demo-button';
 
 interface DashboardLayoutProps {
@@ -263,8 +264,8 @@ export default function DashboardLayout({ session, children }: DashboardLayoutPr
             <div className="flex items-center gap-4">
               <span className="text-sm text-gray-600 hidden md:block">{session?.user?.email}</span>
               
-              {/* STEP 26: Global Search Bar */}
-              <SearchBar />
+              {/* STEP 48: Global Search Engine */}
+              <GlobalSearchBar />
               
               {/* STEP 22: Notification Bell Icon */}
               <BellIcon />

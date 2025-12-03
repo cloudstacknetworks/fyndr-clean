@@ -461,10 +461,48 @@ export const DEMO_SCENARIOS: Record<string, DemoScenarioConfig> = {
         duration: 5000
       },
 
+      // STEP 48: GLOBAL SEARCH ENGINE
+      {
+        id: "global_search_intro",
+        timeOffsetMs: 179000,
+        targetSelector: "[data-demo='global-search-bar']",
+        action: "highlight",
+        text: "Use the Global Search Bar to instantly search across all your RFPs, suppliers, summaries, activities, clauses, and archived content.",
+        role: "buyer",
+        duration: 5000
+      },
+      {
+        id: "global_search_perform",
+        timeOffsetMs: 184000,
+        targetSelector: "[data-demo='global-search-bar'] input",
+        action: "type",
+        text: "cloud",
+        role: "buyer",
+        duration: 3000
+      },
+      {
+        id: "global_search_results_preview",
+        timeOffsetMs: 187000,
+        targetSelector: "[data-demo='global-search-results']",
+        action: "highlight",
+        text: "View live preview results grouped by category: RFPs, Suppliers, Summaries, Activities, Clauses, and Archived RFPs.",
+        role: "buyer",
+        duration: 5000
+      },
+      {
+        id: "global_search_results_page",
+        timeOffsetMs: 192000,
+        route: "/dashboard/search?q=cloud",
+        action: "navigate",
+        text: "Click 'View all results' to see the full search results page with detailed information across all categories.",
+        role: "buyer",
+        duration: 5000
+      },
+
       // BUYER PERSPECTIVE - Final Insights
       {
         id: "buyer_final_overview",
-        timeOffsetMs: 179000,
+        timeOffsetMs: 197000,
         text: "FYNDR streamlines the entire RFP lifecycle for both buyers and suppliers with AI-powered insights, automated workflows, and comprehensive tracking.",
         role: "buyer",
         duration: 5000
@@ -473,7 +511,7 @@ export const DEMO_SCENARIOS: Record<string, DemoScenarioConfig> = {
       // DEMO COMPLETE
       {
         id: "demo_complete",
-        timeOffsetMs: 184000,
+        timeOffsetMs: 202000,
         text: "Demo complete! FYNDR manages everything from RFP creation to supplier selection. Thank you for watching!",
         role: "buyer",
         duration: 5000
