@@ -39,6 +39,7 @@ interface ComparisonData {
     organization?: string;
     totalScore: number;
     readinessIndicator?: string | null;
+    supplierContactId: string;
     metrics: {
       requirementsCoverage: number;
       pricingCompetitiveness: number;
@@ -99,6 +100,7 @@ export default function ComparisonPage({ params }: { params: { id: string } }) {
   const [aiLoading, setAiLoading] = useState(false);
   const [narrativeLoading, setNarrativeLoading] = useState(false);
   const [reportLoading, setReportLoading] = useState(false);
+  const [downloadingDebrief, setDownloadingDebrief] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({
     pricing: false,
@@ -213,6 +215,37 @@ export default function ComparisonPage({ params }: { params: { id: string } }) {
       setError(err.message);
     } finally {
       setReportLoading(false);
+    }
+  };
+
+  // Download supplier debrief pack
+  const handleDownloadDebrief = async (supplierId: string, supplierName: string) => {
+    try {
+      setDownloadingDebrief(supplierId);
+      setError(null);
+
+      const res = await fetch(`/api/dashboard/rfps/${rfpId}/supplier-debrief/${supplierId}/pdf`);
+      
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.error || "Failed to download debrief pack");
+      }
+
+      // Download the PDF
+      const blob = await res.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `Supplier_Debrief_${supplierName.replace(/[^a-z0-9]/gi, "_")}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+    } catch (err: any) {
+      console.error("Error downloading debrief pack:", err);
+      setError(err.message);
+    } finally {
+      setDownloadingDebrief(null);
     }
   };
 
@@ -464,6 +497,39 @@ export default function ComparisonPage({ params }: { params: { id: string } }) {
                           >
                             {comparison.totalScore} / 100
                           </span>
+                        </td>
+                      ))}
+                    </tr>
+
+                    {/* Supplier Debrief Download */}
+                    <tr className="bg-purple-50">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                        Supplier Debrief Pack
+                      </td>
+                      {comparisonData.comparisons.map((comparison, idx) => (
+                        <td key={idx} className="px-6 py-4 whitespace-nowrap">
+                          <button
+                            onClick={() => handleDownloadDebrief(
+                              comparison.supplierContactId,
+                              comparison.organization || comparison.supplierName
+                            )}
+                            disabled={downloadingDebrief === comparison.supplierContactId || !comparisonData.matrixUsed}
+                            className="inline-flex items-center justify-center px-3 py-1.5 border border-purple-600 rounded text-xs font-medium text-purple-600 bg-white hover:bg-purple-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                            data-demo="supplier-debrief-export"
+                            title={!comparisonData.matrixUsed ? "Scoring matrix not available" : "Download supplier debrief pack"}
+                          >
+                            {downloadingDebrief === comparison.supplierContactId ? (
+                              <>
+                                <Loader2 className="h-3 w-3 mr-1.5 animate-spin" />
+                                Downloading...
+                              </>
+                            ) : (
+                              <>
+                                <Download className="h-3 w-3 mr-1.5" />
+                                Download Debrief
+                              </>
+                            )}
+                          </button>
                         </td>
                       ))}
                     </tr>

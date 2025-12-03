@@ -65,6 +65,9 @@ export type ActivityEventType =
   | "award_pdf_exported"
   | "award_status_changed"
   
+  // STEP 42: Supplier Debrief Events
+  | "SUPPLIER_DEBRIEF_EXPORTED"
+  
   // Supplier Q&A Events
   | "SUPPLIER_QUESTION_CREATED"
   | "SUPPLIER_QUESTION_ANSWERED"
@@ -125,6 +128,9 @@ export const EVENT_TYPES = {
   AWARD_COMMITTED: "award_committed" as ActivityEventType,
   AWARD_PDF_EXPORTED: "award_pdf_exported" as ActivityEventType,
   AWARD_STATUS_CHANGED: "award_status_changed" as ActivityEventType,
+  
+  // STEP 42: Supplier Debrief Events
+  SUPPLIER_DEBRIEF_EXPORTED: "SUPPLIER_DEBRIEF_EXPORTED" as ActivityEventType,
   
   // Supplier Q&A Events
   SUPPLIER_QUESTION_CREATED: "SUPPLIER_QUESTION_CREATED" as ActivityEventType,
@@ -252,6 +258,9 @@ export const EVENT_TYPE_LABELS: Record<ActivityEventType, string> = {
   award_committed: "Award Decision Committed",
   award_pdf_exported: "Award Decision PDF Exported",
   award_status_changed: "Award Status Changed",
+  
+  // STEP 42: Supplier Debrief Events
+  SUPPLIER_DEBRIEF_EXPORTED: "Supplier Debrief Pack Exported",
   
   // Supplier Q&A Events
   SUPPLIER_QUESTION_CREATED: "Question Asked",

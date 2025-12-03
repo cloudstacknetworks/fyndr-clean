@@ -19,10 +19,9 @@ interface SupplierResponse {
   id: string;
   supplierContactId: string;
   supplierContact: {
-    supplier: {
-      id: string;
-      name: string;
-    };
+    id: string;
+    name: string;
+    organization: string | null;
   };
   finalScore: number | null;
   readinessScore: number | null;
@@ -97,6 +96,7 @@ export default function AwardFinalizationPage() {
   const [showPreview, setShowPreview] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [exporting, setExporting] = useState(false);
+  const [downloadingDebrief, setDownloadingDebrief] = useState<string | null>(null);
 
   // Load RFP and award data
   useEffect(() => {
@@ -267,6 +267,36 @@ export default function AwardFinalizationPage() {
     }
   };
 
+  const handleDownloadDebrief = async (supplierId: string, supplierName: string) => {
+    try {
+      setDownloadingDebrief(supplierId);
+      setError(null);
+
+      const res = await fetch(`/api/dashboard/rfps/${rfpId}/supplier-debrief/${supplierId}/pdf`);
+      
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.error || "Failed to download debrief pack");
+      }
+
+      // Download the PDF
+      const blob = await res.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `Supplier_Debrief_${supplierName.replace(/[^a-z0-9]/gi, "_")}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+    } catch (err: any) {
+      console.error("Error downloading debrief pack:", err);
+      setError(err.message);
+    } finally {
+      setDownloadingDebrief(null);
+    }
+  };
+
   const getStatusBadgeClass = (status: string | null) => {
     switch (status) {
       case "awarded":
@@ -425,8 +455,8 @@ export default function AwardFinalizationPage() {
                     >
                       <option value="">-- Select Supplier --</option>
                       {rfpData.supplierResponses.map((response) => (
-                        <option key={response.id} value={response.supplierContact.supplier.id}>
-                          {response.supplierContact.supplier.name}
+                        <option key={response.id} value={response.supplierContactId}>
+                          {response.supplierContact.organization || response.supplierContact.name}
                           {response.finalScore ? ` (Score: ${response.finalScore.toFixed(1)})` : ""}
                         </option>
                       ))}
@@ -499,30 +529,59 @@ export default function AwardFinalizationPage() {
 
               {/* Supplier Outcome Table */}
               <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                <h2 className="text-lg font-bold text-gray-900 mb-4">Supplier Outcomes</h2>
+                <h2 className="text-lg font-bold text-gray-900 mb-4">Supplier Outcomes & Debriefs</h2>
                 <p className="text-sm text-gray-600 mb-4">
-                  Optionally tag each supplier with their outcome status.
+                  Tag each supplier with their outcome status and download debrief packs.
                 </p>
-                <div className="space-y-2">
+                <div className="space-y-3">
                   {rfpData.supplierResponses.map((response) => (
-                    <div key={response.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                      <span className="font-medium text-gray-900">
-                        {response.supplierContact.supplier.name}
-                      </span>
-                      <select
-                        value={supplierOutcomes[response.id] || ""}
-                        onChange={(e) => setSupplierOutcomes({
-                          ...supplierOutcomes,
-                          [response.id]: e.target.value,
-                        })}
-                        className="px-3 py-1 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    <div key={response.id} className="p-3 bg-gray-50 rounded-lg">
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="font-medium text-gray-900">
+                          {response.supplierContact.organization || response.supplierContact.name}
+                        </span>
+                        <select
+                          value={supplierOutcomes[response.id] || ""}
+                          onChange={(e) => setSupplierOutcomes({
+                            ...supplierOutcomes,
+                            [response.id]: e.target.value,
+                          })}
+                          className="px-3 py-1 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                        >
+                          <option value="">-- Not Set --</option>
+                          <option value="recommended">Recommended</option>
+                          <option value="shortlisted">Shortlisted</option>
+                          <option value="not_selected">Not Selected</option>
+                          <option value="declined">Declined</option>
+                        </select>
+                      </div>
+                      <button
+                        onClick={() => handleDownloadDebrief(
+                          response.supplierContactId,
+                          response.supplierContact.organization || response.supplierContact.name
+                        )}
+                        disabled={downloadingDebrief === response.supplierContactId || !rfpData.scoringMatrixSnapshot}
+                        className="w-full inline-flex items-center justify-center px-3 py-1.5 border border-purple-600 rounded text-xs font-medium text-purple-600 bg-white hover:bg-purple-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                        data-demo="supplier-debrief-export"
+                        title={!rfpData.scoringMatrixSnapshot ? "Scoring matrix not available" : "Download supplier debrief pack"}
                       >
-                        <option value="">-- Not Set --</option>
-                        <option value="recommended">Recommended</option>
-                        <option value="shortlisted">Shortlisted</option>
-                        <option value="not_selected">Not Selected</option>
-                        <option value="declined">Declined</option>
-                      </select>
+                        {downloadingDebrief === response.supplierContactId ? (
+                          <>
+                            <svg className="animate-spin h-3 w-3 mr-1.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            Downloading...
+                          </>
+                        ) : (
+                          <>
+                            <svg className="h-3 w-3 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                            Download Debrief Pack
+                          </>
+                        )}
+                      </button>
                     </div>
                   ))}
                 </div>

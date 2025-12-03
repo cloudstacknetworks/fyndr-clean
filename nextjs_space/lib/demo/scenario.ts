@@ -865,6 +865,7 @@ export async function createDemoScenarioData(): Promise<DemoScenario> {
     }
   };
 
+  // STEP 42: Set scoring matrix snapshot for supplier debrief pack generation
   await prisma.rFP.update({
     where: { id: primaryRfp.id },
     data: {

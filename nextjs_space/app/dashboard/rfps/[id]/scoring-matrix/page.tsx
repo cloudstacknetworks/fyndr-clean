@@ -433,7 +433,7 @@ export default function ScoringMatrixPage({ params }: { params: { id: string } }
             suppliers={matrix.supplierSummaries}
           />
         ) : (
-          <SummariesView suppliers={matrix.supplierSummaries} />
+          <SummariesView suppliers={matrix.supplierSummaries} rfpId={rfpId} />
         )}
       </div>
     </div>
@@ -539,7 +539,38 @@ function MatrixView({ requirements, cells, suppliers }: any) {
 }
 
 // Summaries View Component
-function SummariesView({ suppliers }: any) {
+function SummariesView({ suppliers, rfpId }: { suppliers: any[]; rfpId: string }) {
+  const [downloadingSupplier, setDownloadingSupplier] = useState<string | null>(null);
+
+  const handleDownloadDebrief = async (supplierId: string, supplierName: string) => {
+    try {
+      setDownloadingSupplier(supplierId);
+      
+      const response = await fetch(`/api/dashboard/rfps/${rfpId}/supplier-debrief/${supplierId}/pdf`);
+      
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to download debrief pack');
+      }
+      
+      // Download the PDF
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `Supplier_Debrief_${supplierName.replace(/[^a-z0-9]/gi, '_')}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+    } catch (error: any) {
+      console.error('Error downloading debrief pack:', error);
+      alert(error.message || 'Failed to download debrief pack');
+    } finally {
+      setDownloadingSupplier(null);
+    }
+  };
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {suppliers.map((supplier: any) => (
@@ -576,7 +607,7 @@ function SummariesView({ suppliers }: any) {
           </div>
 
           {/* Category Breakdown */}
-          <div className="border-t border-gray-200 pt-4">
+          <div className="border-t border-gray-200 pt-4 mb-4">
             <h4 className="text-sm font-medium text-gray-700 mb-2">Category Breakdown</h4>
             <div className="space-y-2">
               {supplier.categoryScores.map((cat: any) => {
@@ -592,6 +623,28 @@ function SummariesView({ suppliers }: any) {
                 );
               })}
             </div>
+          </div>
+
+          {/* Download Debrief Pack Button */}
+          <div className="border-t border-gray-200 pt-4">
+            <button
+              onClick={() => handleDownloadDebrief(supplier.supplierId, supplier.supplierName)}
+              disabled={downloadingSupplier === supplier.supplierId}
+              className="w-full inline-flex items-center justify-center px-4 py-2 border border-indigo-600 rounded-md shadow-sm text-sm font-medium text-indigo-600 bg-white hover:bg-indigo-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              data-demo="supplier-debrief-button"
+            >
+              {downloadingSupplier === supplier.supplierId ? (
+                <>
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  Downloading...
+                </>
+              ) : (
+                <>
+                  <Download className="h-4 w-4 mr-2" />
+                  Download Debrief Pack
+                </>
+              )}
+            </button>
           </div>
         </div>
       ))}

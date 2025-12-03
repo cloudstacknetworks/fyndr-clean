@@ -111,12 +111,13 @@ export async function POST(
 
     await Promise.all(updatePromises);
 
-    // Step 5: Sort by score descending and include readiness indicators
+    // Step 5: Sort by score descending and include readiness indicators and supplier contact IDs
     const sortedComparisons = comparisons.map((comparison, idx) => {
       const response = supplierResponses[idx];
       return {
         ...comparison,
         readinessIndicator: response.readinessIndicator,
+        supplierContactId: response.supplierContactId,
       };
     }).sort((a, b) => b.totalScore - a.totalScore);
 
