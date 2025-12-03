@@ -11,7 +11,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth-options';
-import prisma from '@/lib/prisma';
+import { prisma } from '@/lib/prisma';
 import { compareExecutiveSummaries } from '@/lib/executive-summary/summary-compare-engine';
 import { generateComparisonPdf } from '@/lib/executive-summary/summary-compare-pdf-generator';
 import { logActivityWithRequest } from '@/lib/activity-log';
