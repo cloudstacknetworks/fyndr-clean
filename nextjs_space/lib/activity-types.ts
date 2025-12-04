@@ -102,6 +102,9 @@ export type ActivityEventType =
   // STEP 51: Global Notifications Center Events
   | "NOTIFICATIONS_VIEWED"
   
+  // STEP 52: Email Digest Events
+  | "DIGEST_EMAIL_PREVIEWED"
+  
   // Supplier Q&A Events
   | "SUPPLIER_QUESTION_CREATED"
   | "SUPPLIER_QUESTION_ANSWERED"
@@ -200,6 +203,9 @@ export const EVENT_TYPES = {
   // STEP 51: Global Notifications Center Events
   NOTIFICATIONS_VIEWED: "NOTIFICATIONS_VIEWED" as ActivityEventType,
   
+  // STEP 52: Email Digest Events
+  DIGEST_EMAIL_PREVIEWED: "DIGEST_EMAIL_PREVIEWED" as ActivityEventType,
+  
   // Supplier Q&A Events
   SUPPLIER_QUESTION_CREATED: "SUPPLIER_QUESTION_CREATED" as ActivityEventType,
   SUPPLIER_QUESTION_ANSWERED: "SUPPLIER_QUESTION_ANSWERED" as ActivityEventType,
@@ -227,6 +233,7 @@ export const EVENT_CATEGORIES = {
   SEARCH: "SEARCH",
   COMPARISON: "COMPARISON",
   DASHBOARD: "DASHBOARD",
+  DIGEST: "DIGEST",
 };
 
 // Map event types to categories
@@ -243,6 +250,9 @@ export function getEventCategory(eventType: ActivityEventType): string {
   }
   if (eventType.startsWith("HOME_DASHBOARD_")) {
     return EVENT_CATEGORIES.DASHBOARD;
+  }
+  if (eventType.startsWith("DIGEST_")) {
+    return EVENT_CATEGORIES.DIGEST;
   }
   if (eventType.startsWith("RFP_")) return EVENT_CATEGORIES.RFP;
   if (eventType.startsWith("SUPPLIER_CONTACT_") || eventType.startsWith("SUPPLIER_INVITATION_") || eventType.startsWith("SUPPLIER_PORTAL_")) {
@@ -292,6 +302,8 @@ export function getEventTypeColor(eventType: ActivityEventType): { bg: string; t
       return { bg: "bg-fuchsia-100", text: "text-fuchsia-700" };
     case EVENT_CATEGORIES.DASHBOARD:
       return { bg: "bg-teal-100", text: "text-teal-700" };
+    case EVENT_CATEGORIES.DIGEST:
+      return { bg: "bg-violet-100", text: "text-violet-700" };
     case EVENT_CATEGORIES.QA_SYSTEM:
       return { bg: "bg-amber-100", text: "text-amber-700" };
     case EVENT_CATEGORIES.NOTIFICATIONS:
@@ -388,6 +400,9 @@ export const EVENT_TYPE_LABELS: Record<ActivityEventType, string> = {
   
   // STEP 51: Global Notifications Center Events
   NOTIFICATIONS_VIEWED: "Notifications Center Viewed",
+  
+  // STEP 52: Email Digest Events
+  DIGEST_EMAIL_PREVIEWED: "Email Digest Generated",
   
   // Supplier Q&A Events
   SUPPLIER_QUESTION_CREATED: "Question Asked",

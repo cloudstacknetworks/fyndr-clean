@@ -50,11 +50,40 @@ export const DEMO_SCENARIOS: Record<string, DemoScenarioConfig> = {
         role: "buyer",
         duration: 5000
       },
+      
+      // BUYER PERSPECTIVE - Email Digest (STEP 52)
+      {
+        id: "buyer_email_digest_button",
+        timeOffsetMs: 15000,
+        targetSelector: "button:has-text('Generate Email Digest')",
+        action: "highlight",
+        text: "Generate personalized email digests to get a comprehensive summary of your RFP activity - weekly or monthly.",
+        role: "buyer",
+        duration: 5000
+      },
+      {
+        id: "buyer_email_digest_timeframe",
+        timeOffsetMs: 20000,
+        targetSelector: "select",
+        action: "highlight",
+        text: "Choose between Weekly or Monthly digest timeframes based on your reporting needs.",
+        role: "buyer",
+        duration: 4000
+      },
+      {
+        id: "buyer_email_digest_generate",
+        timeOffsetMs: 24000,
+        targetSelector: "button:has-text('Generate Email Digest')",
+        action: "click",
+        text: "Clicking this generates a professional HTML email digest with stats, awards, submissions, and action items.",
+        role: "buyer",
+        duration: 6000
+      },
 
       // BUYER PERSPECTIVE - Dashboard
       {
         id: "buyer_dashboard_intro",
-        timeOffsetMs: 15000,
+        timeOffsetMs: 30000,
         route: "/dashboard",
         action: "navigate",
         text: "Now let's check the Analytics Dashboard for deeper insights into your RFP pipeline.",
@@ -63,7 +92,7 @@ export const DEMO_SCENARIOS: Record<string, DemoScenarioConfig> = {
       },
       {
         id: "buyer_dashboard_pipeline",
-        timeOffsetMs: 19000,
+        timeOffsetMs: 34000,
         targetSelector: "[data-demo-widget='pipeline']",
         action: "highlight",
         text: "The Pipeline Widget shows all active RFPs across 9 stages, from Intake to Archived.",
@@ -72,7 +101,7 @@ export const DEMO_SCENARIOS: Record<string, DemoScenarioConfig> = {
       },
       {
         id: "buyer_navigate_rfps",
-        timeOffsetMs: 23000,
+        timeOffsetMs: 38000,
         targetSelector: "a[href='/dashboard/rfps']",
         action: "click",
         text: "Let's view all RFPs...",
@@ -83,7 +112,7 @@ export const DEMO_SCENARIOS: Record<string, DemoScenarioConfig> = {
       // BUYER PERSPECTIVE - RFP List
       {
         id: "buyer_rfp_list",
-        timeOffsetMs: 25000,
+        timeOffsetMs: 40000,
         targetSelector: "tbody tr:first-child",
         action: "highlight",
         text: "Here's our primary RFP: Unified Communications & Contact Center RFP for 2025. This is a high-priority project with 4 suppliers competing.",
@@ -92,7 +121,7 @@ export const DEMO_SCENARIOS: Record<string, DemoScenarioConfig> = {
       },
       {
         id: "buyer_click_primary_rfp",
-        timeOffsetMs: 30000,
+        timeOffsetMs: 45000,
         targetSelector: "tbody tr:first-child a",
         action: "click",
         text: "Let's dive into the details...",

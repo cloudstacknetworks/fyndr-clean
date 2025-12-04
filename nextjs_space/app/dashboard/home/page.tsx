@@ -18,9 +18,11 @@ import {
   DocumentTextIcon,
   ChartBarIcon,
   ArrowTrendingUpIcon,
+  EnvelopeIcon,
 } from '@heroicons/react/24/outline';
 
 import type { HomeDashboardData, RfpCardData, WorkQueueItem, AttentionItem, RecentActivityItem } from '@/lib/dashboard/home-dashboard-engine';
+import EmailDigestModal from './components/EmailDigestModal';
 
 export default function BuyerHomeDashboardPage() {
   const { data: session, status } = useSession();
@@ -29,6 +31,12 @@ export default function BuyerHomeDashboardPage() {
   const [dashboardData, setDashboardData] = useState<HomeDashboardData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  // Email Digest State
+  const [isDigestModalOpen, setIsDigestModalOpen] = useState(false);
+  const [digestLoading, setDigestLoading] = useState(false);
+  const [digestData, setDigestData] = useState<any>(null);
+  const [selectedTimeframe, setSelectedTimeframe] = useState<'week' | 'month'>('week');
 
   useEffect(() => {
     async function loadDashboard() {
@@ -53,6 +61,40 @@ export default function BuyerHomeDashboardPage() {
       loadDashboard();
     }
   }, [status]);
+
+  // ========================================
+  // Email Digest Generation Handler
+  // ========================================
+  const handleGenerateDigest = async () => {
+    try {
+      setDigestLoading(true);
+      setError(null);
+
+      const res = await fetch('/api/dashboard/digest/email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          timeframe: selectedTimeframe,
+        }),
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.error || 'Failed to generate digest');
+      }
+
+      const { data } = await res.json();
+      setDigestData(data);
+      setIsDigestModalOpen(true);
+    } catch (err: any) {
+      console.error('Error generating digest:', err);
+      setError(err.message || 'Failed to generate email digest');
+    } finally {
+      setDigestLoading(false);
+    }
+  };
 
   // ========================================
   // Loading State
@@ -109,6 +151,35 @@ export default function BuyerHomeDashboardPage() {
           <p className="mt-1 text-sm text-gray-500">
             Welcome back, {session?.user?.name || session?.user?.email}! Here's your RFP overview.
           </p>
+        </div>
+
+        {/* Email Digest Generator */}
+        <div className="flex items-center gap-3">
+          <select
+            value={selectedTimeframe}
+            onChange={(e) => setSelectedTimeframe(e.target.value as 'week' | 'month')}
+            className="rounded-lg border-gray-300 shadow-sm text-sm focus:border-violet-500 focus:ring-violet-500"
+          >
+            <option value="week">Weekly Digest</option>
+            <option value="month">Monthly Digest</option>
+          </select>
+          <button
+            onClick={handleGenerateDigest}
+            disabled={digestLoading}
+            className="inline-flex items-center gap-2 px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-lg text-white bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet-500 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {digestLoading ? (
+              <>
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                Generating...
+              </>
+            ) : (
+              <>
+                <EnvelopeIcon className="h-5 w-5" />
+                Generate Email Digest
+              </>
+            )}
+          </button>
         </div>
       </div>
 
@@ -294,6 +365,19 @@ export default function BuyerHomeDashboardPage() {
           </div>
         )}
       </section>
+
+      {/* ========================================
+          Email Digest Modal
+          ======================================== */}
+      {digestData && (
+        <EmailDigestModal
+          isOpen={isDigestModalOpen}
+          onClose={() => setIsDigestModalOpen(false)}
+          htmlContent={digestData.htmlContent}
+          timeframe={digestData.timeframe}
+          summary={digestData.summary}
+        />
+      )}
     </div>
   );
 }
