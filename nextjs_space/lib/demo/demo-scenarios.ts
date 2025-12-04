@@ -582,10 +582,30 @@ export const DEMO_SCENARIOS: Record<string, DemoScenarioConfig> = {
         duration: 5000
       },
 
+      // STEP 51: GLOBAL NOTIFICATIONS CENTER
+      {
+        id: "notifications_center_intro",
+        timeOffsetMs: 212000,
+        route: "/dashboard/notifications",
+        action: "navigate",
+        text: "The Notifications Center provides a read-only, centralized view of all recent activity across your RFPs - executive summaries, awards, scoring, compliance, and portfolio insights.",
+        role: "buyer",
+        duration: 5000
+      },
+      {
+        id: "notifications_category_filters",
+        timeOffsetMs: 217000,
+        targetSelector: "div.flex.flex-wrap.gap-2",
+        action: "highlight",
+        text: "Filter notifications by category: All, Executive Summaries, Awards, Scoring, Compliance, and Portfolio. Each notification links directly to the relevant RFP for quick access.",
+        role: "buyer",
+        duration: 5000
+      },
+
       // BUYER PERSPECTIVE - Final Insights
       {
         id: "buyer_final_overview",
-        timeOffsetMs: 212000,
+        timeOffsetMs: 222000,
         text: "FYNDR streamlines the entire RFP lifecycle for both buyers and suppliers with AI-powered insights, automated workflows, and comprehensive tracking.",
         role: "buyer",
         duration: 5000
@@ -594,7 +614,7 @@ export const DEMO_SCENARIOS: Record<string, DemoScenarioConfig> = {
       // DEMO COMPLETE
       {
         id: "demo_complete",
-        timeOffsetMs: 217000,
+        timeOffsetMs: 227000,
         text: "Demo complete! FYNDR manages everything from RFP creation to supplier selection. Thank you for watching!",
         role: "buyer",
         duration: 5000

@@ -99,6 +99,9 @@ export type ActivityEventType =
   // STEP 50: Home Dashboard Events
   | "HOME_DASHBOARD_VIEWED"
   
+  // STEP 51: Global Notifications Center Events
+  | "NOTIFICATIONS_VIEWED"
+  
   // Supplier Q&A Events
   | "SUPPLIER_QUESTION_CREATED"
   | "SUPPLIER_QUESTION_ANSWERED"
@@ -193,6 +196,9 @@ export const EVENT_TYPES = {
   
   // STEP 50: Home Dashboard Events
   HOME_DASHBOARD_VIEWED: "HOME_DASHBOARD_VIEWED" as ActivityEventType,
+  
+  // STEP 51: Global Notifications Center Events
+  NOTIFICATIONS_VIEWED: "NOTIFICATIONS_VIEWED" as ActivityEventType,
   
   // Supplier Q&A Events
   SUPPLIER_QUESTION_CREATED: "SUPPLIER_QUESTION_CREATED" as ActivityEventType,
@@ -379,6 +385,9 @@ export const EVENT_TYPE_LABELS: Record<ActivityEventType, string> = {
   
   // STEP 50: Home Dashboard Events
   HOME_DASHBOARD_VIEWED: "Home Dashboard Viewed",
+  
+  // STEP 51: Global Notifications Center Events
+  NOTIFICATIONS_VIEWED: "Notifications Center Viewed",
   
   // Supplier Q&A Events
   SUPPLIER_QUESTION_CREATED: "Question Asked",

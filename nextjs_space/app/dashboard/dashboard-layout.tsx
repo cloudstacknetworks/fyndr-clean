@@ -3,7 +3,7 @@
 import { signOut } from 'next-auth/react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { LogOut, FileText, Building2, Users, Settings, LayoutDashboard, ChevronLeft, ChevronRight, Search, TrendingUp, GitBranch, Home } from 'lucide-react';
+import { LogOut, FileText, Building2, Users, Settings, LayoutDashboard, ChevronLeft, ChevronRight, Search, TrendingUp, GitBranch, Home, Bell } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import GlobalSearch from './global-search';
 import CommandPalette from './command-palette';
@@ -99,6 +99,7 @@ export default function DashboardLayout({ session, children }: DashboardLayoutPr
   const sidebarNavigation = [
     { name: 'Home', href: '/dashboard/home', icon: Home },
     { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
+    { name: 'Notifications', href: '/dashboard/notifications', icon: Bell },
     { name: 'Portfolio', href: '/dashboard/portfolio', icon: TrendingUp },
     { name: 'Lifecycle Board', href: '/dashboard/rfps/lifecycle', icon: GitBranch },
     { name: 'RFPs', href: '/dashboard/rfps', icon: FileText },
@@ -110,6 +111,7 @@ export default function DashboardLayout({ session, children }: DashboardLayoutPr
   const topNavigation = [
     { name: 'Home', href: '/dashboard/home' },
     { name: 'Dashboard', href: '/dashboard' },
+    { name: 'Notifications', href: '/dashboard/notifications' },
     { name: 'Portfolio', href: '/dashboard/portfolio' },
     { name: 'Lifecycle', href: '/dashboard/rfps/lifecycle' },
     { name: 'RFPs', href: '/dashboard/rfps' },
@@ -139,6 +141,7 @@ export default function DashboardLayout({ session, children }: DashboardLayoutPr
     const labelMap: { [key: string]: string } = {
       'dashboard': 'Dashboard',
       'home': 'Home',
+      'notifications': 'Notifications',
       'rfps': 'RFPs',
       'companies': 'Companies',
       'suppliers': 'Suppliers',
@@ -240,6 +243,11 @@ export default function DashboardLayout({ session, children }: DashboardLayoutPr
           if (!subAction) return 'Supplier Details';
           if (subAction === 'edit') return 'Edit Supplier';
         }
+      }
+
+      // Notifications route (STEP 51)
+      if (section === 'notifications') {
+        return 'Notifications Center';
       }
 
       // Settings route
