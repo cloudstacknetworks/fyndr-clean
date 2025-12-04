@@ -40,6 +40,10 @@ model User {
   lastLoginAt           DateTime?
   isActive              Boolean                 @default(true)
   preferences           Json?                   // User preferences and defaults
+  
+  // STEP 56: Company-Level RFP Master Template Library
+  rfpTemplatesCreated      RFPTemplate[]        @relation("TemplateCreator")
+  rfpTemplateVersionsCreated RFPTemplateVersion[]
 }
 
 model Company {
@@ -59,6 +63,9 @@ model Company {
   brandColor             String?  // Hex color for branding
   timezone               String?  // TZ database timezone (e.g., "America/New_York")
   fiscalYearStartMonth   Int?     // 1-12 (January-December)
+  
+  // STEP 56: Company-Level RFP Master Template Library
+  rfpTemplates      RFPTemplate[]
 }
 
 model Supplier {
@@ -664,4 +671,40 @@ model ExecutiveSummaryDocument {
   @@index([rfpId])
   @@index([authorId])
   @@index([isOfficial])
+}
+
+// STEP 56: Company-Level RFP Master Template Library
+model RFPTemplate {
+  id                String   @id @default(cuid())
+  name              String
+  description       String?
+  companyId         String
+  company           Company  @relation(fields: [companyId], references: [id])
+  visibility        String   @default("company") // "company" | "private"
+  category          String?
+  defaultTimeline   Json?
+  defaultSections   Json?
+  createdByUserId   String
+  createdBy         User     @relation("TemplateCreator", fields: [createdByUserId], references: [id])
+  isDeleted         Boolean  @default(false)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  versions          RFPTemplateVersion[]
+
+  @@index([companyId])
+  @@index([category])
+}
+
+model RFPTemplateVersion {
+  id                String      @id @default(cuid())
+  templateId        String
+  template          RFPTemplate @relation(fields: [templateId], references: [id], onDelete: Cascade)
+  versionNumber     Int
+  contentJson       Json
+  createdAt         DateTime    @default(now())
+  createdByUserId   String
+  createdBy         User        @relation(fields: [createdByUserId], references: [id])
+
+  @@unique([templateId, versionNumber])
+  @@index([templateId])
 }

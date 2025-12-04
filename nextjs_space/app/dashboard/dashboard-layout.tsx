@@ -3,7 +3,7 @@
 import { signOut } from 'next-auth/react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { LogOut, FileText, Building2, Users, Settings, LayoutDashboard, ChevronLeft, ChevronRight, Search, TrendingUp, GitBranch, Home, Bell } from 'lucide-react';
+import { LogOut, FileText, Building2, Users, Settings, LayoutDashboard, ChevronLeft, ChevronRight, Search, TrendingUp, GitBranch, Home, Bell, FileStack } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import GlobalSearch from './global-search';
 import CommandPalette from './command-palette';
@@ -104,6 +104,7 @@ export default function DashboardLayout({ session, children }: DashboardLayoutPr
     { name: 'Portfolio', href: '/dashboard/portfolio', icon: TrendingUp },
     { name: 'Lifecycle Board', href: '/dashboard/rfps/lifecycle', icon: GitBranch },
     { name: 'RFPs', href: '/dashboard/rfps', icon: FileText },
+    { name: 'Templates', href: '/buyer/templates', icon: FileStack },
     { name: 'Companies', href: '/dashboard/companies', icon: Building2 },
     { name: 'Suppliers', href: '/dashboard/suppliers', icon: Users },
   ];
@@ -120,6 +121,7 @@ export default function DashboardLayout({ session, children }: DashboardLayoutPr
     { name: 'Portfolio', href: '/dashboard/portfolio' },
     { name: 'Lifecycle', href: '/dashboard/rfps/lifecycle' },
     { name: 'RFPs', href: '/dashboard/rfps' },
+    { name: 'Templates', href: '/buyer/templates' },
     { name: 'Companies', href: '/dashboard/companies' },
     { name: 'Suppliers', href: '/dashboard/suppliers' },
   ];
@@ -152,6 +154,7 @@ export default function DashboardLayout({ session, children }: DashboardLayoutPr
       'home': 'Home',
       'notifications': 'Notifications',
       'rfps': 'RFPs',
+      'templates': 'Templates',
       'companies': 'Companies',
       'suppliers': 'Suppliers',
       'settings': 'Settings',

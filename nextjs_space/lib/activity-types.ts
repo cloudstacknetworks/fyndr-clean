@@ -118,6 +118,15 @@ export type ActivityEventType =
   // STEP 55: Timeline Automation Events
   | "TIMELINE_AUTOMATION_RUN"
   
+  // STEP 56: Company-Level RFP Master Template Library Events
+  | "TEMPLATE_CREATED"
+  | "TEMPLATE_UPDATED"
+  | "TEMPLATE_DELETED"
+  | "TEMPLATE_DUPLICATED"
+  | "TEMPLATE_VERSION_CREATED"
+  | "TEMPLATE_VIEWED"
+  | "TEMPLATE_APPLIED_TO_RFP"
+  
   // Supplier Q&A Events
   | "SUPPLIER_QUESTION_CREATED"
   | "SUPPLIER_QUESTION_ANSWERED"
@@ -232,6 +241,15 @@ export const EVENT_TYPES = {
   // STEP 55: Timeline Automation Events
   TIMELINE_AUTOMATION_RUN: "TIMELINE_AUTOMATION_RUN" as ActivityEventType,
   
+  // STEP 56: Company-Level RFP Master Template Library Events
+  TEMPLATE_CREATED: "TEMPLATE_CREATED" as ActivityEventType,
+  TEMPLATE_UPDATED: "TEMPLATE_UPDATED" as ActivityEventType,
+  TEMPLATE_DELETED: "TEMPLATE_DELETED" as ActivityEventType,
+  TEMPLATE_DUPLICATED: "TEMPLATE_DUPLICATED" as ActivityEventType,
+  TEMPLATE_VERSION_CREATED: "TEMPLATE_VERSION_CREATED" as ActivityEventType,
+  TEMPLATE_VIEWED: "TEMPLATE_VIEWED" as ActivityEventType,
+  TEMPLATE_APPLIED_TO_RFP: "TEMPLATE_APPLIED_TO_RFP" as ActivityEventType,
+  
   // Supplier Q&A Events
   SUPPLIER_QUESTION_CREATED: "SUPPLIER_QUESTION_CREATED" as ActivityEventType,
   SUPPLIER_QUESTION_ANSWERED: "SUPPLIER_QUESTION_ANSWERED" as ActivityEventType,
@@ -262,6 +280,7 @@ export const EVENT_CATEGORIES = {
   DIGEST: "DIGEST",
   SETTINGS: "SETTINGS",
   AUTOMATION: "AUTOMATION",
+  TEMPLATE: "TEMPLATE",
 };
 
 // Map event types to categories
@@ -287,6 +306,9 @@ export function getEventCategory(eventType: ActivityEventType): string {
   }
   if (eventType.startsWith("TIMELINE_AUTOMATION_")) {
     return EVENT_CATEGORIES.AUTOMATION;
+  }
+  if (eventType.startsWith("TEMPLATE_")) {
+    return EVENT_CATEGORIES.TEMPLATE;
   }
   if (eventType.startsWith("RFP_")) return EVENT_CATEGORIES.RFP;
   if (eventType.startsWith("SUPPLIER_CONTACT_") || eventType.startsWith("SUPPLIER_INVITATION_") || eventType.startsWith("SUPPLIER_PORTAL_")) {
@@ -342,6 +364,8 @@ export function getEventTypeColor(eventType: ActivityEventType): { bg: string; t
       return { bg: "bg-rose-100", text: "text-rose-700" };
     case EVENT_CATEGORIES.AUTOMATION:
       return { bg: "bg-indigo-100", text: "text-indigo-700" };
+    case EVENT_CATEGORIES.TEMPLATE:
+      return { bg: "bg-lime-100", text: "text-lime-700" };
     case EVENT_CATEGORIES.QA_SYSTEM:
       return { bg: "bg-amber-100", text: "text-amber-700" };
     case EVENT_CATEGORIES.NOTIFICATIONS:
@@ -454,6 +478,15 @@ export const EVENT_TYPE_LABELS: Record<ActivityEventType, string> = {
   
   // STEP 55: Timeline Automation Events
   TIMELINE_AUTOMATION_RUN: "Timeline Automation Run",
+  
+  // STEP 56: Company-Level RFP Master Template Library Events
+  TEMPLATE_CREATED: "Template Created",
+  TEMPLATE_UPDATED: "Template Updated",
+  TEMPLATE_DELETED: "Template Deleted",
+  TEMPLATE_DUPLICATED: "Template Duplicated",
+  TEMPLATE_VERSION_CREATED: "Template Version Created",
+  TEMPLATE_VIEWED: "Template Viewed",
+  TEMPLATE_APPLIED_TO_RFP: "Template Applied to RFP",
   
   // Supplier Q&A Events
   SUPPLIER_QUESTION_CREATED: "Question Asked",

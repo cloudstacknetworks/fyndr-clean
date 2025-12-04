@@ -716,6 +716,112 @@ export const DEMO_SCENARIOS: Record<string, DemoScenarioConfig> = {
     ]
   },
 
+  // STEP 56: Template Library Demo
+  template_library_flow: {
+    id: "template_library_flow",
+    name: "RFP Template Library Tour",
+    description: "Demonstration of company-level template management and versioning",
+    steps: [
+      {
+        id: "template_library_intro",
+        timeOffsetMs: 0,
+        route: "/buyer/templates",
+        action: "navigate",
+        text: "Welcome to the RFP Template Library! Create and manage standardized RFP templates across your organization.",
+        role: "buyer",
+        duration: 5000
+      },
+      {
+        id: "template_library_toolbar",
+        timeOffsetMs: 5000,
+        targetSelector: "[data-demo='template-toolbar']",
+        action: "highlight",
+        text: "Search for templates, apply filters by category or visibility, and create new templates from scratch.",
+        role: "buyer",
+        duration: 5000
+      },
+      {
+        id: "template_library_grid",
+        timeOffsetMs: 10000,
+        targetSelector: "[data-demo='templates-grid']",
+        action: "highlight",
+        text: "Company templates are visible to all team members, while private templates are only visible to you.",
+        role: "buyer",
+        duration: 5000
+      },
+      {
+        id: "template_card",
+        timeOffsetMs: 15000,
+        targetSelector: "[data-demo='template-card']",
+        action: "highlight",
+        text: "Each template card shows its name, category, visibility, version count, and quick actions.",
+        role: "buyer",
+        duration: 5000
+      },
+      {
+        id: "template_actions",
+        timeOffsetMs: 20000,
+        targetSelector: "[data-demo='template-actions']",
+        action: "highlight",
+        text: "View, duplicate, or delete templates. Duplicating a template creates a private copy you can customize.",
+        role: "buyer",
+        duration: 5000
+      },
+      {
+        id: "template_editor_intro",
+        timeOffsetMs: 25000,
+        route: "/buyer/templates/[id]",
+        action: "navigate",
+        text: "The Template Editor lets you update template metadata and content. Changes are automatically versioned.",
+        role: "buyer",
+        duration: 5000
+      },
+      {
+        id: "template_basic_info",
+        timeOffsetMs: 30000,
+        targetSelector: "[data-demo='template-basic-info']",
+        action: "highlight",
+        text: "Edit the template name, description, visibility, and category. Set visibility to Company or Private.",
+        role: "buyer",
+        duration: 5000
+      },
+      {
+        id: "template_content",
+        timeOffsetMs: 35000,
+        targetSelector: "[data-demo='template-content']",
+        action: "highlight",
+        text: "The content editor uses JSON to define template structure - sections, questions, and default values.",
+        role: "buyer",
+        duration: 5000
+      },
+      {
+        id: "template_version_history",
+        timeOffsetMs: 40000,
+        targetSelector: "[data-demo='template-versions']",
+        action: "highlight",
+        text: "Version History tracks all changes to the template. Each save creates a new version with author and timestamp.",
+        role: "buyer",
+        duration: 5000
+      },
+      {
+        id: "template_metadata",
+        timeOffsetMs: 45000,
+        targetSelector: "[data-demo='template-metadata']",
+        action: "highlight",
+        text: "View template metadata including creator, creation date, and last updated date.",
+        role: "buyer",
+        duration: 5000
+      },
+      {
+        id: "template_complete",
+        timeOffsetMs: 50000,
+        text: "Templates standardize your RFP process and can be reused across multiple RFPs. Create templates for your most common RFP types!",
+        role: "buyer",
+        duration: 5000
+      }
+    ]
+  },
+
   supplier_only_flow: {
     id: "supplier_only_flow",
     name: "Supplier Portal Tour",
