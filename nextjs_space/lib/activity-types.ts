@@ -115,6 +115,9 @@ export type ActivityEventType =
   // STEP 54: Supplier Work Inbox Events
   | "SUPPLIER_INBOX_VIEWED"
   
+  // STEP 55: Timeline Automation Events
+  | "TIMELINE_AUTOMATION_RUN"
+  
   // Supplier Q&A Events
   | "SUPPLIER_QUESTION_CREATED"
   | "SUPPLIER_QUESTION_ANSWERED"
@@ -226,6 +229,9 @@ export const EVENT_TYPES = {
   // STEP 54: Supplier Work Inbox Events
   SUPPLIER_INBOX_VIEWED: "SUPPLIER_INBOX_VIEWED" as ActivityEventType,
   
+  // STEP 55: Timeline Automation Events
+  TIMELINE_AUTOMATION_RUN: "TIMELINE_AUTOMATION_RUN" as ActivityEventType,
+  
   // Supplier Q&A Events
   SUPPLIER_QUESTION_CREATED: "SUPPLIER_QUESTION_CREATED" as ActivityEventType,
   SUPPLIER_QUESTION_ANSWERED: "SUPPLIER_QUESTION_ANSWERED" as ActivityEventType,
@@ -255,6 +261,7 @@ export const EVENT_CATEGORIES = {
   DASHBOARD: "DASHBOARD",
   DIGEST: "DIGEST",
   SETTINGS: "SETTINGS",
+  AUTOMATION: "AUTOMATION",
 };
 
 // Map event types to categories
@@ -277,6 +284,9 @@ export function getEventCategory(eventType: ActivityEventType): string {
   }
   if (eventType.startsWith("SETTINGS_")) {
     return EVENT_CATEGORIES.SETTINGS;
+  }
+  if (eventType.startsWith("TIMELINE_AUTOMATION_")) {
+    return EVENT_CATEGORIES.AUTOMATION;
   }
   if (eventType.startsWith("RFP_")) return EVENT_CATEGORIES.RFP;
   if (eventType.startsWith("SUPPLIER_CONTACT_") || eventType.startsWith("SUPPLIER_INVITATION_") || eventType.startsWith("SUPPLIER_PORTAL_")) {
@@ -330,6 +340,8 @@ export function getEventTypeColor(eventType: ActivityEventType): { bg: string; t
       return { bg: "bg-violet-100", text: "text-violet-700" };
     case EVENT_CATEGORIES.SETTINGS:
       return { bg: "bg-rose-100", text: "text-rose-700" };
+    case EVENT_CATEGORIES.AUTOMATION:
+      return { bg: "bg-indigo-100", text: "text-indigo-700" };
     case EVENT_CATEGORIES.QA_SYSTEM:
       return { bg: "bg-amber-100", text: "text-amber-700" };
     case EVENT_CATEGORIES.NOTIFICATIONS:
@@ -439,6 +451,9 @@ export const EVENT_TYPE_LABELS: Record<ActivityEventType, string> = {
   
   // STEP 54: Supplier Work Inbox Events
   SUPPLIER_INBOX_VIEWED: "Supplier Work Inbox Viewed",
+  
+  // STEP 55: Timeline Automation Events
+  TIMELINE_AUTOMATION_RUN: "Timeline Automation Run",
   
   // Supplier Q&A Events
   SUPPLIER_QUESTION_CREATED: "Question Asked",

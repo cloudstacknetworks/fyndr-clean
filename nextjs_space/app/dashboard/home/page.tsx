@@ -2,6 +2,7 @@
 
 /**
  * STEP 50: Buyer Home Dashboard & Work Queue UI
+ * STEP 55: Enhanced with Timeline Automation Engine
  * Main landing page for buyers showing active RFPs, deadlines, and attention items
  */
 
@@ -23,6 +24,7 @@ import {
 
 import type { HomeDashboardData, RfpCardData, WorkQueueItem, AttentionItem, RecentActivityItem } from '@/lib/dashboard/home-dashboard-engine';
 import EmailDigestModal from './components/EmailDigestModal';
+import TimelineAutomationClient from './components/TimelineAutomationClient';
 
 export default function BuyerHomeDashboardPage() {
   const { data: session, status } = useSession();
@@ -311,6 +313,13 @@ export default function BuyerHomeDashboardPage() {
             ))}
           </div>
         )}
+      </section>
+
+      {/* ========================================
+          SECTION 4.5: Timeline Automation Engine (STEP 55)
+          ======================================== */}
+      <section>
+        <TimelineAutomationClient />
       </section>
 
       {/* ========================================

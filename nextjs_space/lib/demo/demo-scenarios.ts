@@ -80,10 +80,30 @@ export const DEMO_SCENARIOS: Record<string, DemoScenarioConfig> = {
         duration: 6000
       },
 
+      // BUYER PERSPECTIVE - Timeline Automation (STEP 55)
+      {
+        id: "buyer_timeline_automation_box",
+        timeOffsetMs: 30000,
+        targetSelector: "div:has(h3:has-text('Timeline Automation Engine'))",
+        action: "highlight",
+        text: "Timeline Automation Engine: Auto-advances RFP stages based on dates and generates smart reminders for buyers and suppliers.",
+        role: "buyer",
+        duration: 5000
+      },
+      {
+        id: "buyer_timeline_automation_run",
+        timeOffsetMs: 35000,
+        targetSelector: "button:has-text('Run Timeline Automation')",
+        action: "highlight",
+        text: "Run automation to auto-advance phases (7 rules), generate buyer reminders (9 types), and supplier reminders (6 types)!",
+        role: "buyer",
+        duration: 5000
+      },
+
       // BUYER PERSPECTIVE - Dashboard
       {
         id: "buyer_dashboard_intro",
-        timeOffsetMs: 30000,
+        timeOffsetMs: 40000,
         route: "/dashboard",
         action: "navigate",
         text: "Now let's check the Analytics Dashboard for deeper insights into your RFP pipeline.",
