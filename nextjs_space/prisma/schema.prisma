@@ -35,6 +35,11 @@ model User {
   
   // STEP 47: Archive relations
   archivedRfps          RFP[]                   @relation("ArchivedRFPs")
+  
+  // STEP 53: Admin Settings
+  lastLoginAt           DateTime?
+  isActive              Boolean                 @default(true)
+  preferences           Json?                   // User preferences and defaults
 }
 
 model Company {
@@ -48,6 +53,12 @@ model Company {
   // STEP 35: Portfolio Overview & Multi-RFP Insights
   portfolioSnapshot Json?    // Cached portfolio-wide metrics snapshot
   portfolioMeta     Json?    // Metadata about snapshot generation
+  
+  // STEP 53: Admin Settings
+  logo                   String?  // Logo URL or storage path
+  brandColor             String?  // Hex color for branding
+  timezone               String?  // TZ database timezone (e.g., "America/New_York")
+  fiscalYearStartMonth   Int?     // 1-12 (January-December)
 }
 
 model Supplier {

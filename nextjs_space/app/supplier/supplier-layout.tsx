@@ -16,8 +16,9 @@ import { signOut } from "next-auth/react";
 import SupplierBellIcon from './bell-icon';
 import { DemoButton } from '../components/demo/demo-button';
 
+// STEP 54: Update navigation to use new Work Inbox as Dashboard
 const navigation = [
-  { name: "Dashboard", href: "/supplier", icon: LayoutDashboard },
+  { name: "Work Inbox", href: "/dashboard/supplier/home", icon: LayoutDashboard },
   { name: "My RFPs", href: "/supplier/rfps", icon: FileText },
   { name: "Notifications", href: "/supplier/notifications", icon: Bell },
   { name: "Settings", href: "/supplier/settings/notifications", icon: Settings }

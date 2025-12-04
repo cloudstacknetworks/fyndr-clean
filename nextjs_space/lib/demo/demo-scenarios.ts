@@ -651,6 +651,51 @@ export const DEMO_SCENARIOS: Record<string, DemoScenarioConfig> = {
     ]
   },
 
+  // STEP 53: Admin Settings Demo
+  admin_settings: {
+    id: "admin_settings",
+    name: "Admin Settings Tour",
+    description: "Explore company, user, and preference settings",
+    steps: [
+      {
+        id: "settings_nav",
+        timeOffsetMs: 0,
+        route: "/dashboard/settings",
+        action: "navigate",
+        text: "Welcome to the Admin Settings panel - manage your company, team, and preferences here.",
+        role: "buyer",
+        duration: 4000
+      },
+      {
+        id: "company_settings_tab",
+        timeOffsetMs: 4000,
+        targetSelector: "[data-demo='settings-company']",
+        action: "highlight",
+        text: "Company Settings: Update your company profile, logo, brand color, timezone, and fiscal year start month.",
+        role: "buyer",
+        duration: 5000
+      },
+      {
+        id: "user_management_tab",
+        timeOffsetMs: 9000,
+        targetSelector: "[data-demo='settings-users']",
+        action: "highlight",
+        text: "User Management: Invite team members, change roles, and manage user access across your organization.",
+        role: "buyer",
+        duration: 5000
+      },
+      {
+        id: "preferences_tab",
+        timeOffsetMs: 14000,
+        targetSelector: "[data-demo='settings-preferences']",
+        action: "highlight",
+        text: "Preferences & Defaults: Set your default RFP priority, stage, timezone, and workflow preferences to streamline RFP creation.",
+        role: "buyer",
+        duration: 5000
+      }
+    ]
+  },
+
   supplier_only_flow: {
     id: "supplier_only_flow",
     name: "Supplier Portal Tour",
@@ -659,23 +704,48 @@ export const DEMO_SCENARIOS: Record<string, DemoScenarioConfig> = {
       {
         id: "supplier_intro",
         timeOffsetMs: 0,
-        route: "/supplier",
+        route: "/dashboard/supplier/home",
         action: "navigate",
-        text: "Welcome to the FYNDR Supplier Portal!",
+        text: "Welcome to the FYNDR Supplier Portal! Your Work Inbox is your central hub for managing all RFP activities.",
         role: "supplier",
-        duration: 3000
+        duration: 4000
       },
       {
-        id: "supplier_dashboard",
-        timeOffsetMs: 3000,
-        text: "Your dashboard shows all active RFPs, deadlines, and priority actions.",
+        id: "supplier_inbox_header",
+        timeOffsetMs: 4000,
+        targetSelector: "[data-demo='supplier-inbox-header']",
+        text: "The Work Inbox consolidates all your pending actions, deadlines, invitations, and buyer activity in one place.",
+        role: "supplier",
+        duration: 5000
+      },
+      {
+        id: "supplier_pending_actions",
+        timeOffsetMs: 9000,
+        targetSelector: "[data-demo='supplier-inbox-actions']",
+        text: "Pending Actions shows what needs your immediate attention - proposals to submit, questions to answer, or documents to upload.",
+        role: "supplier",
+        duration: 5000
+      },
+      {
+        id: "supplier_deadlines",
+        timeOffsetMs: 14000,
+        targetSelector: "[data-demo='supplier-inbox-deadlines']",
+        text: "Upcoming Deadlines tracks all submission dates, Q&A windows, and demo schedules with urgency indicators.",
+        role: "supplier",
+        duration: 5000
+      },
+      {
+        id: "supplier_recent_activity",
+        timeOffsetMs: 19000,
+        targetSelector: "[data-demo='supplier-inbox-recent']",
+        text: "Recent Activity From Buyer keeps you informed about award decisions, questions answered, and broadcast messages.",
         role: "supplier",
         duration: 5000
       },
       {
         id: "supplier_complete",
-        timeOffsetMs: 8000,
-        text: "Explore the supplier portal to manage your RFP responses!",
+        timeOffsetMs: 24000,
+        text: "Explore the supplier portal to manage your RFP responses efficiently!",
         role: "supplier",
         duration: 3000
       }

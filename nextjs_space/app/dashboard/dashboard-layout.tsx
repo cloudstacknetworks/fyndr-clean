@@ -96,7 +96,8 @@ export default function DashboardLayout({ session, children }: DashboardLayoutPr
     }
   };
 
-  const sidebarNavigation = [
+  // Base navigation items
+  const baseSidebarNavigation = [
     { name: 'Home', href: '/dashboard/home', icon: Home },
     { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
     { name: 'Notifications', href: '/dashboard/notifications', icon: Bell },
@@ -105,10 +106,14 @@ export default function DashboardLayout({ session, children }: DashboardLayoutPr
     { name: 'RFPs', href: '/dashboard/rfps', icon: FileText },
     { name: 'Companies', href: '/dashboard/companies', icon: Building2 },
     { name: 'Suppliers', href: '/dashboard/suppliers', icon: Users },
-    { name: 'Settings', href: '/dashboard/settings', icon: Settings },
   ];
 
-  const topNavigation = [
+  // Add Settings only for buyers
+  const sidebarNavigation = session?.user?.role === 'buyer' 
+    ? [...baseSidebarNavigation, { name: 'Settings', href: '/dashboard/settings', icon: Settings }]
+    : baseSidebarNavigation;
+
+  const baseTopNavigation = [
     { name: 'Home', href: '/dashboard/home' },
     { name: 'Dashboard', href: '/dashboard' },
     { name: 'Notifications', href: '/dashboard/notifications' },
@@ -117,8 +122,12 @@ export default function DashboardLayout({ session, children }: DashboardLayoutPr
     { name: 'RFPs', href: '/dashboard/rfps' },
     { name: 'Companies', href: '/dashboard/companies' },
     { name: 'Suppliers', href: '/dashboard/suppliers' },
-    { name: 'Settings', href: '/dashboard/settings' },
   ];
+
+  // Add Settings only for buyers
+  const topNavigation = session?.user?.role === 'buyer'
+    ? [...baseTopNavigation, { name: 'Settings', href: '/dashboard/settings' }]
+    : baseTopNavigation;
 
   const isActive = (href: string) => {
     if (href === '/dashboard') {
