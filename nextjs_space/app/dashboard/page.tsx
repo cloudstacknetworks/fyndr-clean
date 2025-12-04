@@ -33,6 +33,11 @@ export default async function DashboardPage() {
     redirect("/login");
   }
 
+  // STEP 50: Redirect buyers to the Home Dashboard as default landing page
+  if (session.user.role === "buyer") {
+    redirect("/dashboard/home");
+  }
+
   return (
     <div className="p-6 space-y-6">
       <div>

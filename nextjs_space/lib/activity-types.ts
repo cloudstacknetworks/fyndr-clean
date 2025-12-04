@@ -96,6 +96,9 @@ export type ActivityEventType =
   | "MULTI_RFP_COMPARE_EXPORTED_PDF"
   | "MULTI_RFP_COMPARE_EXPORTED_DOCX"
   
+  // STEP 50: Home Dashboard Events
+  | "HOME_DASHBOARD_VIEWED"
+  
   // Supplier Q&A Events
   | "SUPPLIER_QUESTION_CREATED"
   | "SUPPLIER_QUESTION_ANSWERED"
@@ -188,6 +191,9 @@ export const EVENT_TYPES = {
   MULTI_RFP_COMPARE_EXPORTED_PDF: "MULTI_RFP_COMPARE_EXPORTED_PDF" as ActivityEventType,
   MULTI_RFP_COMPARE_EXPORTED_DOCX: "MULTI_RFP_COMPARE_EXPORTED_DOCX" as ActivityEventType,
   
+  // STEP 50: Home Dashboard Events
+  HOME_DASHBOARD_VIEWED: "HOME_DASHBOARD_VIEWED" as ActivityEventType,
+  
   // Supplier Q&A Events
   SUPPLIER_QUESTION_CREATED: "SUPPLIER_QUESTION_CREATED" as ActivityEventType,
   SUPPLIER_QUESTION_ANSWERED: "SUPPLIER_QUESTION_ANSWERED" as ActivityEventType,
@@ -214,6 +220,7 @@ export const EVENT_CATEGORIES = {
   ARCHIVE: "ARCHIVE",
   SEARCH: "SEARCH",
   COMPARISON: "COMPARISON",
+  DASHBOARD: "DASHBOARD",
 };
 
 // Map event types to categories
@@ -227,6 +234,9 @@ export function getEventCategory(eventType: ActivityEventType): string {
   }
   if (eventType.startsWith("MULTI_RFP_COMPARE_")) {
     return EVENT_CATEGORIES.COMPARISON;
+  }
+  if (eventType.startsWith("HOME_DASHBOARD_")) {
+    return EVENT_CATEGORIES.DASHBOARD;
   }
   if (eventType.startsWith("RFP_")) return EVENT_CATEGORIES.RFP;
   if (eventType.startsWith("SUPPLIER_CONTACT_") || eventType.startsWith("SUPPLIER_INVITATION_") || eventType.startsWith("SUPPLIER_PORTAL_")) {
@@ -274,6 +284,8 @@ export function getEventTypeColor(eventType: ActivityEventType): { bg: string; t
       return { bg: "bg-cyan-100", text: "text-cyan-700" };
     case EVENT_CATEGORIES.COMPARISON:
       return { bg: "bg-fuchsia-100", text: "text-fuchsia-700" };
+    case EVENT_CATEGORIES.DASHBOARD:
+      return { bg: "bg-teal-100", text: "text-teal-700" };
     case EVENT_CATEGORIES.QA_SYSTEM:
       return { bg: "bg-amber-100", text: "text-amber-700" };
     case EVENT_CATEGORIES.NOTIFICATIONS:
@@ -364,6 +376,9 @@ export const EVENT_TYPE_LABELS: Record<ActivityEventType, string> = {
   MULTI_RFP_COMPARE_RUN: "Multi-RFP Comparison Run",
   MULTI_RFP_COMPARE_EXPORTED_PDF: "Multi-RFP Comparison Exported (PDF)",
   MULTI_RFP_COMPARE_EXPORTED_DOCX: "Multi-RFP Comparison Exported (DOCX)",
+  
+  // STEP 50: Home Dashboard Events
+  HOME_DASHBOARD_VIEWED: "Home Dashboard Viewed",
   
   // Supplier Q&A Events
   SUPPLIER_QUESTION_CREATED: "Question Asked",
