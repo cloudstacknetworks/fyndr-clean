@@ -75,7 +75,7 @@ export default function TemplateEditorPage() {
   const fetchTemplate = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`/api/templates/${templateId}`);
+      const response = await fetch(`/api/dashboard/templates/${templateId}`);
       if (!response.ok) throw new Error('Failed to fetch template');
 
       const data = await response.json();
@@ -112,7 +112,7 @@ export default function TemplateEditorPage() {
         return;
       }
 
-      const response = await fetch(`/api/templates/${templateId}`, {
+      const response = await fetch(`/api/dashboard/templates/${templateId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -141,18 +141,15 @@ export default function TemplateEditorPage() {
 
   const handleDuplicate = async () => {
     try {
-      const response = await fetch(`/api/templates/${templateId}/duplicate`, {
+      const response = await fetch(`/api/dashboard/templates/${templateId}/clone`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
       });
 
       if (!response.ok) throw new Error('Failed to duplicate template');
 
       const data = await response.json();
       alert('Template duplicated successfully!');
-      router.push(`/buyer/templates/${data.template.id}`);
+      router.push(`/dashboard/templates/${data.template.id}`);
     } catch (error) {
       console.error('Error duplicating template:', error);
       alert('Failed to duplicate template');
@@ -163,14 +160,14 @@ export default function TemplateEditorPage() {
     if (!confirm('Are you sure you want to delete this template?')) return;
 
     try {
-      const response = await fetch(`/api/templates/${templateId}`, {
+      const response = await fetch(`/api/dashboard/templates/${templateId}`, {
         method: 'DELETE',
       });
 
       if (!response.ok) throw new Error('Failed to delete template');
 
       alert('Template deleted successfully!');
-      router.push('/buyer/templates');
+      router.push('/dashboard/templates');
     } catch (error) {
       console.error('Error deleting template:', error);
       alert('Failed to delete template');
@@ -204,7 +201,7 @@ export default function TemplateEditorPage() {
             The template you're looking for doesn't exist or you don't have access to it.
           </p>
           <button
-            onClick={() => router.push('/buyer/templates')}
+            onClick={() => router.push('/dashboard/templates')}
             className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
           >
             Back to Templates
@@ -222,7 +219,7 @@ export default function TemplateEditorPage() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <button
-                onClick={() => router.push('/buyer/templates')}
+                onClick={() => router.push('/dashboard/templates')}
                 className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
               >
                 <ArrowLeft className="w-5 h-5 text-gray-600" />

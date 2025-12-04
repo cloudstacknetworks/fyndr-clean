@@ -123,9 +123,12 @@ export type ActivityEventType =
   | "TEMPLATE_UPDATED"
   | "TEMPLATE_DELETED"
   | "TEMPLATE_DUPLICATED"
+  | "TEMPLATE_CLONED"
   | "TEMPLATE_VERSION_CREATED"
   | "TEMPLATE_VIEWED"
+  | "TEMPLATE_LIBRARY_VIEWED"
   | "TEMPLATE_APPLIED_TO_RFP"
+  | "TEMPLATE_USED_FOR_NEW_RFP"
   
   // Supplier Q&A Events
   | "SUPPLIER_QUESTION_CREATED"
@@ -246,9 +249,12 @@ export const EVENT_TYPES = {
   TEMPLATE_UPDATED: "TEMPLATE_UPDATED" as ActivityEventType,
   TEMPLATE_DELETED: "TEMPLATE_DELETED" as ActivityEventType,
   TEMPLATE_DUPLICATED: "TEMPLATE_DUPLICATED" as ActivityEventType,
+  TEMPLATE_CLONED: "TEMPLATE_CLONED" as ActivityEventType,
   TEMPLATE_VERSION_CREATED: "TEMPLATE_VERSION_CREATED" as ActivityEventType,
   TEMPLATE_VIEWED: "TEMPLATE_VIEWED" as ActivityEventType,
+  TEMPLATE_LIBRARY_VIEWED: "TEMPLATE_LIBRARY_VIEWED" as ActivityEventType,
   TEMPLATE_APPLIED_TO_RFP: "TEMPLATE_APPLIED_TO_RFP" as ActivityEventType,
+  TEMPLATE_USED_FOR_NEW_RFP: "TEMPLATE_USED_FOR_NEW_RFP" as ActivityEventType,
   
   // Supplier Q&A Events
   SUPPLIER_QUESTION_CREATED: "SUPPLIER_QUESTION_CREATED" as ActivityEventType,
@@ -484,9 +490,12 @@ export const EVENT_TYPE_LABELS: Record<ActivityEventType, string> = {
   TEMPLATE_UPDATED: "Template Updated",
   TEMPLATE_DELETED: "Template Deleted",
   TEMPLATE_DUPLICATED: "Template Duplicated",
+  TEMPLATE_CLONED: "Template Cloned",
   TEMPLATE_VERSION_CREATED: "Template Version Created",
   TEMPLATE_VIEWED: "Template Viewed",
+  TEMPLATE_LIBRARY_VIEWED: "Template Library Viewed",
   TEMPLATE_APPLIED_TO_RFP: "Template Applied to RFP",
+  TEMPLATE_USED_FOR_NEW_RFP: "Template Used for New RFP",
   
   // Supplier Q&A Events
   SUPPLIER_QUESTION_CREATED: "Question Asked",

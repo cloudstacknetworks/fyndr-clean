@@ -45,9 +45,6 @@ export default function TemplatesPage() {
   const [visibilityFilter, setVisibilityFilter] = useState<string>('');
   const [showFilters, setShowFilters] = useState(false);
 
-  // Mock company ID - TODO: Get from user's RFP or organization
-  const companyId = 'mock-company-id';
-
   useEffect(() => {
     if (session?.user?.id) {
       fetchTemplates();
@@ -57,14 +54,12 @@ export default function TemplatesPage() {
   const fetchTemplates = async () => {
     try {
       setLoading(true);
-      const params = new URLSearchParams({
-        companyId,
-      });
+      const params = new URLSearchParams();
 
       if (categoryFilter) params.append('category', categoryFilter);
       if (visibilityFilter) params.append('visibility', visibilityFilter);
 
-      const response = await fetch(`/api/templates?${params.toString()}`);
+      const response = await fetch(`/api/dashboard/templates?${params.toString()}`);
       if (!response.ok) throw new Error('Failed to fetch templates');
 
       const data = await response.json();
@@ -77,21 +72,17 @@ export default function TemplatesPage() {
   };
 
   const handleCreateTemplate = () => {
-    router.push('/buyer/templates/new');
+    router.push('/dashboard/templates/new');
   };
 
   const handleViewTemplate = (templateId: string) => {
-    router.push(`/buyer/templates/${templateId}`);
+    router.push(`/dashboard/templates/${templateId}`);
   };
 
   const handleDuplicateTemplate = async (templateId: string) => {
     try {
-      const response = await fetch(`/api/templates/${templateId}/duplicate`, {
+      const response = await fetch(`/api/dashboard/templates/${templateId}/clone`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ companyId }),
       });
 
       if (!response.ok) throw new Error('Failed to duplicate template');
@@ -109,7 +100,7 @@ export default function TemplatesPage() {
     if (!confirm('Are you sure you want to delete this template?')) return;
 
     try {
-      const response = await fetch(`/api/templates/${templateId}`, {
+      const response = await fetch(`/api/dashboard/templates/${templateId}`, {
         method: 'DELETE',
       });
 

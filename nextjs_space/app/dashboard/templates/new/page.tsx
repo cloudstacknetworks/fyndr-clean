@@ -57,9 +57,8 @@ export default function NewTemplatePage() {
 
     try {
       setCreating(true);
-      const companyId = 'mock-company-id'; // TODO: Get from user's RFP or organization
 
-      const response = await fetch('/api/templates', {
+      const response = await fetch('/api/dashboard/templates', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -67,7 +66,6 @@ export default function NewTemplatePage() {
         body: JSON.stringify({
           name,
           description: description || undefined,
-          companyId,
           visibility,
           category: category || undefined,
           initialContentJson: parsedContent,
@@ -81,7 +79,7 @@ export default function NewTemplatePage() {
 
       const data = await response.json();
       alert('Template created successfully!');
-      router.push(`/buyer/templates/${data.template.id}`);
+      router.push(`/dashboard/templates/${data.template.id}`);
     } catch (error: any) {
       console.error('Error creating template:', error);
       setError(error.message || 'Failed to create template');
@@ -98,7 +96,7 @@ export default function NewTemplatePage() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <button
-                onClick={() => router.push('/buyer/templates')}
+                onClick={() => router.push('/dashboard/templates')}
                 className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
               >
                 <ArrowLeft className="w-5 h-5 text-gray-600" />

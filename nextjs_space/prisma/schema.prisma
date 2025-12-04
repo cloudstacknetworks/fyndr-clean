@@ -1,10 +1,12 @@
 generator client {
-  provider = "prisma-client-js"
+    provider = "prisma-client-js"
+    binaryTargets = ["native", "linux-musl-arm64-openssl-3.0.x"]
+    output = "/home/ubuntu/fyndr/nextjs_space/node_modules/.prisma/client"
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
 }
 
 model User {
@@ -13,6 +15,8 @@ model User {
   password               String
   name                   String?
   role                   String                  @default("buyer") // "buyer" or "supplier"
+  companyId              String
+  company                Company                 @relation("CompanyUsers", fields: [companyId], references: [id])
   createdAt              DateTime                @default(now())
   isDemo                 Boolean                 @default(false)
   rfps                   RFP[]
@@ -52,6 +56,7 @@ model Company {
   description       String?
   createdAt         DateTime @default(now())
   isDemo            Boolean  @default(false)
+  users             User[]   @relation("CompanyUsers")
   rfps              RFP[]
   
   // STEP 35: Portfolio Overview & Multi-RFP Insights

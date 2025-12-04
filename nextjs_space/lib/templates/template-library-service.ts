@@ -283,7 +283,7 @@ export async function deleteTemplate(templateId: string, userId: string) {
 export async function duplicateTemplate(
   templateId: string,
   userId: string,
-  companyId: string | null,
+  companyId: string,
   newName?: string
 ) {
   // Get original template with latest version
@@ -313,14 +313,11 @@ export async function duplicateTemplate(
     throw new Error('Template has no versions');
   }
 
-  // Use original template's companyId if not provided
-  const targetCompanyId = companyId || original.companyId;
-
   // Create duplicate
   const duplicate = await createTemplate({
     name: newName || `${original.name} (Copy)`,
     description: original.description || undefined,
-    companyId: targetCompanyId,
+    companyId,
     visibility: 'private', // New duplicates are always private
     category: original.category || undefined,
     defaultTimeline: original.defaultTimeline || undefined,

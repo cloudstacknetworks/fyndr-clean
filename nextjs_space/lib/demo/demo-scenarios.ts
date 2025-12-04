@@ -725,7 +725,7 @@ export const DEMO_SCENARIOS: Record<string, DemoScenarioConfig> = {
       {
         id: "template_library_intro",
         timeOffsetMs: 0,
-        route: "/buyer/templates",
+        route: "/dashboard/templates",
         action: "navigate",
         text: "Welcome to the RFP Template Library! Create and manage standardized RFP templates across your organization.",
         role: "buyer",
@@ -770,7 +770,7 @@ export const DEMO_SCENARIOS: Record<string, DemoScenarioConfig> = {
       {
         id: "template_editor_intro",
         timeOffsetMs: 25000,
-        route: "/buyer/templates/[id]",
+        route: "/dashboard/templates/[id]",
         action: "navigate",
         text: "The Template Editor lets you update template metadata and content. Changes are automatically versioned.",
         role: "buyer",
