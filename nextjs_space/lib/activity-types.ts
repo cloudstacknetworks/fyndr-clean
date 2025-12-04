@@ -91,6 +91,11 @@ export type ActivityEventType =
   | "GLOBAL_SEARCH_PERFORMED"
   | "GLOBAL_SEARCH_VIEWED_RESULTS"
   
+  // STEP 49: Multi-RFP Comparison Events
+  | "MULTI_RFP_COMPARE_RUN"
+  | "MULTI_RFP_COMPARE_EXPORTED_PDF"
+  | "MULTI_RFP_COMPARE_EXPORTED_DOCX"
+  
   // Supplier Q&A Events
   | "SUPPLIER_QUESTION_CREATED"
   | "SUPPLIER_QUESTION_ANSWERED"
@@ -178,6 +183,11 @@ export const EVENT_TYPES = {
   GLOBAL_SEARCH_PERFORMED: "GLOBAL_SEARCH_PERFORMED" as ActivityEventType,
   GLOBAL_SEARCH_VIEWED_RESULTS: "GLOBAL_SEARCH_VIEWED_RESULTS" as ActivityEventType,
   
+  // STEP 49: Multi-RFP Comparison Events
+  MULTI_RFP_COMPARE_RUN: "MULTI_RFP_COMPARE_RUN" as ActivityEventType,
+  MULTI_RFP_COMPARE_EXPORTED_PDF: "MULTI_RFP_COMPARE_EXPORTED_PDF" as ActivityEventType,
+  MULTI_RFP_COMPARE_EXPORTED_DOCX: "MULTI_RFP_COMPARE_EXPORTED_DOCX" as ActivityEventType,
+  
   // Supplier Q&A Events
   SUPPLIER_QUESTION_CREATED: "SUPPLIER_QUESTION_CREATED" as ActivityEventType,
   SUPPLIER_QUESTION_ANSWERED: "SUPPLIER_QUESTION_ANSWERED" as ActivityEventType,
@@ -203,6 +213,7 @@ export const EVENT_CATEGORIES = {
   AWARD: "AWARD",
   ARCHIVE: "ARCHIVE",
   SEARCH: "SEARCH",
+  COMPARISON: "COMPARISON",
 };
 
 // Map event types to categories
@@ -213,6 +224,9 @@ export function getEventCategory(eventType: ActivityEventType): string {
   }
   if (eventType.startsWith("GLOBAL_SEARCH_")) {
     return EVENT_CATEGORIES.SEARCH;
+  }
+  if (eventType.startsWith("MULTI_RFP_COMPARE_")) {
+    return EVENT_CATEGORIES.COMPARISON;
   }
   if (eventType.startsWith("RFP_")) return EVENT_CATEGORIES.RFP;
   if (eventType.startsWith("SUPPLIER_CONTACT_") || eventType.startsWith("SUPPLIER_INVITATION_") || eventType.startsWith("SUPPLIER_PORTAL_")) {
@@ -258,6 +272,8 @@ export function getEventTypeColor(eventType: ActivityEventType): { bg: string; t
       return { bg: "bg-slate-100", text: "text-slate-700" };
     case EVENT_CATEGORIES.SEARCH:
       return { bg: "bg-cyan-100", text: "text-cyan-700" };
+    case EVENT_CATEGORIES.COMPARISON:
+      return { bg: "bg-fuchsia-100", text: "text-fuchsia-700" };
     case EVENT_CATEGORIES.QA_SYSTEM:
       return { bg: "bg-amber-100", text: "text-amber-700" };
     case EVENT_CATEGORIES.NOTIFICATIONS:
@@ -343,6 +359,11 @@ export const EVENT_TYPE_LABELS: Record<ActivityEventType, string> = {
   // STEP 48: Global Search Events
   GLOBAL_SEARCH_PERFORMED: "Global Search Performed",
   GLOBAL_SEARCH_VIEWED_RESULTS: "Search Results Viewed",
+  
+  // STEP 49: Multi-RFP Comparison Events
+  MULTI_RFP_COMPARE_RUN: "Multi-RFP Comparison Run",
+  MULTI_RFP_COMPARE_EXPORTED_PDF: "Multi-RFP Comparison Exported (PDF)",
+  MULTI_RFP_COMPARE_EXPORTED_DOCX: "Multi-RFP Comparison Exported (DOCX)",
   
   // Supplier Q&A Events
   SUPPLIER_QUESTION_CREATED: "Question Asked",

@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * Portfolio Overview Page (STEP 35)
+ * Portfolio Overview Page (STEP 35 + STEP 49)
  * 
  * Displays cross-RFP insights for the buyer's entire pipeline:
  * - Section 1: Header Bar with KPIs
@@ -11,10 +11,12 @@
  * - Section 5: Top Suppliers
  * - Section 6: Upcoming Milestones
  * - Section 7: Option 3 Teaser
+ * - Section 8: Multi-RFP Comparison (STEP 49)
  */
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { 
   TrendingUp, 
   AlertTriangle, 
@@ -26,7 +28,8 @@ import {
   Loader2,
   CheckCircle,
   XCircle,
-  Clock
+  Clock,
+  GitCompare
 } from 'lucide-react';
 import { Option3Indicator } from '@/app/components/option3/option3-indicator';
 import { STAGE_LABELS } from '@/lib/stages';
@@ -36,11 +39,28 @@ interface PortfolioData {
   meta: any;
 }
 
+interface RfpListItem {
+  id: string;
+  title: string;
+  status: string;
+  stage: string;
+  createdAt: string;
+  budget: number | null;
+  isArchived: boolean;
+}
+
 export default function PortfolioPage() {
   const [data, setData] = useState<PortfolioData | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  
+  // STEP 49: Multi-RFP Comparison State
+  const [selectedRfpIds, setSelectedRfpIds] = useState<Set<string>>(new Set());
+  const [rfpList, setRfpList] = useState<RfpListItem[]>([]);
+  const [loadingRfpList, setLoadingRfpList] = useState(false);
+  const [showComparisonSelector, setShowComparisonSelector] = useState(false);
+  const router = useRouter();
 
   const fetchPortfolioData = async () => {
     try {
@@ -67,6 +87,64 @@ export default function PortfolioPage() {
   const handleRefresh = () => {
     setRefreshing(true);
     fetchPortfolioData();
+  };
+
+  // STEP 49: Fetch RFP list for comparison
+  const fetchRfpList = async () => {
+    setLoadingRfpList(true);
+    try {
+      const response = await fetch('/api/dashboard/rfps');
+      if (!response.ok) {
+        throw new Error('Failed to fetch RFP list');
+      }
+      const result = await response.json();
+      // Filter out archived RFPs for comparison
+      const activeRfps = result.rfps.filter((rfp: RfpListItem) => !rfp.isArchived);
+      setRfpList(activeRfps);
+    } catch (err) {
+      console.error('Error fetching RFP list:', err);
+    } finally {
+      setLoadingRfpList(false);
+    }
+  };
+
+  // STEP 49: Toggle comparison selector
+  const handleToggleComparisonSelector = () => {
+    if (!showComparisonSelector) {
+      fetchRfpList();
+    }
+    setShowComparisonSelector(!showComparisonSelector);
+    setSelectedRfpIds(new Set()); // Reset selection when toggling
+  };
+
+  // STEP 49: Toggle RFP selection
+  const handleToggleRfpSelection = (rfpId: string) => {
+    const newSelection = new Set(selectedRfpIds);
+    if (newSelection.has(rfpId)) {
+      newSelection.delete(rfpId);
+    } else {
+      // Limit to 5 RFPs
+      if (newSelection.size >= 5) {
+        alert('You can select a maximum of 5 RFPs for comparison');
+        return;
+      }
+      newSelection.add(rfpId);
+    }
+    setSelectedRfpIds(newSelection);
+  };
+
+  // STEP 49: Navigate to comparison workspace
+  const handleCompareRfps = () => {
+    if (selectedRfpIds.size < 2) {
+      alert('Please select at least 2 RFPs to compare');
+      return;
+    }
+    if (selectedRfpIds.size > 5) {
+      alert('You can only compare up to 5 RFPs at once');
+      return;
+    }
+    const rfpIds = Array.from(selectedRfpIds).join(',');
+    router.push(`/dashboard/rfps/compare-multi?rfpIds=${rfpIds}`);
   };
 
   if (loading) {
@@ -127,6 +205,14 @@ export default function PortfolioPage() {
           <div className="text-sm text-gray-500">
             Last updated: {new Date(meta?.lastGeneratedAt).toLocaleString()}
           </div>
+          {/* STEP 49: Compare RFPs Button */}
+          <button
+            onClick={handleToggleComparisonSelector}
+            className="flex items-center gap-2 px-4 py-2 bg-fuchsia-600 text-white rounded-lg hover:bg-fuchsia-700 transition"
+          >
+            <GitCompare className="w-4 h-4" />
+            {showComparisonSelector ? 'Hide Comparison' : 'Compare RFPs'}
+          </button>
           <Link
             href="/dashboard/portfolio/insights"
             className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
@@ -148,6 +234,73 @@ export default function PortfolioPage() {
           </button>
         </div>
       </div>
+
+      {/* ================================================================
+          SECTION 1B: MULTI-RFP COMPARISON SELECTOR (STEP 49)
+          ================================================================ */}
+      {showComparisonSelector && (
+        <div className="bg-white border border-fuchsia-200 rounded-lg p-6 shadow-sm" data-demo="multi-rfp-comparison">
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <h2 className="text-xl font-semibold text-gray-900">Select RFPs to Compare</h2>
+              <p className="text-sm text-gray-600 mt-1">
+                Choose 2-5 RFPs for side-by-side comparison (selected: {selectedRfpIds.size})
+              </p>
+            </div>
+            <button
+              onClick={handleCompareRfps}
+              disabled={selectedRfpIds.size < 2 || selectedRfpIds.size > 5}
+              className="flex items-center gap-2 px-6 py-3 bg-fuchsia-600 text-white rounded-lg hover:bg-fuchsia-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <GitCompare className="w-5 h-5" />
+              Compare Selected ({selectedRfpIds.size})
+            </button>
+          </div>
+
+          {loadingRfpList ? (
+            <div className="flex items-center justify-center py-12">
+              <Loader2 className="w-8 h-8 animate-spin text-fuchsia-600" />
+            </div>
+          ) : rfpList.length === 0 ? (
+            <div className="text-center py-12 text-gray-500">
+              No active RFPs available for comparison
+            </div>
+          ) : (
+            <div className="space-y-2 max-h-96 overflow-y-auto">
+              {rfpList.map((rfp) => (
+                <label
+                  key={rfp.id}
+                  className={`flex items-center gap-4 p-4 border rounded-lg cursor-pointer transition ${
+                    selectedRfpIds.has(rfp.id)
+                      ? 'border-fuchsia-500 bg-fuchsia-50'
+                      : 'border-gray-200 hover:border-fuchsia-300'
+                  }`}
+                >
+                  <input
+                    type="checkbox"
+                    checked={selectedRfpIds.has(rfp.id)}
+                    onChange={() => handleToggleRfpSelection(rfp.id)}
+                    className="w-5 h-5 text-fuchsia-600 rounded border-gray-300 focus:ring-fuchsia-500"
+                  />
+                  <div className="flex-1">
+                    <div className="flex items-center justify-between">
+                      <h3 className="font-semibold text-gray-900">{rfp.title}</h3>
+                      <span className="text-sm text-gray-500">
+                        {STAGE_LABELS[rfp.stage] || rfp.stage}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-4 mt-1 text-sm text-gray-600">
+                      <span>Status: {rfp.status}</span>
+                      {rfp.budget && <span>Budget: ${rfp.budget.toLocaleString()}</span>}
+                      <span>Created: {new Date(rfp.createdAt).toLocaleDateString()}</span>
+                    </div>
+                  </div>
+                </label>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
 
       {/* ================================================================
           SECTION 2: KPI ROW

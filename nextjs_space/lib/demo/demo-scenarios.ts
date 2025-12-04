@@ -165,10 +165,64 @@ export const DEMO_SCENARIOS: Record<string, DemoScenarioConfig> = {
         duration: 5000
       },
 
+      // STEP 49: MULTI-RFP COMPARISON WORKSPACE
+      {
+        id: "buyer_multi_rfp_comparison_intro",
+        timeOffsetMs: 63000,
+        targetSelector: "button:has-text('Compare RFPs')",
+        action: "highlight",
+        text: "The Multi-RFP Comparison feature allows you to compare 2-5 RFPs side-by-side for strategic portfolio analysis.",
+        role: "buyer",
+        duration: 5000
+      },
+      {
+        id: "buyer_multi_rfp_comparison_open_selector",
+        timeOffsetMs: 68000,
+        targetSelector: "button:has-text('Compare RFPs')",
+        action: "click",
+        text: "Let's open the comparison selector...",
+        role: "buyer",
+        duration: 2000
+      },
+      {
+        id: "buyer_multi_rfp_comparison_selector",
+        timeOffsetMs: 70000,
+        targetSelector: "[data-demo='multi-rfp-comparison']",
+        action: "highlight",
+        text: "Select 2-5 RFPs from your active pipeline. The comparison workspace will analyze cycle times, budgets, supplier participation, and generate cross-RFP insights.",
+        role: "buyer",
+        duration: 5000
+      },
+      {
+        id: "buyer_multi_rfp_comparison_select_rfps",
+        timeOffsetMs: 75000,
+        text: "Check the RFPs you want to compare. The system validates your selection (2-5 RFPs, same company, pre-award only).",
+        role: "buyer",
+        duration: 5000
+      },
+      {
+        id: "buyer_multi_rfp_comparison_workspace",
+        timeOffsetMs: 80000,
+        route: "/dashboard/rfps/compare-multi",
+        action: "navigate",
+        text: "The Multi-RFP Comparison Workspace displays a comprehensive side-by-side analysis with 6 sections: overview table, snapshot availability, cycle time chart, supplier participation map, and algorithmic insights.",
+        role: "buyer",
+        duration: 6000
+      },
+      {
+        id: "buyer_multi_rfp_comparison_export",
+        timeOffsetMs: 86000,
+        targetSelector: "button:has-text('Export PDF')",
+        action: "highlight",
+        text: "Export the comparison report as PDF or Word for sharing with stakeholders and strategic planning meetings.",
+        role: "buyer",
+        duration: 5000
+      },
+
       // STEP 44: PORTFOLIO INSIGHTS DASHBOARD
       {
         id: "buyer_navigate_portfolio_insights",
-        timeOffsetMs: 63000,
+        timeOffsetMs: 91000,
         targetSelector: "a[href='/dashboard/portfolio/insights']",
         action: "click",
         text: "Now let's explore the Portfolio Insights Dashboard for comprehensive analytics...",
@@ -177,7 +231,7 @@ export const DEMO_SCENARIOS: Record<string, DemoScenarioConfig> = {
       },
       {
         id: "buyer_portfolio_insights_intro",
-        timeOffsetMs: 66000,
+        timeOffsetMs: 94000,
         route: "/dashboard/portfolio/insights",
         action: "scrollIntoView",
         text: "Portfolio Insights Dashboard provides deep analytics across all RFPs: budget metrics, cycle times, scoring distribution, and supplier participation.",
