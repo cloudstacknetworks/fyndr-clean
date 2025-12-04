@@ -130,6 +130,15 @@ export type ActivityEventType =
   | "TEMPLATE_APPLIED_TO_RFP"
   | "TEMPLATE_USED_FOR_NEW_RFP"
   
+  // STEP 57: Company-Level Master Requirements Library Events
+  | "REQUIREMENT_CREATED"
+  | "REQUIREMENT_UPDATED"
+  | "REQUIREMENT_ARCHIVED"
+  | "REQUIREMENT_CLONED"
+  | "REQUIREMENT_VERSION_CREATED"
+  | "REQUIREMENT_INSERTED_INTO_RFP"
+  | "REQUIREMENT_INSERTED_INTO_TEMPLATE"
+  
   // Supplier Q&A Events
   | "SUPPLIER_QUESTION_CREATED"
   | "SUPPLIER_QUESTION_ANSWERED"
@@ -256,6 +265,15 @@ export const EVENT_TYPES = {
   TEMPLATE_APPLIED_TO_RFP: "TEMPLATE_APPLIED_TO_RFP" as ActivityEventType,
   TEMPLATE_USED_FOR_NEW_RFP: "TEMPLATE_USED_FOR_NEW_RFP" as ActivityEventType,
   
+  // STEP 57: Company-Level Master Requirements Library Events
+  REQUIREMENT_CREATED: "REQUIREMENT_CREATED" as ActivityEventType,
+  REQUIREMENT_UPDATED: "REQUIREMENT_UPDATED" as ActivityEventType,
+  REQUIREMENT_ARCHIVED: "REQUIREMENT_ARCHIVED" as ActivityEventType,
+  REQUIREMENT_CLONED: "REQUIREMENT_CLONED" as ActivityEventType,
+  REQUIREMENT_VERSION_CREATED: "REQUIREMENT_VERSION_CREATED" as ActivityEventType,
+  REQUIREMENT_INSERTED_INTO_RFP: "REQUIREMENT_INSERTED_INTO_RFP" as ActivityEventType,
+  REQUIREMENT_INSERTED_INTO_TEMPLATE: "REQUIREMENT_INSERTED_INTO_TEMPLATE" as ActivityEventType,
+  
   // Supplier Q&A Events
   SUPPLIER_QUESTION_CREATED: "SUPPLIER_QUESTION_CREATED" as ActivityEventType,
   SUPPLIER_QUESTION_ANSWERED: "SUPPLIER_QUESTION_ANSWERED" as ActivityEventType,
@@ -287,6 +305,7 @@ export const EVENT_CATEGORIES = {
   SETTINGS: "SETTINGS",
   AUTOMATION: "AUTOMATION",
   TEMPLATE: "TEMPLATE",
+  REQUIREMENT: "REQUIREMENT",
 };
 
 // Map event types to categories
@@ -315,6 +334,9 @@ export function getEventCategory(eventType: ActivityEventType): string {
   }
   if (eventType.startsWith("TEMPLATE_")) {
     return EVENT_CATEGORIES.TEMPLATE;
+  }
+  if (eventType.startsWith("REQUIREMENT_")) {
+    return EVENT_CATEGORIES.REQUIREMENT;
   }
   if (eventType.startsWith("RFP_")) return EVENT_CATEGORIES.RFP;
   if (eventType.startsWith("SUPPLIER_CONTACT_") || eventType.startsWith("SUPPLIER_INVITATION_") || eventType.startsWith("SUPPLIER_PORTAL_")) {
@@ -372,6 +394,8 @@ export function getEventTypeColor(eventType: ActivityEventType): { bg: string; t
       return { bg: "bg-indigo-100", text: "text-indigo-700" };
     case EVENT_CATEGORIES.TEMPLATE:
       return { bg: "bg-lime-100", text: "text-lime-700" };
+    case EVENT_CATEGORIES.REQUIREMENT:
+      return { bg: "bg-yellow-100", text: "text-yellow-700" };
     case EVENT_CATEGORIES.QA_SYSTEM:
       return { bg: "bg-amber-100", text: "text-amber-700" };
     case EVENT_CATEGORIES.NOTIFICATIONS:
@@ -496,6 +520,15 @@ export const EVENT_TYPE_LABELS: Record<ActivityEventType, string> = {
   TEMPLATE_LIBRARY_VIEWED: "Template Library Viewed",
   TEMPLATE_APPLIED_TO_RFP: "Template Applied to RFP",
   TEMPLATE_USED_FOR_NEW_RFP: "Template Used for New RFP",
+  
+  // STEP 57: Company-Level Master Requirements Library Events
+  REQUIREMENT_CREATED: "Requirement Created",
+  REQUIREMENT_UPDATED: "Requirement Updated",
+  REQUIREMENT_ARCHIVED: "Requirement Archived",
+  REQUIREMENT_CLONED: "Requirement Cloned",
+  REQUIREMENT_VERSION_CREATED: "Requirement Version Created",
+  REQUIREMENT_INSERTED_INTO_RFP: "Requirement Inserted into RFP",
+  REQUIREMENT_INSERTED_INTO_TEMPLATE: "Requirement Inserted into Template",
   
   // Supplier Q&A Events
   SUPPLIER_QUESTION_CREATED: "Question Asked",

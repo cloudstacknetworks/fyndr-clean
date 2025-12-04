@@ -822,6 +822,110 @@ export const DEMO_SCENARIOS: Record<string, DemoScenarioConfig> = {
     ]
   },
 
+  // STEP 57: Requirements Library Demo
+  requirements_library_flow: {
+    id: "requirements_library_flow",
+    name: "Requirements Library Tour",
+    description: "Demonstration of company-level requirement block management and insertion",
+    steps: [
+      {
+        id: "requirements_library_intro",
+        timeOffsetMs: 0,
+        route: "/dashboard/requirements",
+        action: "navigate",
+        text: "Welcome to the Requirements Library! Create reusable requirement blocks that can be inserted into any RFP or template.",
+        role: "buyer",
+        duration: 5000
+      },
+      {
+        id: "requirements_library_filters",
+        timeOffsetMs: 5000,
+        targetSelector: "[data-demo='requirements-filters']",
+        action: "highlight",
+        text: "Search and filter requirements by category, subcategory, or visibility (company-wide vs. private).",
+        role: "buyer",
+        duration: 5000
+      },
+      {
+        id: "requirements_table",
+        timeOffsetMs: 10000,
+        targetSelector: "[data-demo='requirements-table']",
+        action: "highlight",
+        text: "The requirements table displays all your reusable requirement blocks with metadata like category, visibility, and version count.",
+        role: "buyer",
+        duration: 5000
+      },
+      {
+        id: "requirement_actions",
+        timeOffsetMs: 15000,
+        targetSelector: "[data-demo='requirement-actions']",
+        action: "highlight",
+        text: "View details, edit, clone, or archive requirements. Clone creates a copy you can customize without affecting the original.",
+        role: "buyer",
+        duration: 5000
+      },
+      {
+        id: "requirement_editor_intro",
+        timeOffsetMs: 20000,
+        route: "/dashboard/requirements/[id]",
+        action: "navigate",
+        text: "The Requirement Editor lets you create and update requirement blocks with detailed scoring and evaluation criteria.",
+        role: "buyer",
+        duration: 5000
+      },
+      {
+        id: "requirement_basic_info",
+        timeOffsetMs: 25000,
+        targetSelector: "[data-demo='requirement-basic-info']",
+        action: "highlight",
+        text: "Set the requirement title, category, subcategory, and visibility (company or private).",
+        role: "buyer",
+        duration: 5000
+      },
+      {
+        id: "requirement_content",
+        timeOffsetMs: 30000,
+        targetSelector: "[data-demo='requirement-content']",
+        action: "highlight",
+        text: "Define the requirement question, mark it as Must-Have, set scoring type (numeric/weighted/free-response), and assign weight.",
+        role: "buyer",
+        duration: 5000
+      },
+      {
+        id: "requirement_scoring",
+        timeOffsetMs: 35000,
+        targetSelector: "[data-demo='requirement-scoring']",
+        action: "highlight",
+        text: "Scoring configuration integrates with the Scoring Matrix - set weights to prioritize critical requirements.",
+        role: "buyer",
+        duration: 5000
+      },
+      {
+        id: "requirement_version_history",
+        timeOffsetMs: 40000,
+        targetSelector: "[data-demo='requirement-versions']",
+        action: "highlight",
+        text: "Version History tracks all changes to the requirement. Each update creates a new version with full audit trail.",
+        role: "buyer",
+        duration: 5000
+      },
+      {
+        id: "requirement_insert",
+        timeOffsetMs: 45000,
+        text: "Insert requirements into RFPs or templates to maintain consistency across your procurement process.",
+        role: "buyer",
+        duration: 5000
+      },
+      {
+        id: "requirements_complete",
+        timeOffsetMs: 50000,
+        text: "Build a library of standardized requirements to ensure consistency and speed up RFP creation!",
+        role: "buyer",
+        duration: 5000
+      }
+    ]
+  },
+
   supplier_only_flow: {
     id: "supplier_only_flow",
     name: "Supplier Portal Tour",

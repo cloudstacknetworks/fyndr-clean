@@ -48,6 +48,10 @@ model User {
   // STEP 56: Company-Level RFP Master Template Library
   rfpTemplatesCreated      RFPTemplate[]        @relation("TemplateCreator")
   rfpTemplateVersionsCreated RFPTemplateVersion[]
+  
+  // STEP 57: Company-Level Master Requirements Library
+  requirementBlocksCreated RequirementBlock[]   @relation("RequirementBlockCreator")
+  requirementBlockVersionsCreated RequirementBlockVersion[]
 }
 
 model Company {
@@ -71,6 +75,9 @@ model Company {
   
   // STEP 56: Company-Level RFP Master Template Library
   rfpTemplates      RFPTemplate[]
+  
+  // STEP 57: Company-Level Master Requirements Library
+  requirementBlocks RequirementBlock[]
 }
 
 model Supplier {
@@ -182,6 +189,9 @@ model RFP {
   archivedByUserId        String?
   archivedBy              User?     @relation("ArchivedRFPs", fields: [archivedByUserId], references: [id])
   compliancePackSnapshot  Json?     // Full compliance pack snapshot
+
+  // STEP 57: Company-Level Master Requirements Library
+  requirementGroups       Json?     // Inserted requirements from library
 
   user                      User                       @relation(fields: [userId], references: [id])
   userId                    String
@@ -712,4 +722,40 @@ model RFPTemplateVersion {
 
   @@unique([templateId, versionNumber])
   @@index([templateId])
+}
+
+// STEP 57: Company-Level Master Requirements Library
+model RequirementBlock {
+  id                String   @id @default(cuid())
+  companyId         String
+  company           Company  @relation(fields: [companyId], references: [id])
+  title             String
+  category          String
+  subcategory       String?
+  contentJson       Json     // Structured: {question, mustHave, scoringType, weight, notes}
+  visibility        String   @default("company") // "company" | "private"
+  createdByUserId   String
+  createdBy         User     @relation("RequirementBlockCreator", fields: [createdByUserId], references: [id])
+  isArchived        Boolean  @default(false)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  versions          RequirementBlockVersion[]
+
+  @@index([companyId])
+  @@index([category])
+  @@index([isArchived])
+}
+
+model RequirementBlockVersion {
+  id                  String            @id @default(cuid())
+  requirementBlockId  String
+  requirementBlock    RequirementBlock  @relation(fields: [requirementBlockId], references: [id], onDelete: Cascade)
+  versionNumber       Int
+  contentJson         Json
+  createdAt           DateTime          @default(now())
+  createdByUserId     String
+  createdBy           User              @relation(fields: [createdByUserId], references: [id])
+
+  @@unique([requirementBlockId, versionNumber])
+  @@index([requirementBlockId])
 }
