@@ -3,7 +3,7 @@
 import { signOut } from 'next-auth/react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { LogOut, FileText, Building2, Users, Settings, LayoutDashboard, ChevronLeft, ChevronRight, Search, TrendingUp, GitBranch, Home, Bell, FileStack, Database, Target, Table, Download } from 'lucide-react';
+import { LogOut, FileText, Building2, Users, Settings, LayoutDashboard, ChevronLeft, ChevronRight, Search, TrendingUp, GitBranch, Home, Bell, FileStack, Database, Target, Table, Download, BarChart3 } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import GlobalSearch from './global-search';
 import CommandPalette from './command-palette';
@@ -111,10 +111,11 @@ export default function DashboardLayout({ session, children }: DashboardLayoutPr
     { name: 'Suppliers', href: '/dashboard/suppliers', icon: Users },
   ];
 
-  // Add Export Center and Settings only for buyers
+  // Add Export Center, Admin Analytics, and Settings only for buyers
   const buyerOnlyItems = session?.user?.role === 'buyer' 
     ? [
         { name: 'Export Center', href: '/dashboard/export-center', icon: Download },
+        { name: 'Admin Analytics', href: '/dashboard/admin/analytics', icon: BarChart3 },
         { name: 'Settings', href: '/dashboard/settings', icon: Settings }
       ]
     : [];
@@ -136,10 +137,11 @@ export default function DashboardLayout({ session, children }: DashboardLayoutPr
     { name: 'Suppliers', href: '/dashboard/suppliers' },
   ];
 
-  // Add Export Center and Settings only for buyers
+  // Add Export Center, Admin Analytics, and Settings only for buyers
   const buyerOnlyTopItems = session?.user?.role === 'buyer'
     ? [
         { name: 'Export Center', href: '/dashboard/export-center' },
+        { name: 'Admin Analytics', href: '/dashboard/admin/analytics' },
         { name: 'Settings', href: '/dashboard/settings' }
       ]
     : [];
@@ -176,6 +178,8 @@ export default function DashboardLayout({ session, children }: DashboardLayoutPr
       'suppliers': 'Suppliers',
       'settings': 'Settings',
       'export-center': 'Export Center',
+      'admin': 'Admin',
+      'analytics': 'Analytics',
       'new': 'Create',
       'edit': 'Edit',
     };

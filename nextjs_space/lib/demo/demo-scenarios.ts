@@ -1154,6 +1154,48 @@ export const DEMO_SCENARIOS: Record<string, DemoScenarioConfig> = {
     ]
   },
 
+  admin_analytics_flow: {
+    id: "admin_analytics_flow",
+    name: "Admin Analytics Dashboard Tour",
+    description: "Portfolio-level analytics and insights for admin users (STEP 64)",
+    steps: [
+      {
+        id: "admin_analytics_intro",
+        timeOffsetMs: 0,
+        route: "/dashboard/admin/analytics",
+        action: "navigate",
+        targetSelector: "[data-demo='admin-analytics-header']",
+        text: "Welcome to the Admin Analytics Dashboard! This gives you portfolio-level insights across all RFP activity, suppliers, and automation.",
+        role: "buyer",
+        duration: 5000
+      },
+      {
+        id: "admin_analytics_kpis",
+        timeOffsetMs: 5000,
+        targetSelector: "[data-demo='admin-analytics-kpis']",
+        text: "These KPI tiles show Active RFPs, Closed RFPs, Avg Cycle Time, Win Rate, Supplier Participation, and Automation Usage.",
+        role: "buyer",
+        duration: 5000
+      },
+      {
+        id: "admin_analytics_pipeline",
+        timeOffsetMs: 10000,
+        targetSelector: "[data-demo='admin-analytics-pipeline']",
+        text: "Pipeline and volume charts show how RFPs are flowing through stages over time - identify bottlenecks and trends.",
+        role: "buyer",
+        duration: 5000
+      },
+      {
+        id: "admin_analytics_automation",
+        timeOffsetMs: 15000,
+        targetSelector: "[data-demo='admin-analytics-automation']",
+        text: "Automation and AI usage metrics show adoption and impact of Timeline Automation, AI Scoring, and Executive Summaries.",
+        role: "buyer",
+        duration: 5000
+      }
+    ]
+  },
+
   supplier_only_flow: {
     id: "supplier_only_flow",
     name: "Supplier Portal Tour",

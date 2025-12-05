@@ -180,7 +180,11 @@ export type ActivityEventType =
   | "ACTIVITY_EXPORTED_CSV"
   
   // STEP 63: Export Center Events
-  | "EXPORT_GENERATED";
+  | "EXPORT_GENERATED"
+  
+  // STEP 64: Admin Analytics Events
+  | "ADMIN_ANALYTICS_VIEWED"
+  | "ADMIN_ANALYTICS_FILTER_CHANGED";
 
 export const EVENT_TYPES = {
   // RFP Events
@@ -348,6 +352,10 @@ export const EVENT_TYPES = {
   
   // STEP 63: Export Center Events
   EXPORT_GENERATED: "EXPORT_GENERATED" as ActivityEventType,
+  
+  // STEP 64: Admin Analytics Events
+  ADMIN_ANALYTICS_VIEWED: "ADMIN_ANALYTICS_VIEWED" as ActivityEventType,
+  ADMIN_ANALYTICS_FILTER_CHANGED: "ADMIN_ANALYTICS_FILTER_CHANGED" as ActivityEventType,
 };
 
 // Event Categories for UI Grouping
@@ -372,6 +380,7 @@ export const EVENT_CATEGORIES = {
   REQUIREMENT: "REQUIREMENT",
   SCORING_TEMPLATE: "SCORING_TEMPLATE",
   SCORING: "SCORING",
+  ADMIN_ANALYTICS: "ADMIN_ANALYTICS",
 };
 
 // Map event types to categories
@@ -409,6 +418,9 @@ export function getEventCategory(eventType: ActivityEventType): string {
   }
   if (eventType.startsWith("AUTO_SCORE_")) {
     return EVENT_CATEGORIES.SCORING;
+  }
+  if (eventType.startsWith("ADMIN_ANALYTICS_")) {
+    return EVENT_CATEGORIES.ADMIN_ANALYTICS;
   }
   if (eventType.startsWith("RFP_")) return EVENT_CATEGORIES.RFP;
   if (eventType.startsWith("SUPPLIER_CONTACT_") || eventType.startsWith("SUPPLIER_INVITATION_") || eventType.startsWith("SUPPLIER_PORTAL_")) {
@@ -473,6 +485,8 @@ export function getEventTypeColor(eventType: ActivityEventType): { bg: string; t
       return { bg: "bg-pink-100", text: "text-pink-700" };
     case EVENT_CATEGORIES.SCORING:
       return { bg: "bg-sky-100", text: "text-sky-700" };
+    case EVENT_CATEGORIES.ADMIN_ANALYTICS:
+      return { bg: "bg-purple-100", text: "text-purple-700" };
     case EVENT_CATEGORIES.QA_SYSTEM:
       return { bg: "bg-amber-100", text: "text-amber-700" };
     case EVENT_CATEGORIES.NOTIFICATIONS:
@@ -649,4 +663,8 @@ export const EVENT_TYPE_LABELS: Record<ActivityEventType, string> = {
   
   // STEP 63: Export Center Events
   EXPORT_GENERATED: "Export Generated",
+  
+  // STEP 64: Admin Analytics Events
+  ADMIN_ANALYTICS_VIEWED: "Admin Analytics Viewed",
+  ADMIN_ANALYTICS_FILTER_CHANGED: "Admin Analytics Filters Changed",
 };
