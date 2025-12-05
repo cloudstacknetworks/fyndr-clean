@@ -177,7 +177,10 @@ export type ActivityEventType =
   | "NOTIFICATION_SENT"
   
   // Export Events
-  | "ACTIVITY_EXPORTED_CSV";
+  | "ACTIVITY_EXPORTED_CSV"
+  
+  // STEP 63: Export Center Events
+  | "EXPORT_GENERATED";
 
 export const EVENT_TYPES = {
   // RFP Events
@@ -342,6 +345,9 @@ export const EVENT_TYPES = {
   
   // Export Events
   ACTIVITY_EXPORTED_CSV: "ACTIVITY_EXPORTED_CSV" as ActivityEventType,
+  
+  // STEP 63: Export Center Events
+  EXPORT_GENERATED: "EXPORT_GENERATED" as ActivityEventType,
 };
 
 // Event Categories for UI Grouping
@@ -425,6 +431,7 @@ export function getEventCategory(eventType: ActivityEventType): string {
   }
   if (eventType === "NOTIFICATION_SENT") return EVENT_CATEGORIES.NOTIFICATIONS;
   if (eventType === "ACTIVITY_EXPORTED_CSV") return EVENT_CATEGORIES.EXPORT;
+  if (eventType === "EXPORT_GENERATED") return EVENT_CATEGORIES.EXPORT;
   return "OTHER";
 }
 
@@ -639,4 +646,7 @@ export const EVENT_TYPE_LABELS: Record<ActivityEventType, string> = {
   
   // Export Events
   ACTIVITY_EXPORTED_CSV: "Activity Exported to CSV",
+  
+  // STEP 63: Export Center Events
+  EXPORT_GENERATED: "Export Generated",
 };

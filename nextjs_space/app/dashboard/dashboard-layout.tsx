@@ -3,7 +3,7 @@
 import { signOut } from 'next-auth/react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { LogOut, FileText, Building2, Users, Settings, LayoutDashboard, ChevronLeft, ChevronRight, Search, TrendingUp, GitBranch, Home, Bell, FileStack, Database, Target, Table } from 'lucide-react';
+import { LogOut, FileText, Building2, Users, Settings, LayoutDashboard, ChevronLeft, ChevronRight, Search, TrendingUp, GitBranch, Home, Bell, FileStack, Database, Target, Table, Download } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import GlobalSearch from './global-search';
 import CommandPalette from './command-palette';
@@ -111,10 +111,16 @@ export default function DashboardLayout({ session, children }: DashboardLayoutPr
     { name: 'Suppliers', href: '/dashboard/suppliers', icon: Users },
   ];
 
-  // Add Settings only for buyers
-  const sidebarNavigation = session?.user?.role === 'buyer' 
-    ? [...baseSidebarNavigation, { name: 'Settings', href: '/dashboard/settings', icon: Settings }]
-    : baseSidebarNavigation;
+  // Add Export Center and Settings only for buyers
+  const buyerOnlyItems = session?.user?.role === 'buyer' 
+    ? [
+        { name: 'Export Center', href: '/dashboard/export-center', icon: Download },
+        { name: 'Settings', href: '/dashboard/settings', icon: Settings }
+      ]
+    : [];
+
+  // Combine base navigation with buyer-only items
+  const sidebarNavigation = [...baseSidebarNavigation, ...buyerOnlyItems];
 
   const baseTopNavigation = [
     { name: 'Home', href: '/dashboard/home' },
@@ -130,10 +136,15 @@ export default function DashboardLayout({ session, children }: DashboardLayoutPr
     { name: 'Suppliers', href: '/dashboard/suppliers' },
   ];
 
-  // Add Settings only for buyers
-  const topNavigation = session?.user?.role === 'buyer'
-    ? [...baseTopNavigation, { name: 'Settings', href: '/dashboard/settings' }]
-    : baseTopNavigation;
+  // Add Export Center and Settings only for buyers
+  const buyerOnlyTopItems = session?.user?.role === 'buyer'
+    ? [
+        { name: 'Export Center', href: '/dashboard/export-center' },
+        { name: 'Settings', href: '/dashboard/settings' }
+      ]
+    : [];
+  
+  const topNavigation = [...baseTopNavigation, ...buyerOnlyTopItems];
 
   const isActive = (href: string) => {
     if (href === '/dashboard') {
@@ -164,6 +175,7 @@ export default function DashboardLayout({ session, children }: DashboardLayoutPr
       'companies': 'Companies',
       'suppliers': 'Suppliers',
       'settings': 'Settings',
+      'export-center': 'Export Center',
       'new': 'Create',
       'edit': 'Edit',
     };

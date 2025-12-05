@@ -357,11 +357,41 @@ export const DEMO_SCENARIOS: Record<string, DemoScenarioConfig> = {
         role: "buyer",
         duration: 5000
       },
+      
+      // BUYER PERSPECTIVE - Export Center (STEP 63)
+      {
+        id: "export_center_intro",
+        timeOffsetMs: 111000,
+        route: "/dashboard/export-center",
+        action: "navigate",
+        targetSelector: "[data-demo='export-center-page']",
+        text: "The Export Center is your one-stop hub for generating all reports and exports across the entire FYNDR system.",
+        role: "buyer",
+        duration: 5000
+      },
+      {
+        id: "export_center_export_button",
+        timeOffsetMs: 116000,
+        targetSelector: "[data-demo='export-item-button']",
+        action: "highlight",
+        text: "All exports are organized by category (RFP, Scoring, Evaluation, Summary, Compliance) with clear descriptions and format badges.",
+        role: "buyer",
+        duration: 5000
+      },
+      {
+        id: "export_center_history",
+        timeOffsetMs: 121000,
+        targetSelector: "[data-demo='export-history-panel']",
+        action: "highlight",
+        text: "Export History tracks your last 20 exports with instant re-download capability—perfect for quick access to recent reports!",
+        role: "buyer",
+        duration: 5000
+      },
 
       // TRANSITION TO SUPPLIER PERSPECTIVE
       {
         id: "transition_to_supplier",
-        timeOffsetMs: 111000,
+        timeOffsetMs: 126000,
         route: "/supplier",
         action: "navigate",
         text: "Now let's switch to the Supplier Portal to see how vendors experience FYNDR...",
@@ -372,7 +402,7 @@ export const DEMO_SCENARIOS: Record<string, DemoScenarioConfig> = {
       // SUPPLIER PERSPECTIVE - Dashboard
       {
         id: "supplier_dashboard_intro",
-        timeOffsetMs: 114000,
+        timeOffsetMs: 129000,
         text: "Welcome to the Supplier Portal! Suppliers see a clean, action-oriented dashboard with priority RFPs and deadlines.",
         role: "supplier",
         duration: 5000
