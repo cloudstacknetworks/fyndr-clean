@@ -1171,8 +1171,36 @@ export const DEMO_SCENARIOS: Record<string, DemoScenarioConfig> = {
         duration: 5000
       },
       {
-        id: "supplier_complete",
+        id: "supplier_my_rfps_intro",
         timeOffsetMs: 24000,
+        route: "/dashboard/supplier/rfps",
+        action: "navigate",
+        targetSelector: "[data-demo='supplier-my-rfps']",
+        text: "Here you can see all RFPs you've been invited to, along with their stages and statuses.",
+        role: "supplier",
+        duration: 5000
+      },
+      {
+        id: "supplier_rfp_detail_overview",
+        timeOffsetMs: 29000,
+        route: "/dashboard/supplier/rfps/demo-rfp-id",
+        action: "navigate",
+        targetSelector: "[data-demo='supplier-rfp-overview']",
+        text: "The Overview tab shows key dates, progress, and quick links for this RFP.",
+        role: "supplier",
+        duration: 5000
+      },
+      {
+        id: "supplier_rfp_submission_preview",
+        timeOffsetMs: 34000,
+        targetSelector: "[data-demo='supplier-rfp-preview-tab']",
+        text: "Use the Submission Preview tab to review your full proposal exactly as it will appear to the buyer.",
+        role: "supplier",
+        duration: 5000
+      },
+      {
+        id: "supplier_complete",
+        timeOffsetMs: 39000,
         text: "Explore the supplier portal to manage your RFP responses efficiently!",
         role: "supplier",
         duration: 3000

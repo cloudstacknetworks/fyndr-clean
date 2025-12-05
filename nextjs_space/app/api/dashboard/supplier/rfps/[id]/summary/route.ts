@@ -1,0 +1,71 @@
+/**
+ * Step 62: Supplier Portal Enhancements
+ * API Route: GET /api/dashboard/supplier/rfps/[id]/summary
+ * 
+ * Returns detailed summary for one RFP (supplier-scoped)
+ */
+
+import { NextRequest, NextResponse } from 'next/server';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/auth-options';
+import { getSupplierRFPSummary } from '@/lib/services/supplier-rfp.service';
+import { logActivity, getRequestContext } from '@/lib/activity-log';
+import { ACTOR_ROLES } from '@/lib/activity-types';
+
+export async function GET(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  try {
+    // 1. Authentication check
+    const session = await getServerSession(authOptions);
+    if (!session || !session.user) {
+      return NextResponse.json(
+        { error: 'Unauthorized' },
+        { status: 401 }
+      );
+    }
+
+    // 2. Role enforcement
+    if (session.user.role !== 'supplier') {
+      return NextResponse.json(
+        { error: 'Forbidden. This endpoint is for suppliers only.' },
+        { status: 403 }
+      );
+    }
+
+    // 3. Fetch RFP summary
+    const summary = await getSupplierRFPSummary(params.id, session.user.id);
+
+    // 4. Return 404 if not found or not authorized (don't leak existence)
+    if (!summary) {
+      return NextResponse.json(
+        { error: 'RFP not found' },
+        { status: 404 }
+      );
+    }
+
+    // 5. Log activity
+    const context = getRequestContext(request);
+    logActivity({
+      eventType: 'SUPPLIER_RFP_DETAIL_VIEWED',
+      actorRole: ACTOR_ROLES.SUPPLIER,
+      summary: `Supplier ${session.user.name || session.user.email} viewed RFP detail: ${summary.title}`,
+      userId: session.user.id,
+      rfpId: params.id,
+      details: { rfpTitle: summary.title },
+      ...context
+    });
+
+    return NextResponse.json({
+      success: true,
+      data: summary
+    });
+  } catch (error) {
+    console.error('[API] Error fetching supplier RFP summary:', error);
+    return NextResponse.json(
+      { error: 'Failed to fetch RFP summary' },
+      { status: 500 }
+    );
+  }
+}

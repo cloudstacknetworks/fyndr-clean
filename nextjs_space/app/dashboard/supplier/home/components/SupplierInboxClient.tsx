@@ -92,10 +92,21 @@ export default function SupplierInboxClient({ initialData }: SupplierInboxClient
     <div className="p-6 space-y-6">
       {/* Header */}
       <div data-demo="supplier-inbox-header">
-        <h1 className="text-3xl font-bold text-gray-900">Work Inbox</h1>
-        <p className="text-gray-600 mt-1">
-          Your central hub for managing RFP responses, tracking deadlines, and staying updated
-        </p>
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900">Work Inbox</h1>
+            <p className="text-gray-600 mt-1">
+              Your central hub for managing RFP responses, tracking deadlines, and staying updated
+            </p>
+          </div>
+          <Link
+            href="/dashboard/supplier/rfps"
+            className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+          >
+            <Inbox className="h-5 w-5" />
+            View all RFPs
+          </Link>
+        </div>
       </div>
       
       {/* Four Sections Grid */}

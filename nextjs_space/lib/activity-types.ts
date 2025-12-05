@@ -158,6 +158,12 @@ export type ActivityEventType =
   | "SCORE_OVERRIDE_APPLIED"
   | "SCORE_OVERRIDE_CLEARED"
   | "EVALUATOR_COMMENT_ADDED"
+  
+  // STEP 62: Supplier Portal Enhancements Events
+  | "SUPPLIER_RFP_LIST_VIEWED"
+  | "SUPPLIER_RFP_DETAIL_VIEWED"
+  | "SUPPLIER_SUBMISSION_PREVIEW_VIEWED"
+  | "SUPPLIER_RFP_OUTCOME_VIEWED"
   | "EVALUATION_VIEWED"
   | "EVALUATION_EXPORTED_PDF"
   | "EVALUATION_EXPORTED_DOCX"
@@ -319,6 +325,12 @@ export const EVENT_TYPES = {
   EVALUATION_VIEWED: "EVALUATION_VIEWED" as ActivityEventType,
   EVALUATION_EXPORTED_PDF: "EVALUATION_EXPORTED_PDF" as ActivityEventType,
   EVALUATION_EXPORTED_DOCX: "EVALUATION_EXPORTED_DOCX" as ActivityEventType,
+  
+  // STEP 62: Supplier Portal Enhancements Events
+  SUPPLIER_RFP_LIST_VIEWED: "SUPPLIER_RFP_LIST_VIEWED" as ActivityEventType,
+  SUPPLIER_RFP_DETAIL_VIEWED: "SUPPLIER_RFP_DETAIL_VIEWED" as ActivityEventType,
+  SUPPLIER_SUBMISSION_PREVIEW_VIEWED: "SUPPLIER_SUBMISSION_PREVIEW_VIEWED" as ActivityEventType,
+  SUPPLIER_RFP_OUTCOME_VIEWED: "SUPPLIER_RFP_OUTCOME_VIEWED" as ActivityEventType,
   
   // Supplier Q&A Events
   SUPPLIER_QUESTION_CREATED: "SUPPLIER_QUESTION_CREATED" as ActivityEventType,
@@ -610,6 +622,12 @@ export const EVENT_TYPE_LABELS: Record<ActivityEventType, string> = {
   EVALUATION_VIEWED: "Evaluation Viewed",
   EVALUATION_EXPORTED_PDF: "Evaluation Exported to PDF",
   EVALUATION_EXPORTED_DOCX: "Evaluation Exported to DOCX",
+  
+  // STEP 62: Supplier Portal Enhancements Events
+  SUPPLIER_RFP_LIST_VIEWED: "Supplier RFP List Viewed",
+  SUPPLIER_RFP_DETAIL_VIEWED: "Supplier RFP Detail Viewed",
+  SUPPLIER_SUBMISSION_PREVIEW_VIEWED: "Supplier Submission Preview Viewed",
+  SUPPLIER_RFP_OUTCOME_VIEWED: "Supplier RFP Outcome Viewed",
   
   // Supplier Q&A Events
   SUPPLIER_QUESTION_CREATED: "Question Asked",
