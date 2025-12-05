@@ -139,6 +139,21 @@ export type ActivityEventType =
   | "REQUIREMENT_INSERTED_INTO_RFP"
   | "REQUIREMENT_INSERTED_INTO_TEMPLATE"
   
+  // STEP 58: Scoring Matrix Template Library Events
+  | "SCORING_TEMPLATE_CREATED"
+  | "SCORING_TEMPLATE_UPDATED"
+  | "SCORING_TEMPLATE_ARCHIVED"
+  | "SCORING_TEMPLATE_CLONED"
+  | "SCORING_TEMPLATE_VERSION_CREATED"
+  | "SCORING_TEMPLATE_INSERTED_INTO_RFP"
+  | "SCORING_TEMPLATE_INSERTED_INTO_RFP_TEMPLATE"
+  
+  // STEP 59: Auto-Scoring Engine Events
+  | "AUTO_SCORE_RUN"
+  | "AUTO_SCORE_REGENERATED"
+  | "AUTO_SCORE_OVERRIDDEN"
+  | "AUTO_SCORE_AI_FAILURE"
+  
   // Supplier Q&A Events
   | "SUPPLIER_QUESTION_CREATED"
   | "SUPPLIER_QUESTION_ANSWERED"
@@ -283,6 +298,12 @@ export const EVENT_TYPES = {
   SCORING_TEMPLATE_INSERTED_INTO_RFP: "SCORING_TEMPLATE_INSERTED_INTO_RFP" as ActivityEventType,
   SCORING_TEMPLATE_INSERTED_INTO_RFP_TEMPLATE: "SCORING_TEMPLATE_INSERTED_INTO_RFP_TEMPLATE" as ActivityEventType,
   
+  // STEP 59: Auto-Scoring Engine Events
+  AUTO_SCORE_RUN: "AUTO_SCORE_RUN" as ActivityEventType,
+  AUTO_SCORE_REGENERATED: "AUTO_SCORE_REGENERATED" as ActivityEventType,
+  AUTO_SCORE_OVERRIDDEN: "AUTO_SCORE_OVERRIDDEN" as ActivityEventType,
+  AUTO_SCORE_AI_FAILURE: "AUTO_SCORE_AI_FAILURE" as ActivityEventType,
+  
   // Supplier Q&A Events
   SUPPLIER_QUESTION_CREATED: "SUPPLIER_QUESTION_CREATED" as ActivityEventType,
   SUPPLIER_QUESTION_ANSWERED: "SUPPLIER_QUESTION_ANSWERED" as ActivityEventType,
@@ -316,6 +337,7 @@ export const EVENT_CATEGORIES = {
   TEMPLATE: "TEMPLATE",
   REQUIREMENT: "REQUIREMENT",
   SCORING_TEMPLATE: "SCORING_TEMPLATE",
+  SCORING: "SCORING",
 };
 
 // Map event types to categories
@@ -350,6 +372,9 @@ export function getEventCategory(eventType: ActivityEventType): string {
   }
   if (eventType.startsWith("SCORING_TEMPLATE_")) {
     return EVENT_CATEGORIES.SCORING_TEMPLATE;
+  }
+  if (eventType.startsWith("AUTO_SCORE_")) {
+    return EVENT_CATEGORIES.SCORING;
   }
   if (eventType.startsWith("RFP_")) return EVENT_CATEGORIES.RFP;
   if (eventType.startsWith("SUPPLIER_CONTACT_") || eventType.startsWith("SUPPLIER_INVITATION_") || eventType.startsWith("SUPPLIER_PORTAL_")) {
@@ -409,6 +434,10 @@ export function getEventTypeColor(eventType: ActivityEventType): { bg: string; t
       return { bg: "bg-lime-100", text: "text-lime-700" };
     case EVENT_CATEGORIES.REQUIREMENT:
       return { bg: "bg-yellow-100", text: "text-yellow-700" };
+    case EVENT_CATEGORIES.SCORING_TEMPLATE:
+      return { bg: "bg-pink-100", text: "text-pink-700" };
+    case EVENT_CATEGORIES.SCORING:
+      return { bg: "bg-sky-100", text: "text-sky-700" };
     case EVENT_CATEGORIES.QA_SYSTEM:
       return { bg: "bg-amber-100", text: "text-amber-700" };
     case EVENT_CATEGORIES.NOTIFICATIONS:
@@ -542,6 +571,21 @@ export const EVENT_TYPE_LABELS: Record<ActivityEventType, string> = {
   REQUIREMENT_VERSION_CREATED: "Requirement Version Created",
   REQUIREMENT_INSERTED_INTO_RFP: "Requirement Inserted into RFP",
   REQUIREMENT_INSERTED_INTO_TEMPLATE: "Requirement Inserted into Template",
+  
+  // STEP 58: Scoring Matrix Template Library Events
+  SCORING_TEMPLATE_CREATED: "Scoring Template Created",
+  SCORING_TEMPLATE_UPDATED: "Scoring Template Updated",
+  SCORING_TEMPLATE_ARCHIVED: "Scoring Template Archived",
+  SCORING_TEMPLATE_CLONED: "Scoring Template Cloned",
+  SCORING_TEMPLATE_VERSION_CREATED: "Scoring Template Version Created",
+  SCORING_TEMPLATE_INSERTED_INTO_RFP: "Scoring Template Inserted into RFP",
+  SCORING_TEMPLATE_INSERTED_INTO_RFP_TEMPLATE: "Scoring Template Inserted into RFP Template",
+  
+  // STEP 59: Auto-Scoring Engine Events
+  AUTO_SCORE_RUN: "Auto-Score Run",
+  AUTO_SCORE_REGENERATED: "Auto-Score Regenerated",
+  AUTO_SCORE_OVERRIDDEN: "Auto-Score Overridden",
+  AUTO_SCORE_AI_FAILURE: "Auto-Score AI Failure",
   
   // Supplier Q&A Events
   SUPPLIER_QUESTION_CREATED: "Question Asked",

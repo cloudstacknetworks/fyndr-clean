@@ -1032,6 +1032,43 @@ export const DEMO_SCENARIOS: Record<string, DemoScenarioConfig> = {
     ]
   },
 
+  // STEP 59: Auto-Scoring Engine Demo
+  auto_scoring_workspace: {
+    id: "auto_scoring_workspace",
+    name: "Auto-Scoring Engine Tour",
+    description: "Automated scoring with AI semantic analysis and buyer overrides",
+    steps: [
+      {
+        id: "auto_scoring_intro",
+        timeOffsetMs: 0,
+        route: "/dashboard/rfps/[id]/scoring",
+        targetSelector: "[data-demo='auto-scoring-button']",
+        action: "highlight",
+        text: "Run automated scoring on supplier responses using rule-based and AI semantic scoring. The engine evaluates every requirement automatically.",
+        role: "buyer",
+        duration: 5000
+      },
+      {
+        id: "auto_scoring_results",
+        timeOffsetMs: 5000,
+        targetSelector: "[data-demo='auto-scoring-results']",
+        action: "highlight",
+        text: "View detailed scoring results including raw scores, weighted scores, and must-have failures. Each supplier gets an overall score based on all requirements.",
+        role: "buyer",
+        duration: 5000
+      },
+      {
+        id: "auto_scoring_ai_reasoning",
+        timeOffsetMs: 10000,
+        targetSelector: "[data-demo='auto-scoring-ai-reasoning']",
+        action: "highlight",
+        text: "Expand to see AI-generated reasoning and confidence scores for qualitative evaluations. AI explains why it assigned each score.",
+        role: "buyer",
+        duration: 5000
+      }
+    ]
+  },
+
   supplier_only_flow: {
     id: "supplier_only_flow",
     name: "Supplier Portal Tour",

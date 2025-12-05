@@ -204,6 +204,10 @@ model RFP {
   scoringMatrixTemplateId      String?
   scoringMatrixTemplateVersion Int?
 
+  // STEP 59: Auto-Scoring Engine
+  allowAiScoring        Boolean  @default(true)  // Enable/disable AI scoring for this RFP
+  scoringSettingsJson   Json?    // {aiEnabled, ruleWeighting, aiWeighting, mustHaveFailBehavior, scoringScale}
+
   user                      User                       @relation(fields: [userId], references: [id])
   userId                    String
   company                   Company                    @relation(fields: [companyId], references: [id])
@@ -413,6 +417,10 @@ model SupplierResponse {
 
   // STEP 41: Award outcome status
   awardOutcomeStatus String? // "recommended" | "shortlisted" | "not_selected" | "declined"
+
+  // STEP 59: Auto-Scoring Engine
+  autoScoreJson         Json?      // Full scoring results per requirement
+  autoScoreGeneratedAt  DateTime?  // When auto-scoring was last run
 
   rfp             RFP                          @relation(fields: [rfpId], references: [id], onDelete: Cascade)
   supplierContact SupplierContact              @relation(fields: [supplierContactId], references: [id], onDelete: Cascade)
