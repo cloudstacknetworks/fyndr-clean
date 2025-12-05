@@ -52,6 +52,10 @@ model User {
   // STEP 57: Company-Level Master Requirements Library
   requirementBlocksCreated RequirementBlock[]   @relation("RequirementBlockCreator")
   requirementBlockVersionsCreated RequirementBlockVersion[]
+  
+  // STEP 58: Scoring Matrix Template Library
+  scoringTemplatesCreated ScoringMatrixTemplate[] @relation("ScoringTemplateCreator")
+  scoringTemplateVersionsCreated ScoringMatrixTemplateVersion[] @relation("ScoringTemplateVersionCreator")
 }
 
 model Company {
@@ -78,6 +82,9 @@ model Company {
   
   // STEP 57: Company-Level Master Requirements Library
   requirementBlocks RequirementBlock[]
+  
+  // STEP 58: Scoring Matrix Template Library
+  scoringMatrixTemplates ScoringMatrixTemplate[]
 }
 
 model Supplier {
@@ -192,6 +199,10 @@ model RFP {
 
   // STEP 57: Company-Level Master Requirements Library
   requirementGroups       Json?     // Inserted requirements from library
+
+  // STEP 58: Scoring Matrix Template Library (adds templateId and templateVersion to existing scoringMatrixSnapshot from STEP 39)
+  scoringMatrixTemplateId      String?
+  scoringMatrixTemplateVersion Int?
 
   user                      User                       @relation(fields: [userId], references: [id])
   userId                    String
@@ -758,4 +769,40 @@ model RequirementBlockVersion {
 
   @@unique([requirementBlockId, versionNumber])
   @@index([requirementBlockId])
+}
+
+// STEP 58: Scoring Matrix Template Library
+model ScoringMatrixTemplate {
+  id                String   @id @default(cuid())
+  companyId         String
+  company           Company  @relation(fields: [companyId], references: [id])
+  title             String
+  description       String?
+  categoriesJson    Json     // Array of {categoryName: string, weight: number, scoringType: string, notes?: string}
+  requirementsJson  Json?    // Array of requirementIds or embedded requirement copies
+  visibility        String   @default("company") // "company" | "private"
+  createdByUserId   String
+  createdBy         User     @relation("ScoringTemplateCreator", fields: [createdByUserId], references: [id])
+  isArchived        Boolean  @default(false)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  versions          ScoringMatrixTemplateVersion[]
+
+  @@index([companyId])
+  @@index([isArchived])
+}
+
+model ScoringMatrixTemplateVersion {
+  id                  String                   @id @default(cuid())
+  templateId          String
+  template            ScoringMatrixTemplate    @relation(fields: [templateId], references: [id], onDelete: Cascade)
+  versionNumber       Int
+  categoriesJson      Json
+  requirementsJson    Json?
+  createdAt           DateTime                 @default(now())
+  createdByUserId     String
+  createdBy           User                     @relation("ScoringTemplateVersionCreator", fields: [createdByUserId], references: [id])
+
+  @@unique([templateId, versionNumber])
+  @@index([templateId])
 }

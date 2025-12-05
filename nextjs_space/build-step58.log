@@ -1,0 +1,337 @@
+
+> fyndr@0.1.0 build
+> next build
+
+  ▲ Next.js 14.2.28
+  - Environments: .env
+  - Experiments (use with caution):
+    · outputFileTracingRoot
+
+   Creating an optimized production build ...
+Failed to compile.
+
+./app/api/scoring-templates/[id]/clone/route.ts
+Module not found: Can't resolve '@/lib/auth'
+
+https://nextjs.org/docs/messages/module-not-found
+
+./app/api/scoring-templates/[id]/insert-rfp-template/route.ts
+Module not found: Can't resolve '@/lib/auth'
+
+https://nextjs.org/docs/messages/module-not-found
+
+./app/api/scoring-templates/[id]/insert-rfp/route.ts
+Module not found: Can't resolve '@/lib/auth'
+
+https://nextjs.org/docs/messages/module-not-found
+
+./app/api/scoring-templates/[id]/route.ts
+Module not found: Can't resolve '@/lib/auth'
+
+https://nextjs.org/docs/messages/module-not-found
+
+./app/api/scoring-templates/[id]/versions/route.ts
+Module not found: Can't resolve '@/lib/auth'
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+> Build failed because of webpack errors
+
+> fyndr@0.1.0 build
+> next build
+
+  ▲ Next.js 14.2.28
+  - Environments: .env
+  - Experiments (use with caution):
+    · outputFileTracingRoot
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully
+   Skipping linting
+   Checking validity of types ...
+
+
+===== TS errors =====
+
+[Test Mode] ./app/api/dashboard/settings/users/invite/route.ts:107:7
+Type error: Type '{ email: any; name: any; password: string; role: string; isActive: true; isDemo: false; }' is not assignable to type '(Without<UserCreateInput, UserUncheckedCreateInput> & UserUncheckedCreateInput) | (Without<...> & UserCreateInput)'.
+  Type '{ email: any; name: any; password: string; role: string; isActive: true; isDemo: false; }' is not assignable to type 'Without<UserUncheckedCreateInput, UserCreateInput> & UserCreateInput'.
+    Property 'company' is missing in type '{ email: any; name: any; password: string; role: string; isActive: true; isDemo: false; }' but required in type 'UserCreateInput'.
+
+[0m [90m 105 |[39m[0m
+[0m [90m 106 |[39m     [36mconst[39m newUser [33m=[39m [36mawait[39m prisma[33m.[39muser[33m.[39mcreate({[0m
+[0m[31m[1m>[22m[39m[90m 107 |[39m       data[33m:[39m {[0m
+[0m [90m     |[39m       [31m[1m^[22m[39m[0m
+[0m [90m 108 |[39m         email[33m:[39m email[33m.[39mtoLowerCase()[33m,[39m[0m
+[0m [90m 109 |[39m         name[33m:[39m name[33m,[39m[0m
+[0m [90m 110 |[39m         password[33m:[39m hashedPassword[33m,[39m[0m
+
+[Test Mode] ./app/api/dashboard/templates/[id]/use/route.ts:78:9
+Type error: Type '"DRAFT"' is not assignable to type 'RFPStage | undefined'.
+
+[0m [90m 76 |[39m         companyId[33m,[39m[0m
+[0m [90m 77 |[39m         supplierId[33m:[39m supplierId[33m.[39mtrim()[33m,[39m[0m
+[0m[31m[1m>[22m[39m[90m 78 |[39m         stage[33m:[39m [32m'DRAFT'[39m[33m,[39m[0m
+[0m [90m    |[39m         [31m[1m^[22m[39m[0m
+[0m [90m 79 |[39m         status[33m:[39m [32m'open'[39m[33m,[39m[0m
+[0m [90m 80 |[39m         submissionDeadline[33m:[39m [36mnew[39m [33mDate[39m([33mDate[39m[33m.[39mnow() [33m+[39m [35m30[39m [33m*[39m [35m24[39m [33m*[39m [35m60[39m [33m*[39m [35m60[39m [33m*[39m [35m1000[39m)[33m,[39m [90m// 30 days default[39m[0m
+[0m [90m 81 |[39m         expectedAwardDate[33m:[39m [36mnew[39m [33mDate[39m([33mDate[39m[33m.[39mnow() [33m+[39m [35m60[39m [33m*[39m [35m24[39m [33m*[39m [35m60[39m [33m*[39m [35m60[39m [33m*[39m [35m1000[39m)[33m,[39m [90m// 60 days default[39m[0m
+
+[Test Mode] ./app/api/signup/route.ts:36:7
+Type error: Type '{ email: any; password: string; }' is not assignable to type '(Without<UserCreateInput, UserUncheckedCreateInput> & UserUncheckedCreateInput) | (Without<...> & UserCreateInput)'.
+  Type '{ email: any; password: string; }' is not assignable to type 'Without<UserUncheckedCreateInput, UserCreateInput> & UserCreateInput'.
+    Property 'company' is missing in type '{ email: any; password: string; }' but required in type 'UserCreateInput'.
+
+[0m [90m 34 |[39m     [90m// Create user[39m[0m
+[0m [90m 35 |[39m     [36mconst[39m user [33m=[39m [36mawait[39m prisma[33m.[39muser[33m.[39mcreate({[0m
+[0m[31m[1m>[22m[39m[90m 36 |[39m       data[33m:[39m {[0m
+[0m [90m    |[39m       [31m[1m^[22m[39m[0m
+[0m [90m 37 |[39m         email[33m,[39m[0m
+[0m [90m 38 |[39m         password[33m:[39m hashedPassword[33m,[39m[0m
+[0m [90m 39 |[39m       }[33m,[39m[0m
+
+[Test Mode] ./app/api/supplier/validate-token/route.ts:87:9
+Type error: Type '{ email: string; password: string; name: string; role: string; }' is not assignable to type '(Without<UserCreateInput, UserUncheckedCreateInput> & UserUncheckedCreateInput) | (Without<...> & UserCreateInput)'.
+  Type '{ email: string; password: string; name: string; role: string; }' is not assignable to type 'Without<UserUncheckedCreateInput, UserCreateInput> & UserCreateInput'.
+    Property 'company' is missing in type '{ email: string; password: string; name: string; role: string; }' but required in type 'UserCreateInput'.
+
+[0m [90m 85 |[39m[0m
+[0m [90m 86 |[39m       supplierUser [33m=[39m [36mawait[39m prisma[33m.[39muser[33m.[39mcreate({[0m
+[0m[31m[1m>[22m[39m[90m 87 |[39m         data[33m:[39m {[0m
+[0m [90m    |[39m         [31m[1m^[22m[39m[0m
+[0m [90m 88 |[39m           email[33m:[39m supplierContact[33m.[39memail[33m,[39m[0m
+[0m [90m 89 |[39m           password[33m:[39m hashedPassword[33m,[39m[0m
+[0m [90m 90 |[39m           name[33m:[39m supplierContact[33m.[39mname[33m,[39m[0m
+
+[Test Mode] ./components/scoring-templates/insert-modal.tsx:11:8
+Type error: Cannot find module '@/components/ui/dialog' or its corresponding type declarations.
+
+[0m [90m  9 |[39m   [33mDialogHeader[39m[33m,[39m[0m
+[0m [90m 10 |[39m   [33mDialogTitle[39m[33m,[39m[0m
+[0m[31m[1m>[22m[39m[90m 11 |[39m } [36mfrom[39m [32m'@/components/ui/dialog'[39m[33m;[39m[0m
+[0m [90m    |[39m        [31m[1m^[22m[39m[0m
+[0m [90m 12 |[39m [36mimport[39m { [33mButton[39m } [36mfrom[39m [32m'@/components/ui/button'[39m[33m;[39m[0m
+[0m [90m 13 |[39m [36mimport[39m { [33mInput[39m } [36mfrom[39m [32m'@/components/ui/input'[39m[33m;[39m[0m
+[0m [90m 14 |[39m [36mimport[39m { [33mBadge[39m } [36mfrom[39m [32m'@/components/ui/badge'[39m[33m;[39m[0m
+
+[Test Mode] ./components/scoring-templates/insert-modal.tsx:12:24
+Type error: Cannot find module '@/components/ui/button' or its corresponding type declarations.
+
+[0m [90m 10 |[39m   [33mDialogTitle[39m[33m,[39m[0m
+[0m [90m 11 |[39m } [36mfrom[39m [32m'@/components/ui/dialog'[39m[33m;[39m[0m
+[0m[31m[1m>[22m[39m[90m 12 |[39m [36mimport[39m { [33mButton[39m } [36mfrom[39m [32m'@/components/ui/button'[39m[33m;[39m[0m
+[0m [90m    |[39m                        [31m[1m^[22m[39m[0m
+[0m [90m 13 |[39m [36mimport[39m { [33mInput[39m } [36mfrom[39m [32m'@/components/ui/input'[39m[33m;[39m[0m
+[0m [90m 14 |[39m [36mimport[39m { [33mBadge[39m } [36mfrom[39m [32m'@/components/ui/badge'[39m[33m;[39m[0m
+[0m [90m 15 |[39m [36mimport[39m { [33mSearch[39m[33m,[39m [33mAlertCircle[39m } [36mfrom[39m [32m'lucide-react'[39m[33m;[39m[0m
+
+[Test Mode] ./components/scoring-templates/insert-modal.tsx:13:23
+Type error: Cannot find module '@/components/ui/input' or its corresponding type declarations.
+
+[0m [90m 11 |[39m } [36mfrom[39m [32m'@/components/ui/dialog'[39m[33m;[39m[0m
+[0m [90m 12 |[39m [36mimport[39m { [33mButton[39m } [36mfrom[39m [32m'@/components/ui/button'[39m[33m;[39m[0m
+[0m[31m[1m>[22m[39m[90m 13 |[39m [36mimport[39m { [33mInput[39m } [36mfrom[39m [32m'@/components/ui/input'[39m[33m;[39m[0m
+[0m [90m    |[39m                       [31m[1m^[22m[39m[0m
+[0m [90m 14 |[39m [36mimport[39m { [33mBadge[39m } [36mfrom[39m [32m'@/components/ui/badge'[39m[33m;[39m[0m
+[0m [90m 15 |[39m [36mimport[39m { [33mSearch[39m[33m,[39m [33mAlertCircle[39m } [36mfrom[39m [32m'lucide-react'[39m[33m;[39m[0m
+[0m [90m 16 |[39m [36mimport[39m { [33mRadioGroup[39m[33m,[39m [33mRadioGroupItem[39m } [36mfrom[39m [32m'@/components/ui/radio-group'[39m[33m;[39m[0m
+
+[Test Mode] ./components/scoring-templates/insert-modal.tsx:14:23
+Type error: Cannot find module '@/components/ui/badge' or its corresponding type declarations.
+
+[0m [90m 12 |[39m [36mimport[39m { [33mButton[39m } [36mfrom[39m [32m'@/components/ui/button'[39m[33m;[39m[0m
+[0m [90m 13 |[39m [36mimport[39m { [33mInput[39m } [36mfrom[39m [32m'@/components/ui/input'[39m[33m;[39m[0m
+[0m[31m[1m>[22m[39m[90m 14 |[39m [36mimport[39m { [33mBadge[39m } [36mfrom[39m [32m'@/components/ui/badge'[39m[33m;[39m[0m
+[0m [90m    |[39m                       [31m[1m^[22m[39m[0m
+[0m [90m 15 |[39m [36mimport[39m { [33mSearch[39m[33m,[39m [33mAlertCircle[39m } [36mfrom[39m [32m'lucide-react'[39m[33m;[39m[0m
+[0m [90m 16 |[39m [36mimport[39m { [33mRadioGroup[39m[33m,[39m [33mRadioGroupItem[39m } [36mfrom[39m [32m'@/components/ui/radio-group'[39m[33m;[39m[0m
+[0m [90m 17 |[39m [36mimport[39m { [33mLabel[39m } [36mfrom[39m [32m'@/components/ui/label'[39m[33m;[39m[0m
+
+[Test Mode] ./components/scoring-templates/insert-modal.tsx:16:44
+Type error: Cannot find module '@/components/ui/radio-group' or its corresponding type declarations.
+
+[0m [90m 14 |[39m [36mimport[39m { [33mBadge[39m } [36mfrom[39m [32m'@/components/ui/badge'[39m[33m;[39m[0m
+[0m [90m 15 |[39m [36mimport[39m { [33mSearch[39m[33m,[39m [33mAlertCircle[39m } [36mfrom[39m [32m'lucide-react'[39m[33m;[39m[0m
+[0m[31m[1m>[22m[39m[90m 16 |[39m [36mimport[39m { [33mRadioGroup[39m[33m,[39m [33mRadioGroupItem[39m } [36mfrom[39m [32m'@/components/ui/radio-group'[39m[33m;[39m[0m
+[0m [90m    |[39m                                            [31m[1m^[22m[39m[0m
+[0m [90m 17 |[39m [36mimport[39m { [33mLabel[39m } [36mfrom[39m [32m'@/components/ui/label'[39m[33m;[39m[0m
+[0m [90m 18 |[39m[0m
+[0m [90m 19 |[39m [36minterface[39m [33mScoringTemplate[39m {[0m
+
+[Test Mode] ./components/scoring-templates/insert-modal.tsx:17:23
+Type error: Cannot find module '@/components/ui/label' or its corresponding type declarations.
+
+[0m [90m 15 |[39m [36mimport[39m { [33mSearch[39m[33m,[39m [33mAlertCircle[39m } [36mfrom[39m [32m'lucide-react'[39m[33m;[39m[0m
+[0m [90m 16 |[39m [36mimport[39m { [33mRadioGroup[39m[33m,[39m [33mRadioGroupItem[39m } [36mfrom[39m [32m'@/components/ui/radio-group'[39m[33m;[39m[0m
+[0m[31m[1m>[22m[39m[90m 17 |[39m [36mimport[39m { [33mLabel[39m } [36mfrom[39m [32m'@/components/ui/label'[39m[33m;[39m[0m
+[0m [90m    |[39m                       [31m[1m^[22m[39m[0m
+[0m [90m 18 |[39m[0m
+[0m [90m 19 |[39m [36minterface[39m [33mScoringTemplate[39m {[0m
+[0m [90m 20 |[39m   id[33m:[39m string[33m;[39m[0m
+
+[Test Mode] ./components/scoring-templates/insert-modal.tsx:143:40
+Type error: Parameter 'open' implicitly has an 'any' type.
+
+[0m [90m 141 |[39m[0m
+[0m [90m 142 |[39m   [36mreturn[39m ([0m
+[0m[31m[1m>[22m[39m[90m 143 |[39m     [33m<[39m[33mDialog[39m open[33m=[39m{open} onOpenChange[33m=[39m{(open) [33m=>[39m [33m![39mopen [33m&&[39m onClose()}[33m>[39m[0m
+[0m [90m     |[39m                                        [31m[1m^[22m[39m[0m
+[0m [90m 144 |[39m       [33m<[39m[33mDialogContent[39m className[33m=[39m[32m"max-w-3xl max-h-[80vh] overflow-auto"[39m[33m>[39m[0m
+[0m [90m 145 |[39m         [33m<[39m[33mDialogHeader[39m[33m>[39m[0m
+[0m [90m 146 |[39m           [33m<[39m[33mDialogTitle[39m[33m>[39m[33mInsert[39m [33mScoring[39m [33mMatrix[39m [33mTemplate[39m[33m<[39m[33m/[39m[33mDialogTitle[39m[33m>[39m[0m
+
+[Test Mode] ./components/scoring-templates/insert-modal.tsx:170:26
+Type error: Parameter 'e' implicitly has an 'any' type.
+
+[0m [90m 168 |[39m               placeholder[33m=[39m[32m"Search templates..."[39m[0m
+[0m [90m 169 |[39m               value[33m=[39m{search}[0m
+[0m[31m[1m>[22m[39m[90m 170 |[39m               onChange[33m=[39m{(e) [33m=>[39m setSearch(e[33m.[39mtarget[33m.[39mvalue)}[0m
+[0m [90m     |[39m                          [31m[1m^[22m[39m[0m
+[0m [90m 171 |[39m               className[33m=[39m[32m"pl-10"[39m[0m
+[0m [90m 172 |[39m             [33m/[39m[33m>[39m[0m
+[0m [90m 173 |[39m           [33m<[39m[33m/[39m[33mdiv[39m[33m>[39m[0m
+
+[Test Mode] ./lib/demo/scenario.ts:37:5
+Type error: Type '{ email: string; name: string; role: string; password: string; isDemo: true; }' is not assignable to type '(Without<UserCreateInput, UserUncheckedCreateInput> & UserUncheckedCreateInput) | (Without<...> & UserCreateInput)'.
+  Type '{ email: string; name: string; role: string; password: string; isDemo: true; }' is not assignable to type 'Without<UserUncheckedCreateInput, UserCreateInput> & UserCreateInput'.
+    Property 'company' is missing in type '{ email: string; name: string; role: string; password: string; isDemo: true; }' but required in type 'UserCreateInput'.
+
+[0m [90m 35 |[39m   [36mconst[39m hashedPassword [33m=[39m [36mawait[39m bcrypt[33m.[39mhash([32m"demo123"[39m[33m,[39m [35m10[39m)[33m;[39m[0m
+[0m [90m 36 |[39m   [36mconst[39m demoBuyerUser [33m=[39m [36mawait[39m prisma[33m.[39muser[33m.[39mcreate({[0m
+[0m[31m[1m>[22m[39m[90m 37 |[39m     data[33m:[39m {[0m
+[0m [90m    |[39m     [31m[1m^[22m[39m[0m
+[0m [90m 38 |[39m       email[33m:[39m [32m"diane.demo@cloudstack.com"[39m[33m,[39m[0m
+[0m [90m 39 |[39m       name[33m:[39m [32m"Diane Chen (Demo)"[39m[33m,[39m[0m
+[0m [90m 40 |[39m       role[33m:[39m [32m"buyer"[39m[33m,[39m[0m
+
+[Test Mode] ./lib/demo/scenario.ts:374:7
+Type error: Type '{ email: string; name: string; role: string; password: string; isDemo: true; }' is not assignable to type '(Without<UserCreateInput, UserUncheckedCreateInput> & UserUncheckedCreateInput) | (Without<...> & UserCreateInput)'.
+  Type '{ email: string; name: string; role: string; password: string; isDemo: true; }' is not assignable to type 'Without<UserUncheckedCreateInput, UserCreateInput> & UserCreateInput'.
+    Property 'company' is missing in type '{ email: string; name: string; role: string; password: string; isDemo: true; }' but required in type 'UserCreateInput'.
+
+[0m [90m 372 |[39m     [36mconst[39m hashedSupplierPassword [33m=[39m [36mawait[39m bcrypt[33m.[39mhash([32m"demo123"[39m[33m,[39m [35m10[39m)[33m;[39m[0m
+[0m [90m 373 |[39m     [36mconst[39m supplierUser [33m=[39m [36mawait[39m prisma[33m.[39muser[33m.[39mcreate({[0m
+[0m[31m[1m>[22m[39m[90m 374 |[39m       data[33m:[39m {[0m
+[0m [90m     |[39m       [31m[1m^[22m[39m[0m
+[0m [90m 375 |[39m         email[33m:[39m sd[33m.[39memail[33m,[39m[0m
+[0m [90m 376 |[39m         name[33m:[39m sd[33m.[39mname[33m,[39m[0m
+[0m [90m 377 |[39m         role[33m:[39m [32m"supplier"[39m[33m,[39m[0m
+
+[Test Mode] ./lib/scoring/scoring-template-service.ts:106:12
+Type error: Conversion of type 'JsonArray' to type 'ScoringCategory[]' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first.
+  Type 'JsonValue' is not comparable to type 'ScoringCategory'.
+    Type 'JsonValue[]' is missing the following properties from type 'ScoringCategory': categoryName, weight, scoringType
+
+[0m [90m 104 |[39m       versionCount[33m:[39m template[33m.[39m_count[33m.[39mversions[33m,[39m[0m
+[0m [90m 105 |[39m       categoryCount[33m:[39m [33mArray[39m[33m.[39misArray(template[33m.[39mcategoriesJson) [0m
+[0m[31m[1m>[22m[39m[90m 106 |[39m         [33m?[39m (template[33m.[39mcategoriesJson [36mas[39m [33mScoringCategory[39m[])[33m.[39mlength [0m
+[0m [90m     |[39m            [31m[1m^[22m[39m[0m
+[0m [90m 107 |[39m         [33m:[39m [35m0[39m[0m
+[0m [90m 108 |[39m     }))[33m;[39m[0m
+[0m [90m 109 |[39m   } [36mcatch[39m (error) {[0m
+
+[Test Mode] ./lib/scoring/scoring-template-service.ts:267:7
+Type error: Type 'ScoringCategory[]' is not assignable to type 'JsonValue'.
+  Type 'ScoringCategory[]' is not assignable to type 'JsonArray'.
+    Type 'ScoringCategory' is not assignable to type 'JsonValue'.
+      Type 'ScoringCategory' is not assignable to type 'JsonObject'.
+        Index signature for type 'string' is missing in type 'ScoringCategory'.
+
+[0m [90m 265 |[39m     [36mif[39m (payload[33m.[39mcategoriesJson) {[0m
+[0m [90m 266 |[39m       [36mconst[39m normalizedCategories [33m=[39m normalizeCategoryWeights(payload[33m.[39mcategoriesJson)[33m;[39m[0m
+[0m[31m[1m>[22m[39m[90m 267 |[39m       newCategoriesJson [33m=[39m normalizedCategories[33m;[39m[0m
+[0m [90m     |[39m       [31m[1m^[22m[39m[0m
+[0m [90m 268 |[39m       updateData[33m.[39mcategoriesJson [33m=[39m normalizedCategories [36mas[39m any[33m;[39m[0m
+[0m [90m 269 |[39m     }[0m
+[0m [90m 270 |[39m[0m
+
+[Test Mode] ./lib/scoring/scoring-template-service.ts:412:9
+Type error: Type 'JsonValue' is not assignable to type 'JsonNull | InputJsonValue'.
+  Type 'null' is not assignable to type 'JsonNull | InputJsonValue'.
+
+[0m [90m 410 |[39m         title[33m:[39m [32m`${source.title} (Copy)`[39m[33m,[39m[0m
+[0m [90m 411 |[39m         description[33m:[39m source[33m.[39mdescription[33m,[39m[0m
+[0m[31m[1m>[22m[39m[90m 412 |[39m         categoriesJson[33m:[39m latestVersion[33m.[39mcategoriesJson[33m,[39m[0m
+[0m [90m     |[39m         [31m[1m^[22m[39m[0m
+[0m [90m 413 |[39m         requirementsJson[33m:[39m latestVersion[33m.[39mrequirementsJson[33m,[39m[0m
+[0m [90m 414 |[39m         visibility[33m:[39m source[33m.[39mvisibility[33m,[39m[0m
+[0m [90m 415 |[39m         versions[33m:[39m {[0m
+
+[Test Mode] ./lib/scoring/scoring-template-service.ts:413:9
+Type error: Type 'JsonValue' is not assignable to type 'InputJsonValue | NullableJsonNullValueInput | undefined'.
+  Type 'null' is not assignable to type 'InputJsonValue | NullableJsonNullValueInput | undefined'.
+
+[0m [90m 411 |[39m         description[33m:[39m source[33m.[39mdescription[33m,[39m[0m
+[0m [90m 412 |[39m         categoriesJson[33m:[39m latestVersion[33m.[39mcategoriesJson[33m,[39m[0m
+[0m[31m[1m>[22m[39m[90m 413 |[39m         requirementsJson[33m:[39m latestVersion[33m.[39mrequirementsJson[33m,[39m[0m
+[0m [90m     |[39m         [31m[1m^[22m[39m[0m
+[0m [90m 414 |[39m         visibility[33m:[39m source[33m.[39mvisibility[33m,[39m[0m
+[0m [90m 415 |[39m         versions[33m:[39m {[0m
+[0m [90m 416 |[39m           create[33m:[39m {[0m
+
+[Test Mode] ./lib/scoring/scoring-template-service.ts:418:13
+Type error: Type 'JsonValue' is not assignable to type 'JsonNull | InputJsonValue'.
+
+[0m [90m 416 |[39m           create[33m:[39m {[0m
+[0m [90m 417 |[39m             versionNumber[33m:[39m [35m1[39m[33m,[39m[0m
+[0m[31m[1m>[22m[39m[90m 418 |[39m             categoriesJson[33m:[39m latestVersion[33m.[39mcategoriesJson[33m,[39m[0m
+[0m [90m     |[39m             [31m[1m^[22m[39m[0m
+[0m [90m 419 |[39m             requirementsJson[33m:[39m latestVersion[33m.[39mrequirementsJson[33m,[39m[0m
+[0m [90m 420 |[39m             createdByUserId[33m:[39m userId[0m
+[0m [90m 421 |[39m           }[0m
+
+[Test Mode] ./lib/scoring/scoring-template-service.ts:419:13
+Type error: Type 'JsonValue' is not assignable to type 'InputJsonValue | NullableJsonNullValueInput | undefined'.
+
+[0m [90m 417 |[39m             versionNumber[33m:[39m [35m1[39m[33m,[39m[0m
+[0m [90m 418 |[39m             categoriesJson[33m:[39m latestVersion[33m.[39mcategoriesJson[33m,[39m[0m
+[0m[31m[1m>[22m[39m[90m 419 |[39m             requirementsJson[33m:[39m latestVersion[33m.[39mrequirementsJson[33m,[39m[0m
+[0m [90m     |[39m             [31m[1m^[22m[39m[0m
+[0m [90m 420 |[39m             createdByUserId[33m:[39m userId[0m
+[0m [90m 421 |[39m           }[0m
+[0m [90m 422 |[39m         }[0m
+
+[Test Mode] ./lib/scoring/scoring-template-service.ts:536:28
+Type error: Conversion of type 'string | number | boolean | JsonObject | JsonArray | null' to type 'ScoringCategory[]' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first.
+  Type 'JsonArray' is not comparable to type 'ScoringCategory[]'.
+
+[0m [90m 534 |[39m[0m
+[0m [90m 535 |[39m     [36mconst[39m latestVersion [33m=[39m template[33m.[39mversions[[35m0[39m][33m;[39m[0m
+[0m[31m[1m>[22m[39m[90m 536 |[39m     [36mconst[39m categoriesJson [33m=[39m latestVersion[33m.[39mcategoriesJson [36mas[39m [33mScoringCategory[39m[][33m;[39m[0m
+[0m [90m     |[39m                            [31m[1m^[22m[39m[0m
+[0m [90m 537 |[39m     [36mconst[39m requirementsJson [33m=[39m latestVersion[33m.[39mrequirementsJson [36mas[39m string[] [33m|[39m [36mnull[39m[33m;[39m[0m
+[0m [90m 538 |[39m[0m
+[0m [90m 539 |[39m     [90m// Expand requirements if they are IDs[39m[0m
+
+[Test Mode] ./scripts/seed.ts:19:5
+Type error: Type '{ email: string; password: string; }' is not assignable to type '(Without<UserCreateInput, UserUncheckedCreateInput> & UserUncheckedCreateInput) | (Without<...> & UserCreateInput)'.
+  Type '{ email: string; password: string; }' is not assignable to type 'Without<UserUncheckedCreateInput, UserCreateInput> & UserCreateInput'.
+    Property 'company' is missing in type '{ email: string; password: string; }' but required in type 'UserCreateInput'.
+
+[0m [90m 17 |[39m     where[33m:[39m { email[33m:[39m [32m'john@doe.com'[39m }[33m,[39m[0m
+[0m [90m 18 |[39m     update[33m:[39m {}[33m,[39m[0m
+[0m[31m[1m>[22m[39m[90m 19 |[39m     create[33m:[39m {[0m
+[0m [90m    |[39m     [31m[1m^[22m[39m[0m
+[0m [90m 20 |[39m       email[33m:[39m [32m'john@doe.com'[39m[33m,[39m[0m
+[0m [90m 21 |[39m       password[33m:[39m hashedPassword[33m,[39m[0m
+[0m [90m 22 |[39m     }[33m,[39m[0m
+
+===== TS errors =====
+
+
+Failed to compile.
+
+./app/api/dashboard/settings/users/invite/route.ts:107:7
+Type error: Type '{ email: any; name: any; password: string; role: string; isActive: true; isDemo: false; }' is not assignable to type '(Without<UserCreateInput, UserUncheckedCreateInput> & UserUncheckedCreateInput) | (Without<...> & UserCreateInput)'.
+  Type '{ email: any; name: any; password: string; role: string; isActive: true; isDemo: false; }' is not assignable to type 'Without<UserUncheckedCreateInput, UserCreateInput> & UserCreateInput'.
+    Property 'company' is missing in type '{ email: any; name: any; password: string; role: string; isActive: true; isDemo: false; }' but required in type 'UserCreateInput'.
+
+[0m [90m 105 |[39m[0m
+[0m [90m 106 |[39m     [36mconst[39m newUser [33m=[39m [36mawait[39m prisma[33m.[39muser[33m.[39mcreate({[0m
+[0m[31m[1m>[22m[39m[90m 107 |[39m       data[33m:[39m {[0m
+[0m [90m     |[39m       [31m[1m^[22m[39m[0m
+[0m [90m 108 |[39m         email[33m:[39m email[33m.[39mtoLowerCase()[33m,[39m[0m
+[0m [90m 109 |[39m         name[33m:[39m name[33m,[39m[0m
+[0m [90m 110 |[39m         password[33m:[39m hashedPassword[33m,[39m[0m
+Next.js build worker exited with code: 1 and signal: null

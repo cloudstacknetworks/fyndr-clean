@@ -926,6 +926,112 @@ export const DEMO_SCENARIOS: Record<string, DemoScenarioConfig> = {
     ]
   },
 
+  // STEP 58: Scoring Matrix Template Library Demo
+  scoring_template_library_flow: {
+    id: "scoring_template_library_flow",
+    name: "Scoring Matrix Template Library Tour",
+    description: "Demonstration of company-level scoring matrix template management and insertion",
+    steps: [
+      {
+        id: "scoring_template_library_intro",
+        timeOffsetMs: 0,
+        route: "/dashboard/scoring-templates",
+        targetSelector: "[data-demo='scoring-template-library']",
+        action: "navigate",
+        text: "This is your library of standardized scoring frameworks. Create reusable templates to ensure consistent RFP evaluation across your organization.",
+        role: "buyer",
+        duration: 5000
+      },
+      {
+        id: "scoring_template_list",
+        timeOffsetMs: 5000,
+        targetSelector: "[data-demo='scoring-templates-table']",
+        action: "highlight",
+        text: "Browse all scoring matrix templates with information about categories, versions, visibility, and who created them.",
+        role: "buyer",
+        duration: 5000
+      },
+      {
+        id: "scoring_template_filters",
+        timeOffsetMs: 10000,
+        targetSelector: "[data-demo='scoring-templates-filters']",
+        action: "highlight",
+        text: "Search and filter templates by name or visibility (company-wide vs. private templates).",
+        role: "buyer",
+        duration: 5000
+      },
+      {
+        id: "scoring_template_editor_intro",
+        timeOffsetMs: 15000,
+        route: "/dashboard/scoring-templates/[id]",
+        targetSelector: "[data-demo='scoring-template-editor']",
+        action: "navigate",
+        text: "Customize scoring categories, weights, methods, and attach requirement blocks. The editor provides full control over your scoring framework.",
+        role: "buyer",
+        duration: 5000
+      },
+      {
+        id: "scoring_template_basic_info",
+        timeOffsetMs: 20000,
+        targetSelector: "[data-demo='template-basic-info']",
+        action: "highlight",
+        text: "Set the template title, description, and visibility to control who can use this scoring matrix.",
+        role: "buyer",
+        duration: 5000
+      },
+      {
+        id: "scoring_template_categories",
+        timeOffsetMs: 25000,
+        targetSelector: "[data-demo='scoring-categories']",
+        action: "highlight",
+        text: "Define scoring categories with weights that must sum to 100%. Each category can use different scoring types: numeric (0-10), weighted, qualitative, or pass/fail.",
+        role: "buyer",
+        duration: 6000
+      },
+      {
+        id: "scoring_template_weights",
+        timeOffsetMs: 31000,
+        targetSelector: "[data-demo='category-weights']",
+        action: "highlight",
+        text: "The weight normalization feature automatically balances category weights to sum to 100%, ensuring consistent scoring.",
+        role: "buyer",
+        duration: 5000
+      },
+      {
+        id: "scoring_template_version_history",
+        timeOffsetMs: 36000,
+        targetSelector: "[data-demo='template-versions']",
+        action: "highlight",
+        text: "Version History tracks all changes to your scoring template. Each update creates a new version with full audit trail.",
+        role: "buyer",
+        duration: 5000
+      },
+      {
+        id: "scoring_template_insert_intro",
+        timeOffsetMs: 41000,
+        targetSelector: "[data-demo='scoring-template-insert-modal']",
+        action: "highlight",
+        text: "Insert a scoring template into any RFP or RFP template with one click. The modal provides preview and validation before insertion.",
+        role: "buyer",
+        duration: 5000
+      },
+      {
+        id: "scoring_template_insert_rfp_template",
+        timeOffsetMs: 46000,
+        text: "Link scoring templates to RFP templates to automatically include them when creating new RFPs from that template.",
+        role: "buyer",
+        duration: 5000
+      },
+      {
+        id: "scoring_template_complete",
+        timeOffsetMs: 51000,
+        text: "Build a library of scoring templates to ensure fair, consistent, and defensible evaluation across all your RFPs!",
+        role: "buyer",
+        duration: 5000
+      }
+    ]
+  },
+
   supplier_only_flow: {
     id: "supplier_only_flow",
     name: "Supplier Portal Tour",
