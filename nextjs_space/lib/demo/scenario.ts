@@ -39,7 +39,8 @@ export async function createDemoScenarioData(): Promise<DemoScenario> {
       name: "Diane Chen (Demo)",
       role: "buyer",
       password: hashedPassword,
-      isDemo: true
+      isDemo: true,
+      companyId: demoBuyerOrg.id
     }
   });
 
@@ -369,6 +370,15 @@ export async function createDemoScenarioData(): Promise<DemoScenario> {
 
   const suppliers = [];
   for (const sd of supplierData) {
+    // Create supplier company
+    const supplierCompany = await prisma.company.create({
+      data: {
+        name: sd.organization,
+        description: `Demo supplier company - ${sd.organization}`,
+        isDemo: true
+      }
+    });
+
     const hashedSupplierPassword = await bcrypt.hash("demo123", 10);
     const supplierUser = await prisma.user.create({
       data: {
@@ -376,7 +386,8 @@ export async function createDemoScenarioData(): Promise<DemoScenario> {
         name: sd.name,
         role: "supplier",
         password: hashedSupplierPassword,
-        isDemo: true
+        isDemo: true,
+        companyId: supplierCompany.id
       }
     });
 

@@ -75,10 +75,10 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
         userId,
         companyId,
         supplierId: supplierId.trim(),
-        stage: 'DRAFT',
+        stage: 'DRAFTING',
         status: 'open',
-        submissionDeadline: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days default
-        expectedAwardDate: new Date(Date.now() + 60 * 24 * 60 * 60 * 1000), // 60 days default
+        submissionEnd: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days default
+        awardDate: new Date(Date.now() + 60 * 24 * 60 * 60 * 1000), // 60 days default
         // Apply template defaults if available
         ...(template.defaultTimeline && { timeline: template.defaultTimeline }),
         ...(template.defaultSections && { sections: template.defaultSections }),

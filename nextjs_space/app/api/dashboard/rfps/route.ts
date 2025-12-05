@@ -34,9 +34,9 @@ export async function GET(req: NextRequest) {
     const sortBy = searchParams.get("sortBy") || "createdAt";
     const sortOrder = searchParams.get("sortOrder") || "desc";
 
-    // Build where clause
+    // Build where clause with company scoping (PHASE 2: Security hardening)
     const where: any = {
-      userId: session.user.id
+      companyId: session.user.companyId
     };
 
     // Stage filter

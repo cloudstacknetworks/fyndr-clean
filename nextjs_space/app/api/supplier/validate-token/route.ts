@@ -83,12 +83,28 @@ export async function POST(request: NextRequest) {
       temporaryPassword = crypto.randomBytes(32).toString('hex');
       const hashedPassword = await bcrypt.hash(temporaryPassword, 10);
 
+      // Create or find supplier company
+      let supplierCompany = await prisma.company.findFirst({
+        where: { name: supplierContact.organization || supplierContact.email },
+      });
+
+      if (!supplierCompany) {
+        supplierCompany = await prisma.company.create({
+          data: {
+            name: supplierContact.organization || supplierContact.email,
+            description: 'Supplier company',
+            isDemo: false,
+          },
+        });
+      }
+
       supplierUser = await prisma.user.create({
         data: {
           email: supplierContact.email,
           password: hashedPassword,
           name: supplierContact.name,
           role: 'supplier',
+          companyId: supplierCompany.id,
         },
       });
 

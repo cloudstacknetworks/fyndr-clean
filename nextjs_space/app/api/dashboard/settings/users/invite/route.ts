@@ -111,6 +111,7 @@ export async function POST(request: NextRequest) {
         role: 'buyer',
         isActive: true,
         isDemo: false,
+        companyId: firstRfp.companyId,
       },
       select: {
         id: true,

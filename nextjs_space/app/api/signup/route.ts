@@ -31,11 +31,26 @@ export async function POST(request: NextRequest) {
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create user
+    // Create company for new user (derived from email domain)
+    const emailDomain = email.split('@')[1] || 'company';
+    const companyName = emailDomain.split('.')[0].charAt(0).toUpperCase() + emailDomain.split('.')[0].slice(1);
+    
+    const company = await prisma.company.create({
+      data: {
+        name: `${companyName} Inc.`,
+        description: 'New company account',
+        isDemo: false,
+      },
+    });
+
+    // Create user associated with company
     const user = await prisma.user.create({
       data: {
         email,
         password: hashedPassword,
+        companyId: company.id,
+        role: 'buyer',
+        isDemo: false,
       },
     });
 
