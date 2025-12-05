@@ -534,6 +534,26 @@ export default function ComparisonPage({ params }: { params: { id: string } }) {
                       ))}
                     </tr>
 
+                    {/* STEP 61: Evaluation Workspace */}
+                    <tr className="bg-blue-50">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                        Evaluation Workspace
+                      </td>
+                      {comparisonData.comparisons.map((comparison, idx) => (
+                        <td key={idx} className="px-6 py-4 whitespace-nowrap">
+                          <button
+                            onClick={() => router.push(`/dashboard/rfps/${rfpId}/evaluation/${comparison.supplierContactId}`)}
+                            disabled={!comparisonData.matrixUsed}
+                            className="inline-flex items-center justify-center px-3 py-1.5 border border-blue-600 rounded text-xs font-medium text-blue-600 bg-white hover:bg-blue-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                            title={!comparisonData.matrixUsed ? "Scoring matrix not available" : "Open evaluation workspace"}
+                          >
+                            <FileText className="h-3 w-3 mr-1.5" />
+                            Open Evaluation
+                          </button>
+                        </td>
+                      ))}
+                    </tr>
+
                     {/* Requirements Coverage */}
                     <tr>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">

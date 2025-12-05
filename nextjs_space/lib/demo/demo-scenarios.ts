@@ -1069,6 +1069,61 @@ export const DEMO_SCENARIOS: Record<string, DemoScenarioConfig> = {
     ]
   },
 
+  // STEP 61: Buyer Evaluation Workspace Demo
+  evaluation_workspace: {
+    id: "evaluation_workspace",
+    name: "Buyer Evaluation Workspace Tour",
+    description: "Complete evaluation workspace for scoring supplier responses with overrides and comments",
+    steps: [
+      {
+        id: "evaluation_intro",
+        timeOffsetMs: 0,
+        route: "/dashboard/rfps/[id]/evaluation/[supplierId]",
+        targetSelector: "[data-demo='evaluation-workspace']",
+        action: "highlight",
+        text: "Welcome to the Evaluation Workspace! Review and score supplier responses, override AI scores, add comments, and monitor consensus.",
+        role: "buyer",
+        duration: 5000
+      },
+      {
+        id: "evaluation_scoring_table",
+        timeOffsetMs: 5000,
+        targetSelector: "[data-demo='scoring-table']",
+        action: "highlight",
+        text: "The scoring table shows auto-scores, override scores, and variance for each requirement. Color-coded variance badges indicate alignment level.",
+        role: "buyer",
+        duration: 5000
+      },
+      {
+        id: "evaluation_override",
+        timeOffsetMs: 10000,
+        targetSelector: "[data-demo='override-button']",
+        action: "highlight",
+        text: "Override AI scores with justification when needed. All overrides are tracked and logged for audit purposes.",
+        role: "buyer",
+        duration: 5000
+      },
+      {
+        id: "evaluation_comments",
+        timeOffsetMs: 15000,
+        targetSelector: "[data-demo='comment-button']",
+        action: "highlight",
+        text: "Add comments and notes for each requirement. Comments are threaded and include timestamps and evaluator names.",
+        role: "buyer",
+        duration: 5000
+      },
+      {
+        id: "evaluation_export",
+        timeOffsetMs: 20000,
+        targetSelector: "[data-demo='export-buttons']",
+        action: "highlight",
+        text: "Export complete evaluation reports in PDF or DOCX format including all scores, overrides, justifications, and comments.",
+        role: "buyer",
+        duration: 5000
+      }
+    ]
+  },
+
   supplier_only_flow: {
     id: "supplier_only_flow",
     name: "Supplier Portal Tour",

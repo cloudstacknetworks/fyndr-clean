@@ -154,6 +154,14 @@ export type ActivityEventType =
   | "AUTO_SCORE_OVERRIDDEN"
   | "AUTO_SCORE_AI_FAILURE"
   
+  // STEP 61: Buyer Evaluation Workspace Events
+  | "SCORE_OVERRIDE_APPLIED"
+  | "SCORE_OVERRIDE_CLEARED"
+  | "EVALUATOR_COMMENT_ADDED"
+  | "EVALUATION_VIEWED"
+  | "EVALUATION_EXPORTED_PDF"
+  | "EVALUATION_EXPORTED_DOCX"
+  
   // Supplier Q&A Events
   | "SUPPLIER_QUESTION_CREATED"
   | "SUPPLIER_QUESTION_ANSWERED"
@@ -303,6 +311,14 @@ export const EVENT_TYPES = {
   AUTO_SCORE_REGENERATED: "AUTO_SCORE_REGENERATED" as ActivityEventType,
   AUTO_SCORE_OVERRIDDEN: "AUTO_SCORE_OVERRIDDEN" as ActivityEventType,
   AUTO_SCORE_AI_FAILURE: "AUTO_SCORE_AI_FAILURE" as ActivityEventType,
+  
+  // STEP 61: Buyer Evaluation Workspace Events
+  SCORE_OVERRIDE_APPLIED: "SCORE_OVERRIDE_APPLIED" as ActivityEventType,
+  SCORE_OVERRIDE_CLEARED: "SCORE_OVERRIDE_CLEARED" as ActivityEventType,
+  EVALUATOR_COMMENT_ADDED: "EVALUATOR_COMMENT_ADDED" as ActivityEventType,
+  EVALUATION_VIEWED: "EVALUATION_VIEWED" as ActivityEventType,
+  EVALUATION_EXPORTED_PDF: "EVALUATION_EXPORTED_PDF" as ActivityEventType,
+  EVALUATION_EXPORTED_DOCX: "EVALUATION_EXPORTED_DOCX" as ActivityEventType,
   
   // Supplier Q&A Events
   SUPPLIER_QUESTION_CREATED: "SUPPLIER_QUESTION_CREATED" as ActivityEventType,
@@ -586,6 +602,14 @@ export const EVENT_TYPE_LABELS: Record<ActivityEventType, string> = {
   AUTO_SCORE_REGENERATED: "Auto-Score Regenerated",
   AUTO_SCORE_OVERRIDDEN: "Auto-Score Overridden",
   AUTO_SCORE_AI_FAILURE: "Auto-Score AI Failure",
+  
+  // STEP 61: Buyer Evaluation Workspace Events
+  SCORE_OVERRIDE_APPLIED: "Score Override Applied",
+  SCORE_OVERRIDE_CLEARED: "Score Override Cleared",
+  EVALUATOR_COMMENT_ADDED: "Evaluator Comment Added",
+  EVALUATION_VIEWED: "Evaluation Viewed",
+  EVALUATION_EXPORTED_PDF: "Evaluation Exported to PDF",
+  EVALUATION_EXPORTED_DOCX: "Evaluation Exported to DOCX",
   
   // Supplier Q&A Events
   SUPPLIER_QUESTION_CREATED: "Question Asked",

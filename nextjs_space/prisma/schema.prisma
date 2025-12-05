@@ -422,6 +422,10 @@ model SupplierResponse {
   autoScoreJson         Json?      // Full scoring results per requirement
   autoScoreGeneratedAt  DateTime?  // When auto-scoring was last run
 
+  // STEP 61: Buyer Evaluation Workspace
+  overrides             Json?      // Buyer overrides keyed by requirementId
+  comments              Json?      // Array of evaluator comments
+
   rfp             RFP                          @relation(fields: [rfpId], references: [id], onDelete: Cascade)
   supplierContact SupplierContact              @relation(fields: [supplierContactId], references: [id], onDelete: Cascade)
   attachments     SupplierResponseAttachment[]
